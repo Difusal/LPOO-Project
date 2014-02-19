@@ -20,8 +20,9 @@ public class Game {
 			String dir = reader.next(".");
 			System.out.println();
 
-			// moving hero
+			// moving hero and dragon
 			hero.move(dir, lab);
+			dragon.move(lab);
 
 			// checking if player got sword
 			if (sword.isVisible()

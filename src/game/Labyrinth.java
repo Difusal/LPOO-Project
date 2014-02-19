@@ -53,10 +53,14 @@ public class Labyrinth {
 				// printing hero
 				if (hero.isOn(j, i))
 					hero.print();
-				else if (sword.isOn(j, i) && sword.isVisible())
+				else if (dragon.isOn(j, i) && !dragon.isDead()) {
+					// if sword is under the dragon
+					if (sword.isOn(j, i) && sword.isVisible())
+						System.out.print("F ");
+					else
+						dragon.print();
+				} else if (sword.isOn(j, i) && sword.isVisible())
 					sword.print();
-				else if (dragon.isOn(j, i) && !dragon.isDead())
-					dragon.print();
 				else
 					System.out.print(lab[i][j] + " ");
 			}
@@ -75,6 +79,10 @@ public class Labyrinth {
 			}
 		} else
 			return lab[y][x] != 'x';
+	}
+
+	public boolean dragonCanWalkTo(int x, int y) {
+		return lab[y][x] != 'x';
 	}
 
 	public char[][] getLab() {
