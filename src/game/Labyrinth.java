@@ -47,14 +47,14 @@ public class Labyrinth {
 		}
 	}
 
-	public void print(Hero hero) {
-		//System.out.println("Printing labyrinth...");
-
+	public void print(Hero hero, Sword sword) {
 		for (int i = 0; i < lab.length; i++) {
 			for (int j = 0; j < lab[i].length; j++) {
 				// printing hero
 				if (hero.isOn(j, i))
 					hero.print();
+				else if (sword.isOn(j, i) && sword.isVisible())
+					sword.print();
 				else
 					System.out.print(lab[i][j] + " ");
 			}
@@ -62,10 +62,20 @@ public class Labyrinth {
 			System.out.println();
 		}
 	}
-	
-	public boolean cellIsFree(int x, int y) {
-		return lab[y][x] != 'x';
+
+	public boolean heroCanWalkTo(int x, int y, Hero hero) {
+		if (lab[y][x] == 'S') {
+			if (hero.hasSword())
+				return true;
+			else {
+				System.out.println("You have to get the Sword to Exit.");
+				return false;
+			}
+		} else
+			return lab[y][x] != 'x';
 	}
-	
-	public char[][] getLab() {return lab;}
+
+	public char[][] getLab() {
+		return lab;
+	}
 }

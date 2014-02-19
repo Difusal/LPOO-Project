@@ -6,21 +6,33 @@ public class Game {
 	public static void startGame() {
 		Labyrinth lab = new Labyrinth();
 		Hero hero = new Hero("Hero");
+		Sword sword = new Sword();
 
 		Scanner reader = new Scanner(System.in);
-		
+
 		boolean done = false;
 		while (!done) {
-			lab.print(hero);
-			
+			lab.print(hero, sword);
+
 			// reading user input
 			System.out.print("> ");
 			String dir = reader.next(".");
+			System.out.println();
+
 			hero.move(dir, lab);
-			if(lab.getLab()[hero.position.getY()][hero.position.getX()] == 'S')
+
+			// checking if player got sword
+			if (sword.isVisible()
+					&& sword.getPosition().getX() == hero.position.getX()
+					&& sword.getPosition().getY() == hero.position.getY()) {
+				sword.hide();
+				hero.arm();
+			}
+
+			if (lab.getLab()[hero.position.getY()][hero.position.getX()] == 'S')
 				done = true;
 		}
-		
+
 		System.out.println("PARABÉNS! Ganhou o jogo.");
 	}
 
