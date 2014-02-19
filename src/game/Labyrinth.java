@@ -53,7 +53,7 @@ public class Labyrinth {
 		for (int i = 0; i < lab.length; i++) {
 			for (int j = 0; j < lab[i].length; j++) {
 				// printing hero
-				if (hero.isOn(i, j))
+				if (hero.isOn(j, i))
 					hero.print();
 				else
 					System.out.print(lab[i][j] + " ");
@@ -62,4 +62,10 @@ public class Labyrinth {
 			System.out.println();
 		}
 	}
+	
+	public boolean cellIsFree(int x, int y) {
+		return lab[y][x] != 'x';
+	}
+	
+	public char[][] getLab() {return lab;}
 }
