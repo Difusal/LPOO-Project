@@ -28,10 +28,6 @@ public class Hero extends LivingBeing {
 		System.out.println("Hero caught the sword.");
 	}
 
-	public boolean isOn(int x, int y) {
-		return (x == position.getX()) && (y == position.getY());
-	}
-
 	public void move(String dir, Labyrinth lab) {
 		switch (dir) {
 		case "w":

@@ -47,7 +47,7 @@ public class Labyrinth {
 		}
 	}
 
-	public void print(Hero hero, Sword sword) {
+	public void print(Hero hero, Sword sword, Dragon dragon) {
 		for (int i = 0; i < lab.length; i++) {
 			for (int j = 0; j < lab[i].length; j++) {
 				// printing hero
@@ -55,6 +55,8 @@ public class Labyrinth {
 					hero.print();
 				else if (sword.isOn(j, i) && sword.isVisible())
 					sword.print();
+				else if (dragon.isOn(j, i) && !dragon.isDead())
+					dragon.print();
 				else
 					System.out.print(lab[i][j] + " ");
 			}

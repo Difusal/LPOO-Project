@@ -7,18 +7,20 @@ public class Game {
 		Labyrinth lab = new Labyrinth();
 		Hero hero = new Hero("Hero");
 		Sword sword = new Sword();
+		Dragon dragon = new Dragon();
 
 		Scanner reader = new Scanner(System.in);
 
 		boolean done = false;
 		while (!done) {
-			lab.print(hero, sword);
+			lab.print(hero, sword, dragon);
 
 			// reading user input
 			System.out.print("> ");
 			String dir = reader.next(".");
 			System.out.println();
 
+			// moving hero
 			hero.move(dir, lab);
 
 			// checking if player got sword
@@ -29,11 +31,27 @@ public class Game {
 				hero.arm();
 			}
 
+			// if player is next to dragon
+			if ((Math.abs(hero.position.getX() - dragon.position.getX()) <= 1)
+					&& (Math.abs(hero.position.getY() - dragon.position.getY()) <= 1)) {
+				// if player has sword
+				if (hero.hasSword())
+					dragon.setLife(0);
+				else {
+					hero.setLife(0);
+					done = true;
+				}
+			}
+
 			if (lab.getLab()[hero.position.getY()][hero.position.getX()] == 'S')
 				done = true;
 		}
+		lab.print(hero, sword, dragon);
 
-		System.out.println("PARABÉNS! Ganhou o jogo.");
+		if (hero.isDead())
+			System.out.println("You lost.");
+		else
+			System.out.println("PARABÉNS! Ganhou o jogo.");
 	}
 
 	public static void main(String[] args) {
