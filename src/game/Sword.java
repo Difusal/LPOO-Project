@@ -17,14 +17,18 @@ public class Sword {
 	}
 
 	public boolean isOn(int x, int y) {
-		return (x == position.getX()) && (y == position.getY()); 
+		return (x == position.getX()) && (y == position.getY());
 	}
-	
-	public boolean isVisible() { return show; }
-	
+
+	public boolean isVisible() {
+		return show;
+	}
+
 	public void hide() {
 		show = false;
 	}
-	
-	public Coord getPosition() { return position; }
+
+	public Coord getPosition() {
+		return position;
+	}
 }

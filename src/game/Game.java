@@ -4,21 +4,24 @@ import java.util.Scanner;
 
 public class Game {
 	public static void startGame() {
+		// initializing variables
 		Labyrinth lab = new Labyrinth();
 		Hero hero = new Hero("Hero");
 		Sword sword = new Sword();
 		Dragon dragon = new Dragon();
 
+		// opening scanner
 		Scanner reader = new Scanner(System.in);
 
 		boolean done = false;
 		while (!done) {
+			// printing labyrinth
 			lab.print(hero, sword, dragon);
 
 			// reading user input
-			System.out.print("> ");
-			String dir = reader.next(".");
 			System.out.println();
+			System.out.print("Type W/A/S/D to move: ");
+			String dir = reader.next(".");
 
 			// moving hero and dragon
 			hero.move(dir, lab);
@@ -28,34 +31,50 @@ public class Game {
 			if (sword.isVisible()
 					&& sword.getPosition().getX() == hero.position.getX()
 					&& sword.getPosition().getY() == hero.position.getY()) {
+				// hide sword from labyrinth
 				sword.hide();
+				
+				// arm hero
 				hero.arm();
 			}
 
-			// if player is next to dragon
+			// if hero is next to a dragon
 			if ((Math.abs(hero.position.getX() - dragon.position.getX()) <= 1)
 					&& (Math.abs(hero.position.getY() - dragon.position.getY()) <= 1)) {
-				// if player has sword
-				if (hero.hasSword())
+				// if hero has sword
+				if (hero.hasSword()) {
+					// kill the dragon
 					dragon.setLife(0);
+					
+					hero.killedTheDragon();
+				}
 				else {
+					// else kill hero
 					hero.setLife(0);
 					done = true;
 				}
 			}
 
+			// if hero is able to step on Exit, game is done
 			if (lab.getLab()[hero.position.getY()][hero.position.getX()] == 'S')
 				done = true;
 		}
+		// print labyrinth for the last time
 		lab.print(hero, sword, dragon);
 
+		// displaying notification message
+		System.out.println();
 		if (hero.isDead())
-			System.out.println("You lost.");
+			System.out.println("GAME OVER! You lost.");
 		else
-			System.out.println("PARABÉNS! Ganhou o jogo.");
+			System.out.println("CONGRATULATIONS! You won the game.");
+
+		// closing scanner
+		reader.close();
 	}
 
 	public static void main(String[] args) {
+		// printing main menu
 		System.out.println("--------------");
 		System.out.println("Labyrinth Game");
 		System.out.println("--------------");
@@ -64,10 +83,12 @@ public class Game {
 		System.out.println("2. Exit");
 		System.out.println();
 
+		Scanner reader = new Scanner(System.in);
+		
 		boolean done = false;
 		while (!done) {
 			// reading user input
-			Scanner reader = new Scanner(System.in);
+			System.out.println("Choose what to do:");
 			System.out.print("> ");
 			int input = reader.nextInt();
 
@@ -79,13 +100,17 @@ public class Game {
 				done = true;
 				break;
 			case 2:
+				System.out.println();
 				System.out.println("Quitting game... Done.");
 				done = true;
 				break;
 			default:
+				System.out.println();
 				System.out.println("Invalid input!");
 				break;
 			}
 		}
+		
+		reader.close();
 	}
 }

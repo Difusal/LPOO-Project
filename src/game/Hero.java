@@ -2,6 +2,7 @@ package game;
 
 public class Hero extends LivingBeing {
 	private boolean hasSword = false;
+	private boolean hasKilledTheDragon = false;
 
 	public Hero(String name) {
 		this.name = name;
@@ -25,35 +26,48 @@ public class Hero extends LivingBeing {
 
 	public void arm() {
 		hasSword = true;
-		System.out.println("Hero caught the sword.");
+		System.out.println("You caught the sword.");
+	}
+
+	public boolean hasKilledTheDragon() {
+		return hasKilledTheDragon;
+	}
+
+	public void killedTheDragon() {
+		hasKilledTheDragon = true;
 	}
 
 	public void move(String dir, Labyrinth lab) {
+		boolean validMove = false;
+
 		switch (dir) {
 		case "w":
-			if (lab.heroCanWalkTo(position.getX(), position.getY() - 1, this))
+			if (lab.heroCanWalkTo(position.getX(), position.getY() - 1, this)) {
 				position.setY(position.getY() - 1);
-			else
-				System.out.println("Jogada Inválida.");
+				validMove = true;
+			}
 			break;
 		case "s":
-			if (lab.heroCanWalkTo(position.getX(), position.getY() + 1, this))
+			if (lab.heroCanWalkTo(position.getX(), position.getY() + 1, this)) {
 				position.setY(position.getY() + 1);
-			else
-				System.out.println("Jogada Inválida.");
+				validMove = true;
+			}
 			break;
 		case "a":
-			if (lab.heroCanWalkTo(position.getX() - 1, position.getY(), this))
+			if (lab.heroCanWalkTo(position.getX() - 1, position.getY(), this)) {
 				position.setX(position.getX() - 1);
-			else
-				System.out.println("Jogada Inválida.");
+				validMove = true;
+			}
 			break;
 		case "d":
-			if (lab.heroCanWalkTo(position.getX() + 1, position.getY(), this))
+			if (lab.heroCanWalkTo(position.getX() + 1, position.getY(), this)) {
 				position.setX(position.getX() + 1);
-			else
-				System.out.println("Jogada Inválida.");
+				validMove = true;
+			}
 			break;
 		}
+
+		if (!validMove)
+			System.out.println("Invalid move.");
 	}
 }

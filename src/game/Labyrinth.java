@@ -6,7 +6,6 @@ public class Labyrinth {
 
 	public Labyrinth() {
 		System.out.println("Initializing labyrinth...");
-		System.out.println();
 
 		lab = new char[dimension][dimension];
 
@@ -48,11 +47,13 @@ public class Labyrinth {
 	}
 
 	public void print(Hero hero, Sword sword, Dragon dragon) {
+		System.out.println();
 		for (int i = 0; i < lab.length; i++) {
 			for (int j = 0; j < lab[i].length; j++) {
 				// printing hero
 				if (hero.isOn(j, i))
 					hero.print();
+				// printing dragon
 				else if (dragon.isOn(j, i) && !dragon.isDead()) {
 					// if sword is under the dragon
 					if (sword.isOn(j, i) && sword.isVisible())
@@ -60,6 +61,7 @@ public class Labyrinth {
 					else
 						dragon.print();
 				} else if (sword.isOn(j, i) && sword.isVisible())
+					// printing sword
 					sword.print();
 				else
 					System.out.print(lab[i][j] + " ");
@@ -71,10 +73,10 @@ public class Labyrinth {
 
 	public boolean heroCanWalkTo(int x, int y, Hero hero) {
 		if (lab[y][x] == 'S') {
-			if (hero.hasSword())
+			if (hero.hasKilledTheDragon())
 				return true;
 			else {
-				System.out.println("You have to get the Sword to Exit.");
+				System.out.println("You have to kill the Dragon to exit.");
 				return false;
 			}
 		} else
@@ -82,7 +84,7 @@ public class Labyrinth {
 	}
 
 	public boolean dragonCanWalkTo(int x, int y) {
-		return lab[y][x] != 'x';
+		return lab[y][x] == ' ';
 	}
 
 	public char[][] getLab() {
