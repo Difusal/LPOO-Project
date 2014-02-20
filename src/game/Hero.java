@@ -26,7 +26,7 @@ public class Hero extends LivingBeing {
 
 	public void arm() {
 		hasSword = true;
-		System.out.println("You caught the sword.");
+		System.out.println("You have caught the sword.");
 	}
 
 	public boolean hasKilledTheDragon() {
@@ -35,6 +35,7 @@ public class Hero extends LivingBeing {
 
 	public void killedTheDragon() {
 		hasKilledTheDragon = true;
+		System.out.println("You have killed the Dragon.");
 	}
 
 	public void move(String dir, Labyrinth lab) {

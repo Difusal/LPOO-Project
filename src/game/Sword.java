@@ -1,7 +1,7 @@
 package game;
 
 public class Sword {
-	private Coord position = new Coord(1, 8);
+	private Coord position = new Coord(1, 1);
 	private boolean show = true;
 
 	public Sword() {

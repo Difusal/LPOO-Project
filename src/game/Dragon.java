@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Dragon extends LivingBeing {
 	public Dragon() {
-		this.position = new Coord(1, 3);
+		this.position = new Coord(3, 3);
 	}
 
 	public Dragon(int x, int y) {

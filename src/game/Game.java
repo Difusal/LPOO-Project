@@ -4,14 +4,22 @@ import java.util.Scanner;
 
 public class Game {
 	public static void startGame() {
+		// opening scanner
+		Scanner reader = new Scanner(System.in);
+
+		// reading user input
+		int dimension;
+		do {
+			System.out.println("Insert an odd labyrinth size: ");
+			System.out.print("> ");
+			dimension = reader.nextInt();
+		} while (dimension % 2 == 0);
+
 		// initializing variables
-		Labyrinth lab = new Labyrinth();
+		Labyrinth lab = new Labyrinth(dimension);
 		Hero hero = new Hero("Hero");
 		Sword sword = new Sword();
 		Dragon dragon = new Dragon();
-
-		// opening scanner
-		Scanner reader = new Scanner(System.in);
 
 		boolean done = false;
 		while (!done) {
@@ -33,25 +41,27 @@ public class Game {
 					&& sword.getPosition().getY() == hero.position.getY()) {
 				// hide sword from labyrinth
 				sword.hide();
-				
+
 				// arm hero
 				hero.arm();
 			}
 
 			// if hero is next to a dragon
-			if ((Math.abs(hero.position.getX() - dragon.position.getX()) <= 1)
-					&& (Math.abs(hero.position.getY() - dragon.position.getY()) <= 1)) {
-				// if hero has sword
-				if (hero.hasSword()) {
-					// kill the dragon
-					dragon.setLife(0);
-					
-					hero.killedTheDragon();
-				}
-				else {
-					// else kill hero
-					hero.setLife(0);
-					done = true;
+			if (!dragon.isDead()) {
+				if ((Math.abs(hero.position.getX() - dragon.position.getX()) <= 1)
+						&& (Math.abs(hero.position.getY()
+								- dragon.position.getY()) <= 1)) {
+					// if hero has sword
+					if (hero.hasSword()) {
+						// kill the dragon
+						dragon.setLife(0);
+
+						hero.killedTheDragon();
+					} else {
+						// else kill hero
+						hero.setLife(0);
+						done = true;
+					}
 				}
 			}
 
@@ -84,33 +94,30 @@ public class Game {
 		System.out.println();
 
 		Scanner reader = new Scanner(System.in);
-		
+
 		boolean done = false;
 		while (!done) {
 			// reading user input
 			System.out.println("Choose what to do:");
 			System.out.print("> ");
 			int input = reader.nextInt();
+			System.out.println();
 
 			switch (input) {
 			case 1:
-				System.out.println();
-				System.out.println("Loading game...");
 				startGame();
 				done = true;
 				break;
 			case 2:
-				System.out.println();
 				System.out.println("Quitting game... Done.");
 				done = true;
 				break;
 			default:
-				System.out.println();
 				System.out.println("Invalid input!");
 				break;
 			}
 		}
-		
+
 		reader.close();
 	}
 }
