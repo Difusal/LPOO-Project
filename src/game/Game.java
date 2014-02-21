@@ -10,10 +10,10 @@ public class Game {
 		// reading user input
 		int dimension;
 		do {
-			System.out.println("Insert an odd labyrinth size: ");
+			System.out.println("Insert an odd labyrinth size (>= 5): ");
 			System.out.print("> ");
 			dimension = reader.nextInt();
-		} while (dimension % 2 == 0);
+		} while (dimension % 2 == 0 || dimension < 5);
 
 		// initializing variables
 		Labyrinth lab = new Labyrinth(dimension);
