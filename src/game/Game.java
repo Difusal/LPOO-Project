@@ -17,9 +17,9 @@ public class Game {
 
 		// initializing variables
 		Labyrinth lab = new Labyrinth(dimension);
-		Hero hero = new Hero("Hero");
-		Sword sword = new Sword();
-		Dragon dragon = new Dragon();
+		Hero hero = new Hero("Hero", lab);
+		Sword sword = new Sword(lab, hero);
+		Dragon dragon = new Dragon(lab, hero, sword);
 
 		boolean done = false;
 		while (!done) {

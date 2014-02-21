@@ -1,10 +1,22 @@
 package game;
 
+import java.util.Random;
+
 public class Sword {
-	private Coord position = new Coord(1, 1);
+	protected Coord position = new Coord(1, 1);
 	private boolean show = true;
 
-	public Sword() {
+	public Sword(Labyrinth lab, Hero hero) {
+		Random r = new Random();
+		do {
+			do {
+				position.setX(r.nextInt(lab.getDimension() - 2) + 1);
+			} while (position.getX() % 2 == 0);
+			do {
+				position.setY(r.nextInt(lab.getDimension() - 2) + 1);
+			} while (position.getY() % 2 == 0);
+		} while (position.getX() == hero.position.getX()
+				&& position.getY() == hero.position.getY());
 	}
 
 	public Sword(int x, int y) {

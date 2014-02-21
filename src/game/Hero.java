@@ -1,11 +1,21 @@
 package game;
 
+import java.util.Random;
+
 public class Hero extends LivingBeing {
 	private boolean hasSword = false;
 	private boolean hasKilledTheDragon = false;
 
-	public Hero(String name) {
+	public Hero(String name, Labyrinth lab) {
 		this.name = name;
+
+		Random r = new Random();
+		do {
+			position.setX(r.nextInt(lab.getDimension() - 2) + 1);
+		} while (position.getX() % 2 == 0);
+		do {
+			position.setY(r.nextInt(lab.getDimension() - 2) + 1);
+		} while (position.getY() % 2 == 0);
 	}
 
 	public Hero(String name, int x, int y) {

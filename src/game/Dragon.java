@@ -3,8 +3,19 @@ package game;
 import java.util.Random;
 
 public class Dragon extends LivingBeing {
-	public Dragon() {
-		this.position = new Coord(3, 3);
+	public Dragon(Labyrinth lab, Hero hero, Sword sword) {
+		Random r = new Random();
+		do {
+			do {
+				position.setX(r.nextInt(lab.getDimension() - 2) + 1);
+			} while (position.getX() % 2 == 0);
+			do {
+				position.setY(r.nextInt(lab.getDimension() - 2) + 1);
+			} while (position.getY() % 2 == 0);
+		} while ((position.getX() == hero.position.getX() && position.getY() == hero.position
+				.getY())
+				|| (position.getX() == sword.position.getX() && position.getY() == sword.position
+						.getY()));
 	}
 
 	public Dragon(int x, int y) {
