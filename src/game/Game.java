@@ -3,17 +3,9 @@ package game;
 import java.util.Scanner;
 
 public class Game {
-	public static void startGame() {
+	public static void startGame(int dimension) {
 		// opening scanner
 		Scanner reader = new Scanner(System.in);
-
-		// reading user input
-		int dimension;
-		do {
-			System.out.println("Insert an odd labyrinth size (>= 5): ");
-			System.out.print("> ");
-			dimension = reader.nextInt();
-		} while (dimension % 2 == 0 || dimension < 5);
 
 		// initializing variables
 		Labyrinth lab = new Labyrinth(dimension);
@@ -105,7 +97,15 @@ public class Game {
 
 			switch (input) {
 			case 1:
-				startGame();
+				// reading user input
+				int dimension;
+				do {
+					System.out.println("Insert an odd labyrinth size (>= 5): ");
+					System.out.print("> ");
+					dimension = reader.nextInt();
+				} while (dimension % 2 == 0 || dimension < 5);
+
+				startGame(dimension);
 				done = true;
 				break;
 			case 2:

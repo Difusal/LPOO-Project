@@ -9,12 +9,11 @@ public class Labyrinth {
 
 	int dimension;
 	private char[][] lab;
-	private boolean[][] visitedCells;
 
 	public Labyrinth(int dimension) {
 		this.dimension = dimension;
 		lab = new char[dimension][dimension];
-		visitedCells = new boolean[dimension - 2][dimension - 2];
+		boolean[][] visitedCells = new boolean[dimension - 2][dimension - 2];
 
 		// filling labyrinth with X
 		for (int i = 0; i < dimension; i++) {
