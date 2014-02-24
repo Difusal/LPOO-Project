@@ -1,9 +1,11 @@
 package game.logic;
 
+import game.logic.Dragon.DragonBehavior;
+
 import java.util.Scanner;
 
 public class Game {
-	public static void startGame(int dimension) {
+	public static void startGame(int dimension, DragonBehavior dragonBehavior) {
 		// opening scanner
 		Scanner reader = new Scanner(System.in);
 
@@ -11,7 +13,7 @@ public class Game {
 		Labyrinth lab = MazeBuilder.Build(dimension);
 		Hero hero = new Hero("Hero", lab);
 		Sword sword = new Sword(lab, hero);
-		Dragon dragon = new Dragon(lab, hero, sword);
+		Dragon dragon = new Dragon(dragonBehavior, lab, hero, sword);
 
 		boolean done = false;
 		while (!done) {
