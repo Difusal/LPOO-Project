@@ -3,6 +3,7 @@ package game.cli;
 import game.logic.Dragon;
 import game.logic.Hero;
 import game.logic.Labyrinth;
+import game.logic.MazeBuilder;
 import game.logic.Sword;
 
 import java.util.Scanner;
@@ -13,7 +14,8 @@ public class Game {
 		Scanner reader = new Scanner(System.in);
 
 		// initializing variables
-		Labyrinth lab = new Labyrinth(dimension);
+		//Labyrinth lab = new Labyrinth(dimension);
+		Labyrinth lab = MazeBuilder.Build(dimension);
 		Hero hero = new Hero("Hero", lab);
 		Sword sword = new Sword(lab, hero);
 		Dragon dragon = new Dragon(lab, hero, sword);
@@ -21,7 +23,7 @@ public class Game {
 		boolean done = false;
 		while (!done) {
 			// printing labyrinth
-			lab.print(hero, sword, dragon);
+			lab.draw(hero, sword, dragon);
 
 			// reading user input
 			System.out.println();
@@ -67,7 +69,7 @@ public class Game {
 				done = true;
 		}
 		// print labyrinth for the last time
-		lab.print(hero, sword, dragon);
+		lab.draw(hero, sword, dragon);
 
 		// displaying notification message
 		System.out.println();

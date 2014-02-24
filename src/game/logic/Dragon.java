@@ -22,7 +22,7 @@ public class Dragon extends LivingBeing {
 		this.setPosition(new Coord(x, y));
 	}
 
-	public void print() {
+	public void draw() {
 		System.out.print("D ");
 	}
 

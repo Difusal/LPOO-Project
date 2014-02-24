@@ -23,7 +23,7 @@ public class Hero extends LivingBeing {
 		this.setPosition(new Coord(x, y));
 	}
 
-	public void print() {
+	public void draw() {
 		if (hasSword)
 			System.out.print("A ");
 		else

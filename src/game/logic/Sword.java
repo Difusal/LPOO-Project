@@ -24,7 +24,7 @@ public class Sword {
 		position.setY(y);
 	}
 
-	public void print() {
+	public void draw() {
 		System.out.print("E ");
 	}
 
