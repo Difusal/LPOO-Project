@@ -1,10 +1,4 @@
-package game.cli;
-
-import game.logic.Dragon;
-import game.logic.Hero;
-import game.logic.Labyrinth;
-import game.logic.MazeBuilder;
-import game.logic.Sword;
+package game.logic;
 
 import java.util.Scanner;
 
@@ -14,7 +8,6 @@ public class Game {
 		Scanner reader = new Scanner(System.in);
 
 		// initializing variables
-		//Labyrinth lab = new Labyrinth(dimension);
 		Labyrinth lab = MazeBuilder.Build(dimension);
 		Hero hero = new Hero("Hero", lab);
 		Sword sword = new Sword(lab, hero);
@@ -54,9 +47,8 @@ public class Game {
 					if (hero.hasSword()) {
 						// kill the dragon
 						dragon.setLife(0);
-
 						hero.killedTheDragon();
-					} else {
+					} else if (!dragon.isSleeping()) {
 						// else kill hero
 						hero.setLife(0);
 						done = true;
@@ -79,52 +71,6 @@ public class Game {
 			System.out.println("CONGRATULATIONS! You won the game.");
 
 		// closing scanner
-		reader.close();
-	}
-
-	public static void main(String[] args) {
-		// printing main menu
-		System.out.println("--------------");
-		System.out.println("Labyrinth Game");
-		System.out.println("--------------");
-		System.out.println();
-		System.out.println("1. Play");
-		System.out.println("2. Exit");
-		System.out.println();
-
-		Scanner reader = new Scanner(System.in);
-
-		boolean done = false;
-		while (!done) {
-			// reading user input
-			System.out.println("Choose what to do:");
-			System.out.print("> ");
-			int input = reader.nextInt();
-			System.out.println();
-
-			switch (input) {
-			case 1:
-				// reading user input
-				int dimension;
-				do {
-					System.out.println("Insert an odd labyrinth size (>= 5): ");
-					System.out.print("> ");
-					dimension = reader.nextInt();
-				} while (dimension % 2 == 0 || dimension < 5);
-
-				startGame(dimension);
-				done = true;
-				break;
-			case 2:
-				System.out.println("Quitting game... Done.");
-				done = true;
-				break;
-			default:
-				System.out.println("Invalid input!");
-				break;
-			}
-		}
-
 		reader.close();
 	}
 }

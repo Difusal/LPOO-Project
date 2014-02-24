@@ -3,6 +3,8 @@ package game.logic;
 import java.util.Random;
 
 public class Dragon extends LivingBeing {
+	private boolean isSleeping = false;
+	
 	public Dragon(Labyrinth lab, Hero hero, Sword sword) {
 		Random r = new Random();
 		do {
@@ -22,11 +24,11 @@ public class Dragon extends LivingBeing {
 		this.setPosition(new Coord(x, y));
 	}
 
-	public void draw() {
-		System.out.print("D ");
-	}
-
 	public void move(Labyrinth lab) {
+		// if dragon is asleep, it does not move
+		if (isSleeping)
+			return;
+		
 		Random r = new Random();
 		int dir = r.nextInt(4);
 
@@ -56,5 +58,16 @@ public class Dragon extends LivingBeing {
 				getPosition().setX(getPosition().getX() - 1);
 			break;
 		}
+	}
+	
+	public void draw() {
+		if (isSleeping)
+			System.out.print("d ");
+		else
+			System.out.print("D ");
+	}
+
+	public boolean isSleeping() {
+		return isSleeping;
 	}
 }
