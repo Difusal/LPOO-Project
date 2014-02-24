@@ -1,33 +1,37 @@
 package game.logic;
 
-import game.logic.Dragon.DragonBehavior;
+import java.util.Vector;
 
-import java.util.Scanner;
+import game.logic.Dragon.DragonBehavior;
+import game.logic.LivingBeing.Type;
 
 public class Game {
-	public static void startGame(int dimension, DragonBehavior dragonBehavior) {
-		// opening scanner
-		Scanner reader = new Scanner(System.in);
-
+	public static void startGame(int dimension, DragonBehavior dragonBehavior,
+			int numDragons) {
 		// initializing variables
 		Labyrinth lab = MazeBuilder.Build(dimension);
-		Hero hero = new Hero("Hero", lab);
-		Sword sword = new Sword(lab, hero);
-		Dragon dragon = new Dragon(dragonBehavior, lab, hero, sword);
+		Vector<LivingBeing> livingBeings = new Vector<LivingBeing>();
+
+		// creating hero
+		livingBeings.add(new Hero("Hero", lab));
+		Hero hero = (Hero) livingBeings.get(0);
+
+		// creating sword
+		Sword sword = new Sword(lab, livingBeings.get(0));
+
+		// summoning dragons
+		for (int i = 0; i < numDragons; i++)
+			livingBeings.add(new Dragon(dragonBehavior, lab, livingBeings,
+					sword));
 
 		boolean done = false;
 		while (!done) {
 			// printing labyrinth
-			lab.draw(hero, sword, dragon);
+			lab.draw(livingBeings, sword);
 
-			// reading user input
-			System.out.println();
-			System.out.print("Type W/A/S/D to move: ");
-			String dir = reader.next(".");
-
-			// moving hero and dragon
-			hero.move(dir, lab);
-			dragon.move(lab);
+			// moving living beings
+			for (LivingBeing i : livingBeings)
+				i.move(lab);
 
 			// checking if player got sword
 			if (sword.isVisible()
@@ -41,29 +45,37 @@ public class Game {
 			}
 
 			// if hero is next to a dragon
-			if (!dragon.isDead()) {
-				if ((Math.abs(hero.getPosition().getX() - dragon.getPosition().getX()) <= 1)
-						&& (Math.abs(hero.getPosition().getY()
-								- dragon.getPosition().getY()) <= 1)) {
-					// if hero has sword
-					if (hero.hasSword()) {
-						// kill the dragon
-						dragon.setLife(0);
-						hero.killedTheDragon();
-					} else if (!dragon.isSleeping()) {
-						// else kill hero
-						hero.setLife(0);
-						done = true;
+			for (LivingBeing i : livingBeings) {
+				// skipping verification if comparing to hero
+				if (i.getType() == Type.HERO)
+					continue;
+
+				if (!i.isDead()) {
+					if ((Math.abs(hero.getPosition().getX()
+							- i.getPosition().getX()) <= 1)
+							&& (Math.abs(hero.getPosition().getY()
+									- i.getPosition().getY()) <= 1)) {
+						// if hero has sword
+						if (hero.hasSword()) {
+							// kill the dragon
+							i.setLife(0);
+							hero.killedTheDragon();
+						} else if (!i.isSleeping()) {
+							// else kill hero
+							hero.setLife(0);
+							done = true;
+						}
 					}
 				}
 			}
 
 			// if hero is able to step on Exit, game is done
-			if (lab.getLab()[hero.getPosition().getY()][hero.getPosition().getX()] == 'S')
+			if (lab.getLab()[hero.getPosition().getY()][hero.getPosition()
+					.getX()] == 'S')
 				done = true;
 		}
 		// print labyrinth for the last time
-		lab.draw(hero, sword, dragon);
+		lab.draw(livingBeings, sword);
 
 		// displaying notification message
 		System.out.println();
@@ -71,8 +83,5 @@ public class Game {
 			System.out.println("GAME OVER! You lost.");
 		else
 			System.out.println("CONGRATULATIONS! You won the game.");
-
-		// closing scanner
-		reader.close();
 	}
 }

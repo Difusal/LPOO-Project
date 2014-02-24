@@ -71,9 +71,11 @@ public class UI {
 						1, 3);
 				DragonBehavior dragonBehavior = DragonBehavior.values()[behaviorInput - 1];
 
+				// reading number of dragons to summon
+				int numDragons = waitForUserInput("How many dragons should appear?", 1, dimension/3);
+				
 				// starting game
-				System.out.println("Dbeh: " + dragonBehavior);
-				Game.startGame(dimension, dragonBehavior);
+				Game.startGame(dimension, dragonBehavior, numDragons);
 				
 				done = true;
 				break;

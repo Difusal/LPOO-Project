@@ -6,7 +6,7 @@ public class Sword {
 	protected Coord position = new Coord(1, 1);
 	private boolean show = true;
 
-	public Sword(Labyrinth lab, Hero hero) {
+	public Sword(Labyrinth lab, LivingBeing hero) {
 		Random r = new Random();
 		do {
 			do {

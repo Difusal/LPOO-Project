@@ -1,19 +1,22 @@
 package game.logic;
 
 import java.util.Random;
+import java.util.List;
 
 public class Dragon extends LivingBeing {
-	DragonBehavior behavior = DragonBehavior.Moving;
-	private boolean isSleeping = false;
+	DragonBehavior behavior = DragonBehavior.MOVING;
 
 	public enum DragonBehavior {
-		notMoving, Moving, MovingAndSleeping
+		NOTMOVING, MOVING, MOVINGANDSLEEPING
 	}
 
-	public Dragon(DragonBehavior behavior, Labyrinth lab, Hero hero, Sword sword) {
+	public Dragon(DragonBehavior behavior, Labyrinth lab,
+			List<LivingBeing> livingBeings, Sword sword) {
+		this.type = Type.DRAGON;
 		this.behavior = behavior;
 
 		Random r = new Random();
+		boolean repeat;
 		do {
 			do {
 				getPosition().setX(r.nextInt(lab.getDimension() - 2) + 1);
@@ -21,20 +24,26 @@ public class Dragon extends LivingBeing {
 			do {
 				getPosition().setY(r.nextInt(lab.getDimension() - 2) + 1);
 			} while (getPosition().getY() % 2 == 0);
-		} while ((getPosition().getX() == hero.getPosition().getX() && getPosition()
-				.getY() == hero.getPosition().getY())
-				|| (getPosition().getX() == sword.position.getX() && getPosition()
-						.getY() == sword.position.getY()));
-	}
 
-	public Dragon(int x, int y) {
-		this.setPosition(new Coord(x, y));
+			// checking if coords are available
+			repeat = false;
+			for (int i = 0; i < livingBeings.size(); i++) {
+				if ((getPosition().getX() == livingBeings.get(i).getPosition()
+						.getX() && getPosition().getY() == livingBeings.get(i)
+						.getPosition().getY())
+						|| (getPosition().getX() == sword.position.getX() && getPosition()
+								.getY() == sword.position.getY())) {
+					repeat = true;
+					break;
+				}
+			}
+		} while (repeat);
 	}
 
 	public void move(Labyrinth lab) {
 		Random r = new Random();
 
-		if (behavior != DragonBehavior.notMoving && !isSleeping) {
+		if (behavior != DragonBehavior.NOTMOVING && !isSleeping) {
 			/*
 			 * Legend: 0 - up; 1 - right; 2 - down; 3 - left.
 			 */
@@ -68,7 +77,7 @@ public class Dragon extends LivingBeing {
 			}
 		}
 
-		if (behavior == DragonBehavior.MovingAndSleeping) {
+		if (behavior == DragonBehavior.MOVINGANDSLEEPING) {
 			// making dragon sleep sometimes
 			int sleep = r.nextInt(2);
 			if (sleep == 1)
@@ -83,9 +92,5 @@ public class Dragon extends LivingBeing {
 			System.out.print("d ");
 		else
 			System.out.print("D ");
-	}
-
-	public boolean isSleeping() {
-		return isSleeping;
 	}
 }

@@ -1,5 +1,9 @@
 package game.logic;
 
+import game.logic.LivingBeing.Type;
+
+import java.util.Vector;
+
 public class Labyrinth {
 	public char wallChar = 'X';
 	public char exitChar = 'S';
@@ -12,24 +16,45 @@ public class Labyrinth {
 		this.lab = lab;
 	}
 
-	public void draw(Hero hero, Sword sword, Dragon dragon) {
+	public void draw(Vector<LivingBeing> livingBeings, Sword sword) {
 		System.out.println();
 		for (int i = 0; i < lab.length; i++) {
 			for (int j = 0; j < lab[i].length; j++) {
-				// printing hero
-				if (hero.isOn(j, i))
-					hero.draw();
-				// printing dragon
-				else if (dragon.isOn(j, i) && !dragon.isDead()) {
-					// if sword is under the dragon
-					if (sword.isOn(j, i) && sword.isVisible())
-						System.out.print("F ");
-					else
-						dragon.draw();
-				} else if (sword.isOn(j, i) && sword.isVisible())
-					// printing sword
-					sword.draw();
-				else
+				boolean somethingWasDrawn = false;
+
+				// drawing hero, dragon or sword
+				for (LivingBeing k : livingBeings) {
+					// if something is at this coords
+					if (k.isOn(j, i)) {
+						// drawing hero
+						if (k.getType() == Type.HERO) {
+							k.draw();
+							somethingWasDrawn = true;
+						}
+						// drawing dragon
+						else if (k.getType() == Type.DRAGON && !k.isDead()) {
+							// if sword is under the dragon
+							if (sword.isOn(j, i) && sword.isVisible())
+								System.out.print("F ");
+							else
+								k.draw();
+
+							somethingWasDrawn = true;
+						}
+
+						break;
+					}
+				}
+
+				if (!somethingWasDrawn) {
+					if (sword.isOn(j, i) && sword.isVisible()) {
+						// printing sword
+						sword.draw();
+						somethingWasDrawn = true;
+					}
+				}
+
+				if (!somethingWasDrawn)
 					System.out.print(lab[i][j] + " ");
 			}
 

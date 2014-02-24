@@ -1,6 +1,7 @@
 package game.logic;
 
 import java.util.Random;
+import java.util.Scanner;
 
 public class Hero extends LivingBeing {
 	private boolean hasSword = false;
@@ -8,6 +9,7 @@ public class Hero extends LivingBeing {
 
 	public Hero(String name, Labyrinth lab) {
 		this.name = name;
+		this.type = Type.HERO;
 
 		Random r = new Random();
 		do {
@@ -16,11 +18,6 @@ public class Hero extends LivingBeing {
 		do {
 			getPosition().setY(r.nextInt(lab.getDimension() - 2) + 1);
 		} while (getPosition().getY() % 2 == 0);
-	}
-
-	public Hero(String name, int x, int y) {
-		this.name = name;
-		this.setPosition(new Coord(x, y));
 	}
 
 	public void draw() {
@@ -48,8 +45,20 @@ public class Hero extends LivingBeing {
 		System.out.println("You have killed the Dragon.");
 	}
 
-	public void move(String dir, Labyrinth lab) {
+	public void move(Labyrinth lab) {
 		boolean validMove = false;
+		
+		// opening scanner
+		Scanner reader = new Scanner(System.in);
+		
+		// reading user input
+		System.out.println();
+		System.out.print("Type W/A/S/D to move: ");
+		String dir = reader.next(".");
+		
+		// closing scanner
+		//reader.close();
+		// TODO why does the previous line cause a runtime exception?
 
 		switch (dir) {
 		case "w":
