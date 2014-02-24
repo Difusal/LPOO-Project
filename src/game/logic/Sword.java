@@ -1,4 +1,4 @@
-package game;
+package game.logic;
 
 import java.util.Random;
 
@@ -15,8 +15,8 @@ public class Sword {
 			do {
 				position.setY(r.nextInt(lab.getDimension() - 2) + 1);
 			} while (position.getY() % 2 == 0);
-		} while (position.getX() == hero.position.getX()
-				&& position.getY() == hero.position.getY());
+		} while (position.getX() == hero.getPosition().getX()
+				&& position.getY() == hero.getPosition().getY());
 	}
 
 	public Sword(int x, int y) {

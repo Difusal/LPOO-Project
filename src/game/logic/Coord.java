@@ -1,4 +1,4 @@
-package game;
+package game.logic;
 
 public class Coord {
 	private int x, y;

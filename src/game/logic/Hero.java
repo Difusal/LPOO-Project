@@ -1,4 +1,4 @@
-package game;
+package game.logic;
 
 import java.util.Random;
 
@@ -11,16 +11,16 @@ public class Hero extends LivingBeing {
 
 		Random r = new Random();
 		do {
-			position.setX(r.nextInt(lab.getDimension() - 2) + 1);
-		} while (position.getX() % 2 == 0);
+			getPosition().setX(r.nextInt(lab.getDimension() - 2) + 1);
+		} while (getPosition().getX() % 2 == 0);
 		do {
-			position.setY(r.nextInt(lab.getDimension() - 2) + 1);
-		} while (position.getY() % 2 == 0);
+			getPosition().setY(r.nextInt(lab.getDimension() - 2) + 1);
+		} while (getPosition().getY() % 2 == 0);
 	}
 
 	public Hero(String name, int x, int y) {
 		this.name = name;
-		this.position = new Coord(x, y);
+		this.setPosition(new Coord(x, y));
 	}
 
 	public void print() {
@@ -53,26 +53,26 @@ public class Hero extends LivingBeing {
 
 		switch (dir) {
 		case "w":
-			if (lab.heroCanWalkTo(position.getX(), position.getY() - 1, this)) {
-				position.setY(position.getY() - 1);
+			if (lab.heroCanWalkTo(getPosition().getX(), getPosition().getY() - 1, this)) {
+				getPosition().setY(getPosition().getY() - 1);
 				validMove = true;
 			}
 			break;
 		case "s":
-			if (lab.heroCanWalkTo(position.getX(), position.getY() + 1, this)) {
-				position.setY(position.getY() + 1);
+			if (lab.heroCanWalkTo(getPosition().getX(), getPosition().getY() + 1, this)) {
+				getPosition().setY(getPosition().getY() + 1);
 				validMove = true;
 			}
 			break;
 		case "a":
-			if (lab.heroCanWalkTo(position.getX() - 1, position.getY(), this)) {
-				position.setX(position.getX() - 1);
+			if (lab.heroCanWalkTo(getPosition().getX() - 1, getPosition().getY(), this)) {
+				getPosition().setX(getPosition().getX() - 1);
 				validMove = true;
 			}
 			break;
 		case "d":
-			if (lab.heroCanWalkTo(position.getX() + 1, position.getY(), this)) {
-				position.setX(position.getX() + 1);
+			if (lab.heroCanWalkTo(getPosition().getX() + 1, getPosition().getY(), this)) {
+				getPosition().setX(getPosition().getX() + 1);
 				validMove = true;
 			}
 			break;

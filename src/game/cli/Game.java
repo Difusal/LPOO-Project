@@ -1,4 +1,9 @@
-package game;
+package game.cli;
+
+import game.logic.Dragon;
+import game.logic.Hero;
+import game.logic.Labyrinth;
+import game.logic.Sword;
 
 import java.util.Scanner;
 
@@ -29,8 +34,8 @@ public class Game {
 
 			// checking if player got sword
 			if (sword.isVisible()
-					&& sword.getPosition().getX() == hero.position.getX()
-					&& sword.getPosition().getY() == hero.position.getY()) {
+					&& sword.getPosition().getX() == hero.getPosition().getX()
+					&& sword.getPosition().getY() == hero.getPosition().getY()) {
 				// hide sword from labyrinth
 				sword.hide();
 
@@ -40,9 +45,9 @@ public class Game {
 
 			// if hero is next to a dragon
 			if (!dragon.isDead()) {
-				if ((Math.abs(hero.position.getX() - dragon.position.getX()) <= 1)
-						&& (Math.abs(hero.position.getY()
-								- dragon.position.getY()) <= 1)) {
+				if ((Math.abs(hero.getPosition().getX() - dragon.getPosition().getX()) <= 1)
+						&& (Math.abs(hero.getPosition().getY()
+								- dragon.getPosition().getY()) <= 1)) {
 					// if hero has sword
 					if (hero.hasSword()) {
 						// kill the dragon
@@ -58,7 +63,7 @@ public class Game {
 			}
 
 			// if hero is able to step on Exit, game is done
-			if (lab.getLab()[hero.position.getY()][hero.position.getX()] == 'S')
+			if (lab.getLab()[hero.getPosition().getY()][hero.getPosition().getX()] == 'S')
 				done = true;
 		}
 		// print labyrinth for the last time

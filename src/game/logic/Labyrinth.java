@@ -1,4 +1,4 @@
-package game;
+package game.logic;
 
 import java.util.Random;
 import java.util.Stack;
