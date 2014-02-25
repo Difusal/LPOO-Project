@@ -35,6 +35,15 @@ public abstract class LivingBeing {
 		this.position = position;
 	}
 
+	public int distanceTo(LivingBeing livingBeing) {
+		int dx = Math.abs(getPosition().getX()
+				- livingBeing.getPosition().getX());
+		int dy = Math.abs(getPosition().getY()
+				- livingBeing.getPosition().getY());
+
+		return (int) Math.round(Math.sqrt(dx * dx + dy * dy));
+	}
+
 	public boolean isDead() {
 		return life == 0;
 	}

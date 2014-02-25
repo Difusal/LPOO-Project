@@ -22,13 +22,6 @@ public class Hero extends LivingBeing {
 		} while (getPosition().getY() % 2 == 0);
 	}
 
-	public void draw() {
-		if (hasSword)
-			System.out.print("A ");
-		else
-			System.out.print("H ");
-	}
-
 	public boolean hasSword() {
 		return hasSword;
 	}
@@ -60,13 +53,30 @@ public class Hero extends LivingBeing {
 			arm();
 	}
 
-	public boolean hasKilledTheDragon() {
+	public boolean hasKilledADragon() {
 		return hasKilledADragon;
 	}
 
-	public void killedTheDragon() {
+	public void killedADragon() {
 		hasKilledADragon = true;
 		System.out.println("You have killed the Dragon.");
+	}
+
+	public void go(Direction dir) {
+		switch (dir) {
+		case RIGHT:
+			position.setX(position.getX() + 1);
+			break;
+		case DOWN:
+			position.setY(position.getY() + 1);
+			break;
+		case LEFT:
+			position.setX(position.getX() - 1);
+			break;
+		case UP:
+			position.setY(position.getY() - 1);
+			break;
+		}
 	}
 
 	public void move(Labyrinth lab) {
@@ -87,34 +97,27 @@ public class Hero extends LivingBeing {
 		// reader.close();
 		// TODO why does the previous line cause a runtime exception?
 
+		Direction direction = Direction.NONE;
 		switch (dir) {
-		case "w":
-			if (lab.heroCanWalkTo(getPosition().getX(),
-					getPosition().getY() - 1, this)) {
-				getPosition().setY(getPosition().getY() - 1);
-				validMove = true;
-			}
-			break;
-		case "s":
-			if (lab.heroCanWalkTo(getPosition().getX(),
-					getPosition().getY() + 1, this)) {
-				getPosition().setY(getPosition().getY() + 1);
-				validMove = true;
-			}
-			break;
-		case "a":
-			if (lab.heroCanWalkTo(getPosition().getX() - 1, getPosition()
-					.getY(), this)) {
-				getPosition().setX(getPosition().getX() - 1);
-				validMove = true;
-			}
-			break;
+		// right
 		case "d":
-			if (lab.heroCanWalkTo(getPosition().getX() + 1, getPosition()
-					.getY(), this)) {
-				getPosition().setX(getPosition().getX() + 1);
-				validMove = true;
-			}
+			direction = Direction.RIGHT;
+			validMove = true;
+			break;
+		// down
+		case "s":
+			direction = Direction.DOWN;
+			validMove = true;
+			break;
+		// left
+		case "a":
+			direction = Direction.LEFT;
+			validMove = true;
+			break;
+		// up
+		case "w":
+			direction = Direction.UP;
+			validMove = true;
 			break;
 		// hero sent eagle
 		case "b":
@@ -126,7 +129,17 @@ public class Hero extends LivingBeing {
 			break;
 		}
 
+		if (direction != Direction.NONE && lab.heroCanWalk(direction, this))
+			go(direction);
+
 		if (!validMove)
 			System.out.println("Invalid move.");
+	}
+
+	public void draw() {
+		if (hasSword)
+			System.out.print("A ");
+		else
+			System.out.print("H ");
 	}
 }

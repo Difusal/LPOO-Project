@@ -38,50 +38,8 @@ public class Game {
 			for (LivingBeing i : livingBeings)
 				i.move(lab);
 
-			// if eagle got the sword
-			if (!eagle.isDead() && sword.isVisible() && eagle.hasSword())
-				// hide sword from labyrinth
-				sword.hide();
-
-			// if dragon nearby eagle while catching sword or waiting for hero,
-			// die and drop sword
-			if (!eagle.isDead()
-					&& ((!eagle.isFlying() && !eagle.isWithHero()) || eagle
-							.isCatchingSword())) {
-				for (LivingBeing i : livingBeings) {
-					// skipping if comparing to something other than a dragon
-					if (i.getType() != Type.DRAGON)
-						continue;
-
-					if (!i.isDead() && !i.isSleeping) {
-						if ((Math.abs(eagle.getPosition().getX()
-								- i.getPosition().getX()) <= 1)
-								&& (Math.abs(eagle.getPosition().getY()
-										- i.getPosition().getY()) <= 1)) {
-							// sword is dropped
-							sword.setPosition(new Coord(eagle.getPosition()));
-							sword.show();
-
-							// eagle dies
-							eagle.setLife(0);
-						}
-					}
-				}
-			}
-
-			// updating eagle position if it is on hero's shoulder
-			if (hero.hasEagle())
-				eagle.setPosition(new Coord(hero.getPosition()));
-
-			// if hero sent eagle
-			if (hero.hasJustSentEagle())
-				eagle.startFlight(lab, sword);
-
-			// checking if hero caught eagle
-			if (!eagle.isFlying() && !eagle.isDead()
-					&& hero.getPosition().getX() == eagle.getPosition().getX()
-					&& hero.getPosition().getY() == eagle.getPosition().getY())
-				hero.catchEagle(eagle);
+			// updating eagle
+			eagle.update(lab, livingBeings, hero, sword);
 
 			// checking if player got sword
 			if (sword.isVisible()
@@ -100,18 +58,18 @@ public class Game {
 				if (i.getType() != Type.DRAGON)
 					continue;
 
+				// if dragon is not dead nor sleeping
 				if (!i.isDead()) {
-					if ((Math.abs(hero.getPosition().getX()
-							- i.getPosition().getX()) <= 1)
-							&& (Math.abs(hero.getPosition().getY()
-									- i.getPosition().getY()) <= 1)) {
+					if (hero.distanceTo(i) <= 1) {
 						// if hero has sword
 						if (hero.hasSword()) {
 							// kill the dragon
 							i.setLife(0);
-							hero.killedTheDragon();
-						} else if (!i.isSleeping()) {
-							// else kill hero
+							// active hero flag
+							hero.killedADragon();
+						} else if (!hero.isSleeping()) {
+							// if hero has no sword and dragon is not sleeping,
+							// kill hero
 							hero.setLife(0);
 							done = true;
 						}

@@ -25,7 +25,7 @@ public class Dragon extends LivingBeing {
 				getPosition().setY(r.nextInt(lab.getDimension() - 2) + 1);
 			} while (getPosition().getY() % 2 == 0);
 
-			// checking if coords are available
+			// checking if position is available
 			repeat = false;
 			for (int i = 0; i < livingBeings.size(); i++) {
 				if ((getPosition().getX() == livingBeings.get(i).getPosition()

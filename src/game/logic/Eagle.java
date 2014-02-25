@@ -3,7 +3,7 @@ package game.logic;
 import java.util.Vector;
 
 public class Eagle extends LivingBeing {
-	private boolean active = false;
+	private boolean flying = false;
 	private boolean withHero = true;
 	private boolean hasSword = false;
 	private FlightState state;
@@ -19,7 +19,7 @@ public class Eagle extends LivingBeing {
 	}
 
 	public boolean isFlying() {
-		return active;
+		return flying;
 	}
 
 	public boolean isWithHero() {
@@ -36,7 +36,7 @@ public class Eagle extends LivingBeing {
 
 	public void startFlight(Labyrinth lab, Sword sword) {
 		// preparing variables
-		active = true;
+		flying = true;
 		withHero = false;
 		state = FlightState.GOING;
 		pathStep = 0;
@@ -108,7 +108,7 @@ public class Eagle extends LivingBeing {
 
 	public void move(Labyrinth lab) {
 		// if eagle moving
-		if (active) {
+		if (flying) {
 			// updating pathStep
 			if (state == FlightState.GOING)
 				pathStep++;
@@ -126,7 +126,7 @@ public class Eagle extends LivingBeing {
 
 			// if origin reached
 			if (pathStep == 0 && state == FlightState.RETURNING)
-				active = false;
+				flying = false;
 
 			// updating eagle position
 			getPosition().setX(path.get(pathStep).getX());
@@ -134,8 +134,51 @@ public class Eagle extends LivingBeing {
 		}
 	}
 
+	public void update(Labyrinth lab, Vector<LivingBeing> livingBeings,
+			Hero hero, Sword sword) {
+		// if eagle got the sword
+		if (!isDead() && sword.isVisible() && hasSword())
+			// hide sword from labyrinth
+			sword.hide();
+
+		// if dragon nearby when waiting for hero or catching sword
+		if (!isDead() && ((!isFlying() && !isWithHero()) || isCatchingSword())) {
+			for (LivingBeing i : livingBeings) {
+				// skipping if comparing to something other than a dragon
+				if (i.getType() != Type.DRAGON)
+					continue;
+
+				// if dragon is not dead nor sleeping
+				if (!i.isDead() && !i.isSleeping) {
+					if (distanceTo(i) <= 1) {
+						// sword is dropped
+						sword.setPosition(new Coord(getPosition()));
+						sword.show();
+
+						// eagle dies
+						setLife(0);
+					}
+				}
+			}
+		}
+
+		// updating eagle position if it is on hero's shoulder
+		if (hero.hasEagle())
+			setPosition(new Coord(hero.getPosition()));
+
+		// if hero sent eagle
+		if (hero.hasJustSentEagle())
+			startFlight(lab, sword);
+
+		// checking if hero caught eagle
+		if (!isFlying() && !isDead()
+				&& hero.getPosition().getX() == getPosition().getX()
+				&& hero.getPosition().getY() == getPosition().getY())
+			hero.catchEagle(this);
+	}
+
 	public void draw() {
-		if (active || !withHero) {
+		if (flying || !withHero) {
 			if (hasSword)
 				System.out.print("BE");
 			else
