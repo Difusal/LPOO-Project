@@ -16,8 +16,12 @@ public class Labyrinth {
 		this.lab = lab;
 	}
 
-	public void draw(Vector<LivingBeing> livingBeings, Sword sword) {
+	public void draw(Vector<LivingBeing> livingBeings, Sword sword, Eagle eagle) {
 		System.out.println();
+
+		System.out.println("Eagle flying: " + eagle.isFlying());
+		System.out.println("Eagle with hero: " + eagle.isWithHero());
+
 		for (int i = 0; i < lab.length; i++) {
 			for (int j = 0; j < lab[i].length; j++) {
 				boolean somethingWasDrawn = false;
@@ -28,6 +32,12 @@ public class Labyrinth {
 					if (k.isOn(j, i)) {
 						// drawing hero
 						if (k.getType() == Type.HERO) {
+							k.draw();
+							somethingWasDrawn = true;
+						}
+						// drawing eagle
+						if (k.getType() == Type.EAGLE
+								&& (eagle.isFlying() || !eagle.isWithHero())) {
 							k.draw();
 							somethingWasDrawn = true;
 						}
@@ -67,7 +77,7 @@ public class Labyrinth {
 			if (hero.hasKilledTheDragon())
 				return true;
 			else {
-				System.out.println("You have to kill the Dragon to exit.");
+				System.out.println("You have to kill a Dragon to exit.");
 				return false;
 			}
 		} else

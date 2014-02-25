@@ -3,7 +3,7 @@ package game.logic;
 public abstract class LivingBeing {
 	protected String name;
 	protected Type type;
-	private Coord position = new Coord();
+	protected Coord position = new Coord();
 	protected int life = 100;
 	protected boolean isSleeping = false;
 
@@ -12,7 +12,7 @@ public abstract class LivingBeing {
 	public abstract void draw();
 
 	public enum Type {
-		HERO, DRAGON
+		HERO, EAGLE, DRAGON
 	}
 
 	public Type getType() {

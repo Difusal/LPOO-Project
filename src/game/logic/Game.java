@@ -16,6 +16,11 @@ public class Game {
 		livingBeings.add(new Hero("Hero", lab));
 		Hero hero = (Hero) livingBeings.get(0);
 
+		// creating eagle
+		livingBeings.add(new Eagle());
+		Eagle eagle = (Eagle) livingBeings.get(1);
+		eagle.setPosition(new Coord(hero.getPosition()));
+
 		// creating sword
 		Sword sword = new Sword(lab, livingBeings.get(0));
 
@@ -24,14 +29,28 @@ public class Game {
 			livingBeings.add(new Dragon(dragonBehavior, lab, livingBeings,
 					sword));
 
+		// print labyrinth for the first time
+		lab.draw(livingBeings, sword, eagle);
+		
 		boolean done = false;
 		while (!done) {
-			// printing labyrinth
-			lab.draw(livingBeings, sword);
-
 			// moving living beings
 			for (LivingBeing i : livingBeings)
 				i.move(lab);
+
+			// updating eagle position if it is on hero's shoulder
+			if (hero.hasEagle())
+				eagle.setPosition(new Coord(hero.getPosition()));
+
+			// if hero sent eagle
+			if (hero.hasJustSentEagle())
+				eagle.startFlight(lab, sword);
+
+			// checking if hero caught eagle
+			if (!eagle.isFlying() && !eagle.isDead()
+					&& hero.getPosition().getX() == eagle.getPosition().getX()
+					&& hero.getPosition().getY() == eagle.getPosition().getY())
+				hero.catchEagle(eagle);
 
 			// checking if player got sword
 			if (sword.isVisible()
@@ -47,7 +66,7 @@ public class Game {
 			// if hero is next to a dragon
 			for (LivingBeing i : livingBeings) {
 				// skipping verification if comparing to hero
-				if (i.getType() == Type.HERO)
+				if (i.getType() != Type.DRAGON)
 					continue;
 
 				if (!i.isDead()) {
@@ -73,9 +92,10 @@ public class Game {
 			if (lab.getLab()[hero.getPosition().getY()][hero.getPosition()
 					.getX()] == 'S')
 				done = true;
+			
+			// printing labyrinth
+			lab.draw(livingBeings, sword, eagle);
 		}
-		// print labyrinth for the last time
-		lab.draw(livingBeings, sword);
 
 		// displaying notification message
 		System.out.println();

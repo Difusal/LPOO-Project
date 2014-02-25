@@ -13,6 +13,11 @@ public class Coord {
 		this.y = y;
 	}
 
+	public Coord(Coord position) {
+		x = position.getX();
+		y = position.getY();
+	}
+
 	public int getX() {
 		return x;
 	}
