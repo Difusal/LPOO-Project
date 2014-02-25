@@ -41,22 +41,23 @@ public class Hero extends LivingBeing {
 	public boolean hasEagle() {
 		return hasEagle;
 	}
-	
+
 	public boolean hasJustSentEagle() {
 		return hasJustSentEagle;
 	}
-	
+
 	public void sendEagle() {
 		System.out.println("Eagle was sent.");
 		hasEagle = false;
 		hasJustSentEagle = true;
 	}
-	
+
 	public void catchEagle(Eagle eagle) {
 		hasEagle = true;
 		eagle.setWithHero(true);
-		
-		arm();
+
+		if (eagle.hasSword())
+			arm();
 	}
 
 	public boolean hasKilledTheDragon() {
@@ -70,7 +71,7 @@ public class Hero extends LivingBeing {
 
 	public void move(Labyrinth lab) {
 		boolean validMove = false;
-		
+
 		// resetting hasJustSentEagle value
 		hasJustSentEagle = false;
 
@@ -119,7 +120,7 @@ public class Hero extends LivingBeing {
 		case "b":
 			if (hasEagle && !hasSword) {
 				sendEagle();
-				
+
 				validMove = true;
 			}
 			break;

@@ -36,11 +36,19 @@ public class Sword {
 		return show;
 	}
 
+	public void show() {
+		show = true;
+	}
+
 	public void hide() {
 		show = false;
 	}
 
 	public Coord getPosition() {
 		return position;
+	}
+
+	public void setPosition(Coord position) {
+		this.position = position;
 	}
 }

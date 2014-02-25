@@ -39,9 +39,35 @@ public class Game {
 				i.move(lab);
 
 			// if eagle got the sword
-			if (sword.isVisible() && eagle.hasSword())
+			if (!eagle.isDead() && sword.isVisible() && eagle.hasSword())
 				// hide sword from labyrinth
 				sword.hide();
+
+			// if dragon nearby eagle while catching sword or waiting for hero,
+			// die and drop sword
+			if (!eagle.isDead()
+					&& ((!eagle.isFlying() && !eagle.isWithHero()) || eagle
+							.isCatchingSword())) {
+				for (LivingBeing i : livingBeings) {
+					// skipping if comparing to something other than a dragon
+					if (i.getType() != Type.DRAGON)
+						continue;
+
+					if (!i.isDead() && !i.isSleeping) {
+						if ((Math.abs(eagle.getPosition().getX()
+								- i.getPosition().getX()) <= 1)
+								&& (Math.abs(eagle.getPosition().getY()
+										- i.getPosition().getY()) <= 1)) {
+							// sword is dropped
+							sword.setPosition(new Coord(eagle.getPosition()));
+							sword.show();
+
+							// eagle dies
+							eagle.setLife(0);
+						}
+					}
+				}
+			}
 
 			// updating eagle position if it is on hero's shoulder
 			if (hero.hasEagle())
@@ -70,7 +96,7 @@ public class Game {
 
 			// if hero is next to a dragon
 			for (LivingBeing i : livingBeings) {
-				// skipping verification if comparing to hero
+				// skipping if comparing to something other than a dragon
 				if (i.getType() != Type.DRAGON)
 					continue;
 

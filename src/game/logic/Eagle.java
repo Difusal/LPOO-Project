@@ -29,7 +29,7 @@ public class Eagle extends LivingBeing {
 	public void setWithHero(boolean withHero) {
 		this.withHero = withHero;
 	}
-	
+
 	public boolean hasSword() {
 		return hasSword;
 	}
@@ -141,5 +141,9 @@ public class Eagle extends LivingBeing {
 			else
 				System.out.print("B ");
 		}
+	}
+
+	public boolean isCatchingSword() {
+		return pathStep == path.size() - 1;
 	}
 }

@@ -33,9 +33,9 @@ public class UI {
 			input = reader.nextInt();
 		} while (input < min || input > max);
 		System.out.println();
-		
+
 		// closing scanner
-		//reader.close();
+		// reader.close();
 		// TODO why does the previous line cause a runtime exception?
 
 		return input;
@@ -72,21 +72,22 @@ public class UI {
 				DragonBehavior dragonBehavior = DragonBehavior.values()[behaviorInput - 1];
 
 				// reading number of dragons to summon
-				int numDragons = waitForUserInput("How many dragons should appear?", 1, dimension/3);
-				
+				int numDragons = waitForUserInput(
+						"How many dragons should appear?", 1, dimension / 2);
+
 				// starting game
 				Game.startGame(dimension, dragonBehavior, numDragons);
-				
+
 				done = true;
 				break;
 			case 2:
 				System.out.println("Quitting game.");
-				
+
 				done = true;
 				break;
 			default:
 				System.out.println("Invalid input!");
-				
+
 				break;
 			}
 		}

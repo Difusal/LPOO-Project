@@ -19,8 +19,10 @@ public class Labyrinth {
 	public void draw(Vector<LivingBeing> livingBeings, Sword sword, Eagle eagle) {
 		System.out.println();
 
+		System.out.println("Eagle dead: " + eagle.isDead());
 		System.out.println("Eagle flying: " + eagle.isFlying());
 		System.out.println("Eagle with hero: " + eagle.isWithHero());
+		System.out.println("SWORD visible: " + sword.isVisible());
 
 		for (int i = 0; i < lab.length; i++) {
 			for (int j = 0; j < lab[i].length; j++) {
@@ -36,7 +38,7 @@ public class Labyrinth {
 							somethingWasDrawn = true;
 						}
 						// drawing eagle
-						if (k.getType() == Type.EAGLE
+						if (k.getType() == Type.EAGLE && !eagle.isDead()
 								&& (eagle.isFlying() || !eagle.isWithHero())) {
 							k.draw();
 							somethingWasDrawn = true;
