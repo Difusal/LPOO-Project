@@ -33,6 +33,10 @@ public class Eagle extends LivingBeing {
 	public boolean hasSword() {
 		return hasSword;
 	}
+	
+	public void setHasSword(boolean hasSword) {
+		this.hasSword = hasSword;
+	}
 
 	public void startFlight(Labyrinth lab, Sword sword) {
 		// preparing variables
@@ -57,8 +61,6 @@ public class Eagle extends LivingBeing {
 
 			// calculating b
 			double b = position.getY() - m * position.getX();
-
-			System.out.println("y = " + m + "*x + " + b);
 
 			// if eagleX < swordX
 			if (position.getX() < sword.position.getX()) {
@@ -85,8 +87,6 @@ public class Eagle extends LivingBeing {
 
 			// calculating b
 			double b = position.getX() - m * position.getY();
-
-			System.out.println("y = " + m + "*x + " + b);
 
 			// if eagleY < swordY
 			if (position.getY() < sword.position.getY()) {
@@ -171,7 +171,7 @@ public class Eagle extends LivingBeing {
 			startFlight(lab, sword);
 
 		// checking if hero caught eagle
-		if (!isFlying() && !isDead()
+		if (!hero.hasEagle() && !isFlying() && !isDead()
 				&& hero.getPosition().getX() == getPosition().getX()
 				&& hero.getPosition().getY() == getPosition().getY())
 			hero.catchEagle(this);

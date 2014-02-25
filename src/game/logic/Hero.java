@@ -51,6 +51,8 @@ public class Hero extends LivingBeing {
 
 		if (eagle.hasSword())
 			arm();
+
+		eagle.setHasSword(false);
 	}
 
 	public boolean hasKilledADragon() {
@@ -76,12 +78,12 @@ public class Hero extends LivingBeing {
 		case UP:
 			position.setY(position.getY() - 1);
 			break;
+		default:
+			break;
 		}
 	}
 
 	public void move(Labyrinth lab) {
-		boolean validMove = false;
-
 		// resetting hasJustSentEagle value
 		hasJustSentEagle = false;
 
@@ -90,50 +92,50 @@ public class Hero extends LivingBeing {
 
 		// reading user input
 		System.out.println();
-		System.out.print("Type W/A/S/D/B to move: ");
+		System.out.print("Type W/A/S/D/B to move/send eagle: ");
 		String dir = reader.next(".");
 
 		// closing scanner
 		// reader.close();
 		// TODO why does the previous line cause a runtime exception?
 
+		boolean validMove = true;
 		Direction direction = Direction.NONE;
+
 		switch (dir) {
 		// right
 		case "d":
 			direction = Direction.RIGHT;
-			validMove = true;
 			break;
 		// down
 		case "s":
 			direction = Direction.DOWN;
-			validMove = true;
 			break;
 		// left
 		case "a":
 			direction = Direction.LEFT;
-			validMove = true;
 			break;
 		// up
 		case "w":
 			direction = Direction.UP;
-			validMove = true;
 			break;
 		// hero sent eagle
 		case "b":
-			if (hasEagle && !hasSword) {
+			if (hasEagle && !hasSword)
 				sendEagle();
-
-				validMove = true;
-			}
+			break;
+		default:
+			validMove = false;
 			break;
 		}
 
+		// if hero can go to direction, do go to that direction
 		if (direction != Direction.NONE && lab.heroCanWalk(direction, this))
 			go(direction);
 
+		// if invalid input detected
 		if (!validMove)
-			System.out.println("Invalid move.");
+			System.out.println("Invalid input.");
 	}
 
 	public void draw() {

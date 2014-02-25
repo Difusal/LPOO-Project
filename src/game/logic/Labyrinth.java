@@ -93,6 +93,8 @@ public class Labyrinth {
 			if (lab[y - 1][x] != exitChar)
 				return lab[y - 1][x] != wallChar;
 			break;
+		default:
+			break;
 		}
 
 		// if hero is trying to walk to maze exit
