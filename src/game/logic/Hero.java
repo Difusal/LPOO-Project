@@ -55,6 +55,8 @@ public class Hero extends LivingBeing {
 	public void catchEagle(Eagle eagle) {
 		hasEagle = true;
 		eagle.setWithHero(true);
+		
+		arm();
 	}
 
 	public boolean hasKilledTheDragon() {
@@ -115,7 +117,7 @@ public class Hero extends LivingBeing {
 			break;
 		// hero sent eagle
 		case "b":
-			if (hasEagle) {
+			if (hasEagle && !hasSword) {
 				sendEagle();
 				
 				validMove = true;

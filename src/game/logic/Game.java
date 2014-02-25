@@ -31,12 +31,17 @@ public class Game {
 
 		// print labyrinth for the first time
 		lab.draw(livingBeings, sword, eagle);
-		
+
 		boolean done = false;
 		while (!done) {
 			// moving living beings
 			for (LivingBeing i : livingBeings)
 				i.move(lab);
+
+			// if eagle got the sword
+			if (sword.isVisible() && eagle.hasSword())
+				// hide sword from labyrinth
+				sword.hide();
 
 			// updating eagle position if it is on hero's shoulder
 			if (hero.hasEagle())
@@ -92,7 +97,7 @@ public class Game {
 			if (lab.getLab()[hero.getPosition().getY()][hero.getPosition()
 					.getX()] == 'S')
 				done = true;
-			
+
 			// printing labyrinth
 			lab.draw(livingBeings, sword, eagle);
 		}
