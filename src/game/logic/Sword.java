@@ -11,10 +11,8 @@ public class Sword {
 		do {
 			do {
 				position.setX(r.nextInt(lab.getDimension() - 2) + 1);
-			} while (position.getX() % 2 == 0);
-			do {
 				position.setY(r.nextInt(lab.getDimension() - 2) + 1);
-			} while (position.getY() % 2 == 0);
+			} while (lab.getLab()[position.getY()][position.getX()] != ' ');
 		} while (position.getX() == hero.getPosition().getX()
 				&& position.getY() == hero.getPosition().getY());
 	}

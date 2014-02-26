@@ -4,12 +4,56 @@ import java.util.Random;
 import java.util.Stack;
 
 public class MazeBuilder {
+	private static char[][] maze;
+	private static boolean[][] visitedCells;
+	private static Coord guideCell;
+
 	public static char wallChar = 'X';
 	public static char exitChar = 'S';
 
+	// demo labyrinth builder
+	public static Labyrinth Build() {
+		maze = new char[10][10];
+
+		// filling maze with ' '
+		for (int i = 0; i < 10; i++)
+			for (int j = 0; j < 10; j++)
+				maze[i][j] = ' ';
+
+		// setting borders
+		for (int i = 0; i < 10; i++) {
+			maze[0][i] = wallChar;
+			maze[9][i] = wallChar;
+			maze[i][0] = wallChar;
+			maze[i][9] = wallChar;
+		}
+
+		// marking exit
+		maze[5][9] = exitChar;
+
+		// setting maze walls
+		for (int i = 2; i < 8; i++) {
+			if (i == 4 || i == 6)
+				continue;
+
+			for (int j = 2; j < 8; j++) {
+				if (j == 5)
+					continue;
+				else
+					maze[j][i] = wallChar;
+			}
+		}
+		maze[8][2] = wallChar;
+		maze[8][3] = wallChar;
+		maze[5][7] = wallChar;
+
+		return new Labyrinth(10, maze);
+	}
+
+	// random labyrinth builder
 	public static Labyrinth Build(int dimension) {
-		char[][] maze = new char[dimension][dimension];
-		boolean[][] visitedCells = new boolean[dimension - 2][dimension - 2];
+		maze = new char[dimension][dimension];
+		visitedCells = new boolean[dimension - 2][dimension - 2];
 
 		// filling maze with 'X'
 		for (int i = 0; i < dimension; i++) {
@@ -74,7 +118,7 @@ public class MazeBuilder {
 
 		int guideCellX = (cellNextToExit.getX() - 1) / 2;
 		int guideCellY = (cellNextToExit.getY() - 1) / 2;
-		Coord guideCell = new Coord(guideCellX, guideCellY);
+		guideCell = new Coord(guideCellX, guideCellY);
 
 		visitedCells[guideCell.getY()][guideCell.getX()] = true;
 		Stack<Coord> pathHistory = new Stack<Coord>();
@@ -83,14 +127,7 @@ public class MazeBuilder {
 		// running maze generation algorithm
 		while (!pathHistory.empty()) {
 			// if all neighbors of guideCell have been visited
-			if ((guideCell.getX() + 1 >= (dimension - 1) / 2 || visitedCells[guideCell
-					.getY()][guideCell.getX() + 1] == true)
-					&& (guideCell.getX() - 1 < 0 || visitedCells[guideCell
-							.getY()][guideCell.getX() - 1] == true)
-					&& (guideCell.getY() + 1 >= (dimension - 1) / 2 || visitedCells[guideCell
-							.getY() + 1][guideCell.getX()] == true)
-					&& (guideCell.getY() - 1 < 0 || visitedCells[guideCell
-							.getY() - 1][guideCell.getX()] == true)) {
+			if (allGuideCellNeighborsHaveBeenVisited(dimension)) {
 				// pop cell from history
 				pathHistory.pop();
 
@@ -172,5 +209,35 @@ public class MazeBuilder {
 
 		// creating labyrinth
 		return new Labyrinth(dimension, maze);
+	}
+
+	private static boolean allGuideCellNeighborsHaveBeenVisited(int dimension) {
+		/*
+		 * previous return. remove comment to revert verification if needed
+		 * 
+		 * return (guideCell.getX() + 1 >= (dimension - 1) / 2 ||
+		 * visitedCells[guideCell.getY()][guideCell.getX() + 1] == true) &&
+		 * (guideCell.getX() - 1 < 0 ||
+		 * visitedCells[guideCell.getY()][guideCell.getX() - 1] == true) &&
+		 * (guideCell.getY() + 1 >= (dimension - 1) / 2 ||
+		 * visitedCells[guideCell.getY() + 1][guideCell.getX()] == true) &&
+		 * (guideCell.getY() - 1 < 0 || visitedCells[guideCell.getY() -
+		 * 1][guideCell.getX()] == true);
+		 */
+
+		if (guideCell.getX() + 1 < (dimension - 1) / 2
+				&& visitedCells[guideCell.getY()][guideCell.getX() + 1] == false)
+			return false;
+		if (guideCell.getX() - 1 >= 0
+				&& visitedCells[guideCell.getY()][guideCell.getX() - 1] == false)
+			return false;
+		if (guideCell.getY() + 1 < (dimension - 1) / 2
+				&& visitedCells[guideCell.getY() + 1][guideCell.getX()] == false)
+			return false;
+		if (guideCell.getY() - 1 >= 0
+				&& visitedCells[guideCell.getY() - 1][guideCell.getX()] == false)
+			return false;
+
+		return true;
 	}
 }

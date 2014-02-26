@@ -6,33 +6,54 @@ import game.logic.Dragon.DragonBehavior;
 import game.logic.LivingBeing.Type;
 
 public class Game {
-	public static void startGame(int dimension, DragonBehavior dragonBehavior,
-			int numDragons) {
+	private Labyrinth lab;
+	private Vector<LivingBeing> livingBeings;
+	private Hero hero;
+	private Eagle eagle;
+	private Sword sword;
+
+	public Game(DragonBehavior dragonBehavior, int numDragons) {
 		// initializing variables
-		Labyrinth lab = MazeBuilder.Build(dimension);
-		Vector<LivingBeing> livingBeings = new Vector<LivingBeing>();
+		lab = MazeBuilder.Build();
+
+		initializeVariables(dragonBehavior, numDragons);
+	}
+
+	public Game(int dimension, DragonBehavior dragonBehavior, int numDragons) {
+		// initializing variables
+		lab = MazeBuilder.Build(dimension);
+
+		initializeVariables(dragonBehavior, numDragons);
+	}
+
+	public void initializeVariables(DragonBehavior dragonBehavior,
+			int numDragons) {
+		livingBeings = new Vector<LivingBeing>();
 
 		// creating hero
 		livingBeings.add(new Hero("Hero", lab));
-		Hero hero = (Hero) livingBeings.get(0);
+		hero = (Hero) livingBeings.get(0);
 
 		// creating eagle
 		livingBeings.add(new Eagle());
-		Eagle eagle = (Eagle) livingBeings.get(1);
+		eagle = (Eagle) livingBeings.get(1);
 		eagle.setPosition(new Coord(hero.getPosition()));
 
 		// creating sword
-		Sword sword = new Sword(lab, livingBeings.get(0));
+		sword = new Sword(lab, livingBeings.get(0));
 
 		// summoning dragons
 		for (int i = 0; i < numDragons; i++)
 			livingBeings.add(new Dragon(dragonBehavior, lab, livingBeings,
 					sword));
+	}
+
+	public void startGame() {
+		boolean done = false;
 
 		// print labyrinth for the first time
 		lab.draw(livingBeings, sword, eagle);
 
-		boolean done = false;
 		while (!done) {
 			// moving living beings
 			for (LivingBeing i : livingBeings)

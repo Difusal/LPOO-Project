@@ -19,11 +19,9 @@ public class Dragon extends LivingBeing {
 		boolean repeat;
 		do {
 			do {
-				getPosition().setX(r.nextInt(lab.getDimension() - 2) + 1);
-			} while (getPosition().getX() % 2 == 0);
-			do {
-				getPosition().setY(r.nextInt(lab.getDimension() - 2) + 1);
-			} while (getPosition().getY() % 2 == 0);
+				position.setX(r.nextInt(lab.getDimension() - 2) + 1);
+				position.setY(r.nextInt(lab.getDimension() - 2) + 1);
+			} while (lab.getLab()[position.getY()][position.getX()] != ' ');
 
 			// checking if position is available
 			repeat = false;

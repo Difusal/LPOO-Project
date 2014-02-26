@@ -8,7 +8,7 @@ public class Labyrinth {
 	public char wallChar = 'X';
 	public char exitChar = 'S';
 
-	int dimension;
+	private int dimension;
 	private char[][] lab;
 
 	public Labyrinth(int dimension, char[][] lab) {

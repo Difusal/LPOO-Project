@@ -15,11 +15,9 @@ public class Hero extends LivingBeing {
 
 		Random r = new Random();
 		do {
-			getPosition().setX(r.nextInt(lab.getDimension() - 2) + 1);
-		} while (getPosition().getX() % 2 == 0);
-		do {
-			getPosition().setY(r.nextInt(lab.getDimension() - 2) + 1);
-		} while (getPosition().getY() % 2 == 0);
+			position.setX(r.nextInt(lab.getDimension() - 2) + 1);
+			position.setY(r.nextInt(lab.getDimension() - 2) + 1);
+		} while (lab.getLab()[position.getY()][position.getX()] != ' ');
 	}
 
 	public boolean hasSword() {
