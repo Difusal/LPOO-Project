@@ -17,11 +17,9 @@ public class UI {
 		System.out.println();
 	}
 
-	public static int waitForUserInput(String message, int min, int max) {
+	public static int waitForUserInput(Scanner reader, String message, int min,
+			int max) {
 		int input;
-
-		// opening scanner
-		Scanner reader = new Scanner(System.in);
 
 		// getting input
 		do {
@@ -33,10 +31,6 @@ public class UI {
 			input = reader.nextInt();
 		} while (input < min || input > max);
 		System.out.println();
-
-		// closing scanner
-		// reader.close();
-		// TODO why does the previous line cause a runtime exception?
 
 		return input;
 	}
@@ -56,12 +50,14 @@ public class UI {
 
 			switch (input) {
 			case 1:
+				String msg;
+
 				// declaring game
 				Game game = null;
 
 				// asking what maze to build
-				int mazeToPlay = waitForUserInput(
-						"Choose which maze to play: \n1. Random\n2. Demo", 1, 2);
+				msg = "Choose which maze to play: \n1. Random\n2. Demo";
+				int mazeToPlay = waitForUserInput(reader, msg, 1, 2);
 
 				int dimension = 10;
 				// if random maze was chosen
@@ -77,14 +73,13 @@ public class UI {
 				}
 
 				// asking dragon behavior
-				int behaviorInput = waitForUserInput(
-						"Choose the dragon(s) behavior: \n1. Stopped\n2. Moving\n3. Moving/Sleeping",
-						1, 3);
+				msg = "Choose the dragon(s) behavior: \n1. Stopped\n2. Moving\n3. Moving/Sleeping";
+				int behaviorInput = waitForUserInput(reader, msg, 1, 3);
 				DragonBehavior dragonBehavior = DragonBehavior.values()[behaviorInput - 1];
 
 				// asking number of dragons to summon
-				int numDragons = waitForUserInput(
-						"How many dragons should appear?", 1, dimension / 2);
+				msg = "How many dragons should appear?";
+				int numDragons = waitForUserInput(reader, msg, 1, dimension - 2);
 
 				// creating game
 				if (mazeToPlay == 1)
@@ -109,6 +104,7 @@ public class UI {
 			}
 		}
 
+		// closing scanner
 		reader.close();
 	}
 }

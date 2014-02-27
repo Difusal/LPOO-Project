@@ -54,6 +54,7 @@ public class MazeBuilder {
 
 	// random labyrinth builder
 	public Labyrinth Build(int dimension) {
+		Random r = new Random();
 		maze = new char[dimension][dimension];
 		visitedCells = new boolean[dimension - 2][dimension - 2];
 
@@ -67,12 +68,12 @@ public class MazeBuilder {
 			}
 		}
 
-		// preparing matrix for maze generation
+		// preparing visitedCells
 		for (int i = 0; i < visitedCells.length; i++)
 			for (int j = 0; j < visitedCells[i].length; j++)
 				visitedCells[i][j] = false;
 
-		generateExit();
+		generateExit(r);
 		initializeGuideCell();
 		markGuideCellPositionAsVisited();
 
@@ -95,7 +96,6 @@ public class MazeBuilder {
 			if (pathHistory.empty())
 				break;
 
-			Random r = new Random();
 			Direction direction;
 			do {
 				direction = Direction.values()[r.nextInt(4)];
@@ -128,8 +128,7 @@ public class MazeBuilder {
 		return new Labyrinth(dimension, maze);
 	}
 
-	private void generateExit() {
-		Random r = new Random();
+	private void generateExit(Random r) {
 		exit = new Coord();
 
 		// generating exit distance to corner

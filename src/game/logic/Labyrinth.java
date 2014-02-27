@@ -16,6 +16,17 @@ public class Labyrinth {
 		this.lab = lab;
 	}
 
+	public void draw() {
+		System.out.println();
+
+		for (int i = 0; i < lab.length; i++) {
+			for (int j = 0; j < lab[i].length; j++)
+				System.out.print(lab[i][j] + " ");
+
+			System.out.println();
+		}
+	}
+
 	public void draw(Vector<LivingBeing> livingBeings, Sword sword, Eagle eagle) {
 		System.out.println();
 

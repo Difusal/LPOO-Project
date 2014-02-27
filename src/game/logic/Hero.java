@@ -92,7 +92,7 @@ public class Hero extends LivingBeing {
 		String dir;
 		System.out.println();
 		do {
-			System.out.print("Type W/A/S/D/B to move/send eagle: ");
+			System.out.print("Type W/A/S/D to move or B to send eagle: ");
 			dir = reader.next();
 		} while (dir.length() != 1);
 

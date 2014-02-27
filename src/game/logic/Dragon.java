@@ -1,7 +1,7 @@
 package game.logic;
 
 import java.util.Random;
-import java.util.List;
+import java.util.Vector;
 
 public class Dragon extends LivingBeing {
 	DragonBehavior behavior = DragonBehavior.MOVING;
@@ -11,31 +11,19 @@ public class Dragon extends LivingBeing {
 	}
 
 	public Dragon(DragonBehavior behavior, Labyrinth lab,
-			List<LivingBeing> livingBeings, Sword sword) {
+			Vector<LivingBeing> livingBeings, Sword sword) {
 		this.type = Type.DRAGON;
 		this.behavior = behavior;
 
 		Random r = new Random();
-		boolean repeat;
 		do {
-			do {
-				position.setX(r.nextInt(lab.getDimension() - 2) + 1);
-				position.setY(r.nextInt(lab.getDimension() - 2) + 1);
-			} while (lab.getLab()[position.getY()][position.getX()] != ' ');
+			position.setX(r.nextInt(lab.getDimension() - 2) + 1);
+			position.setY(r.nextInt(lab.getDimension() - 2) + 1);
 
-			// checking if position is available
-			repeat = false;
-			for (int i = 0; i < livingBeings.size(); i++) {
-				if ((getPosition().getX() == livingBeings.get(i).getPosition()
-						.getX() && getPosition().getY() == livingBeings.get(i)
-						.getPosition().getY())
-						|| (getPosition().getX() == sword.position.getX() && getPosition()
-								.getY() == sword.position.getY())) {
-					repeat = true;
-					break;
-				}
-			}
-		} while (repeat);
+			// while dragon is not generated on a free cell
+			// or while distance to hero is < 2
+		} while (lab.getLab()[position.getY()][position.getX()] != ' '
+				|| distanceTo(livingBeings.get(0)) < 2);
 	}
 
 	public void move(Labyrinth lab) {
