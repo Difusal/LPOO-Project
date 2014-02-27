@@ -6,6 +6,7 @@ import game.logic.Dragon.DragonBehavior;
 import game.logic.LivingBeing.Type;
 
 public class Game {
+	private MazeBuilder mazeBuilder = new MazeBuilder();
 	private Labyrinth lab;
 	private Vector<LivingBeing> livingBeings;
 	private Hero hero;
@@ -14,14 +15,14 @@ public class Game {
 
 	public Game(DragonBehavior dragonBehavior, int numDragons) {
 		// initializing variables
-		lab = MazeBuilder.Build();
+		lab = mazeBuilder.Build();
 
 		initializeVariables(dragonBehavior, numDragons);
 	}
 
 	public Game(int dimension, DragonBehavior dragonBehavior, int numDragons) {
 		// initializing variables
-		lab = MazeBuilder.Build(dimension);
+		lab = mazeBuilder.Build(dimension);
 
 		initializeVariables(dragonBehavior, numDragons);
 	}

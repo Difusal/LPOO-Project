@@ -89,9 +89,12 @@ public class Hero extends LivingBeing {
 		Scanner reader = new Scanner(System.in);
 
 		// reading user input
+		String dir;
 		System.out.println();
-		System.out.print("Type W/A/S/D/B to move/send eagle: ");
-		String dir = reader.next(".");
+		do {
+			System.out.print("Type W/A/S/D/B to move/send eagle: ");
+			dir = reader.next();
+		} while (dir.length() != 1);
 
 		// closing scanner
 		// reader.close();
