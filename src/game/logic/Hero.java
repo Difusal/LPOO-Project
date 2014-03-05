@@ -25,26 +25,23 @@ public class Hero extends LivingBeing {
 
 	public void move(Labyrinth lab, Direction direction) {
 		// if hero can go to direction, do go to that direction
-		if (direction != Direction.NONE && lab.heroCanWalk(direction, this))
-			go(direction);
-	}
-
-	public void go(Direction dir) {
-		switch (dir) {
-		case RIGHT:
-			position.setX(position.getX() + 1);
-			break;
-		case DOWN:
-			position.setY(position.getY() + 1);
-			break;
-		case LEFT:
-			position.setX(position.getX() - 1);
-			break;
-		case UP:
-			position.setY(position.getY() - 1);
-			break;
-		default:
-			break;
+		if (direction != Direction.NONE && lab.heroCanWalk(direction, this)) {
+			switch (direction) {
+			case RIGHT:
+				position.setX(position.getX() + 1);
+				break;
+			case DOWN:
+				position.setY(position.getY() + 1);
+				break;
+			case LEFT:
+				position.setX(position.getX() - 1);
+				break;
+			case UP:
+				position.setY(position.getY() - 1);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 

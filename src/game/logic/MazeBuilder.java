@@ -15,39 +15,17 @@ public class MazeBuilder {
 
 	// demo labyrinth builder
 	public Labyrinth Build() {
-		maze = new char[10][10];
-
-		// filling maze with ' '
-		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < 10; j++)
-				maze[i][j] = ' ';
-
-		// setting borders
-		for (int i = 0; i < 10; i++) {
-			maze[0][i] = wallChar;
-			maze[9][i] = wallChar;
-			maze[i][0] = wallChar;
-			maze[i][9] = wallChar;
-		}
-
-		// marking exit
-		maze[5][9] = exitChar;
-
-		// setting maze walls
-		for (int i = 2; i < 8; i++) {
-			if (i == 4 || i == 6)
-				continue;
-
-			for (int j = 2; j < 8; j++) {
-				if (j == 5)
-					continue;
-				else
-					maze[j][i] = wallChar;
-			}
-		}
-		maze[8][2] = wallChar;
-		maze[8][3] = wallChar;
-		maze[5][7] = wallChar;
+		maze = new char[][] {
+				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'S' },
+				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+				{ 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
+				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
 
 		return new Labyrinth(10, maze);
 	}

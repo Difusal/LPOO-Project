@@ -129,10 +129,17 @@ public class UI {
 		}
 
 		// displaying notification message
-		if (game.getHero().isDead())
-			System.out.println("GAME OVER! You lost.");
-		else
-			System.out.println("CONGRATULATIONS! You won the game.");
+		if (game.getHero().isDead()) {
+			System.out.println("----------");
+			System.out.println("GAME OVER!");
+			System.out.println("----------");
+			System.out.println("You lost.");
+		} else {
+			System.out.println("----------------");
+			System.out.println("CONGRATULATIONS!");
+			System.out.println("----------------");
+			System.out.println("You won the game.");
+		}
 		System.out.println();
 	}
 
@@ -160,12 +167,10 @@ public class UI {
 				break;
 			case 2:
 				System.out.println("Quitting game.");
-
 				done = true;
 				break;
 			default:
 				System.out.println("Invalid input!");
-
 				break;
 			}
 		}
