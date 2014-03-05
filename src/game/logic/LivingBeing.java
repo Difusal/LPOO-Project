@@ -7,13 +7,13 @@ public abstract class LivingBeing {
 	protected int life = 100;
 	protected boolean isSleeping = false;
 
-	public abstract void move(Labyrinth lab, Direction direction);
-
-	public abstract String drawToString();
-
 	public enum Type {
 		HERO, EAGLE, DRAGON
 	}
+
+	public abstract void move(Labyrinth lab, Direction direction);
+
+	public abstract String drawToString();
 
 	public Type getType() {
 		return type;

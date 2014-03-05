@@ -52,6 +52,20 @@ public class Hero extends LivingBeing {
 			return "H ";
 	}
 
+	public boolean catchSwordIfPossible(Sword sword) {
+		if (sword.isVisible() && sword.getPosition().equals(position)) {
+			// hide sword from labyrinth
+			sword.hide();
+
+			// arm hero
+			arm();
+			
+			return true;
+		}
+		
+		return false;
+	}
+
 	public void arm() {
 		hasSword = true;
 	}

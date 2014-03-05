@@ -70,15 +70,7 @@ public class Game {
 		eagle.update(lab, livingBeings, hero, sword);
 
 		// checking if player got sword
-		if (sword.isVisible()
-				&& sword.getPosition().getX() == hero.getPosition().getX()
-				&& sword.getPosition().getY() == hero.getPosition().getY()) {
-			// hide sword from labyrinth
-			sword.hide();
-
-			// arm hero
-			hero.arm();
-		}
+		hero.catchSwordIfPossible(sword);
 
 		// if hero is next to a dragon
 		for (LivingBeing i : livingBeings) {
@@ -111,7 +103,7 @@ public class Game {
 
 		return done;
 	}
-	
+
 	public Labyrinth getLabyrinth() {
 		return lab;
 	}
@@ -123,11 +115,11 @@ public class Game {
 	public Vector<LivingBeing> getLivingBeings() {
 		return livingBeings;
 	}
-	
+
 	public Sword getSword() {
 		return sword;
 	}
-	
+
 	public Eagle getEagle() {
 		return eagle;
 	}

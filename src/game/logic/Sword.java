@@ -22,6 +22,10 @@ public class Sword {
 		position.setY(y);
 	}
 
+	public Sword(Coord coord) {
+		position = new Coord(coord);
+	}
+
 	public String drawToString() {
 		return "E ";
 	}

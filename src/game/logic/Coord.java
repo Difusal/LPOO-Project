@@ -18,6 +18,16 @@ public class Coord {
 		y = position.getY();
 	}
 
+	public boolean equals(Object other) {
+		if (!(other instanceof Coord))
+			return false;
+
+		Coord that = (Coord) other;
+
+		// Custom equality check here.
+		return this.x == that.x && this.y == that.y;
+	}
+
 	public int getX() {
 		return x;
 	}
