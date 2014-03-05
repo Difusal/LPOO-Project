@@ -48,9 +48,12 @@ public class Labyrinth {
 						// drawing dragon
 						else if (k.getType() == Type.DRAGON) {
 							// if sword is under the dragon
-							if (sword.isVisible() && sword.isOn(j, i))
-								System.out.print("F ");
-							else
+							if (sword.isVisible() && sword.isOn(j, i)) {
+								if (k.isSleeping)
+									System.out.print("f ");
+								else
+									System.out.print("F ");
+							} else
 								k.draw();
 
 							somethingWasDrawn = true;

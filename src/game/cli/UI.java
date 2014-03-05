@@ -6,18 +6,9 @@ import game.logic.Game;
 import java.util.Scanner;
 
 public class UI {
-	public static void displayMainMenu() {
-		// printing main menu
-		System.out.println("--------------");
-		System.out.println("Labyrinth Game");
-		System.out.println("--------------");
-		System.out.println();
-		System.out.println("1. Play");
-		System.out.println("2. Exit");
-		System.out.println();
-	}
+	private static Game game = null;
 
-	public static int waitForUserInput(Scanner reader, String message, int min,
+	private static int waitForUserInput(Scanner reader, String message, int min,
 			int max) {
 		int input;
 
@@ -35,6 +26,56 @@ public class UI {
 		return input;
 	}
 
+	private static void displayMainMenu() {
+		// printing main menu
+		System.out.println("--------------");
+		System.out.println("Labyrinth Game");
+		System.out.println("--------------");
+		System.out.println();
+		System.out.println("1. Play");
+		System.out.println("2. Exit");
+		System.out.println();
+	}
+
+	private static void createGameUI(Scanner reader) {
+		String msg;
+
+		// asking which maze to build
+		msg = "Choose which maze to play: \n1. Random\n2. Demo";
+		int mazeToPlay = waitForUserInput(reader, msg, 1, 2);
+
+		// if random maze was chosen
+		int dimension = 10;
+		if (mazeToPlay == 1) {
+			// asking maze dimension
+			do {
+				System.out.println("Insert an odd labyrinth size (>= 5): ");
+				System.out.print("> ");
+				dimension = reader.nextInt();
+			} while (dimension % 2 == 0 || dimension < 5);
+			System.out.println();
+		}
+
+		// asking dragon behavior
+		msg = "Choose the dragon(s) behavior: \n1. Stopped\n2. Moving\n3. Moving/Sleeping";
+		int behaviorInput = waitForUserInput(reader, msg, 1, 3);
+		DragonBehavior dragonBehavior = DragonBehavior.values()[behaviorInput - 1];
+
+		// asking number of dragons to summon
+		msg = "How many dragons should appear?";
+		int numDragons = waitForUserInput(reader, msg, 1, dimension - 2);
+
+		// creating game
+		if (mazeToPlay == 1)
+			game = new Game(dimension, dragonBehavior, numDragons);
+		else if (mazeToPlay == 2)
+			game = new Game(dragonBehavior, numDragons);
+	}
+	
+	private static void startGame() {
+		
+	}
+
 	public static void main(String[] args) {
 		displayMainMenu();
 
@@ -50,42 +91,8 @@ public class UI {
 
 			switch (input) {
 			case 1:
-				String msg;
-
-				// declaring game
-				Game game = null;
-
-				// asking what maze to build
-				msg = "Choose which maze to play: \n1. Random\n2. Demo";
-				int mazeToPlay = waitForUserInput(reader, msg, 1, 2);
-
-				int dimension = 10;
-				// if random maze was chosen
-				if (mazeToPlay == 1) {
-					// asking maze dimension
-					do {
-						System.out
-								.println("Insert an odd labyrinth size (>= 5): ");
-						System.out.print("> ");
-						dimension = reader.nextInt();
-					} while (dimension % 2 == 0 || dimension < 5);
-					System.out.println();
-				}
-
-				// asking dragon behavior
-				msg = "Choose the dragon(s) behavior: \n1. Stopped\n2. Moving\n3. Moving/Sleeping";
-				int behaviorInput = waitForUserInput(reader, msg, 1, 3);
-				DragonBehavior dragonBehavior = DragonBehavior.values()[behaviorInput - 1];
-
-				// asking number of dragons to summon
-				msg = "How many dragons should appear?";
-				int numDragons = waitForUserInput(reader, msg, 1, dimension - 2);
-
-				// creating game
-				if (mazeToPlay == 1)
-					game = new Game(dimension, dragonBehavior, numDragons);
-				else if (mazeToPlay == 2)
-					game = new Game(dragonBehavior, numDragons);
+				// getting info about game
+				createGameUI(reader);
 
 				// starting game
 				game.startGame();
