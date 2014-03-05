@@ -26,46 +26,41 @@ public class Dragon extends LivingBeing {
 				|| distanceTo(livingBeings.get(0)) < 2);
 	}
 
-	public void move(Labyrinth lab) {
-		Random r = new Random();
-
+	public void move(Labyrinth lab, Direction direction) {
 		if (behavior != DragonBehavior.NOTMOVING && !isSleeping) {
-			/*
-			 * Legend: 0 - up; 1 - right; 2 - down; 3 - left.
-			 */
-
-			int dir = r.nextInt(4);
-			switch (dir) {
-			// up
-			case 0:
+			// moving dragon randomly
+			switch (direction) {
+			case UP:
 				if (lab.dragonCanWalkTo(getPosition().getX(), getPosition()
 						.getY() - 1))
 					getPosition().setY(getPosition().getY() - 1);
 				break;
-			// right
-			case 1:
+			case RIGHT:
 				if (lab.dragonCanWalkTo(getPosition().getX() + 1, getPosition()
 						.getY()))
 					getPosition().setX(getPosition().getX() + 1);
 				break;
-			// down
-			case 2:
+			case DOWN:
 				if (lab.dragonCanWalkTo(getPosition().getX(), getPosition()
 						.getY() + 1))
 					getPosition().setY(getPosition().getY() + 1);
 				break;
-			// left
-			case 3:
+			case LEFT:
 				if (lab.dragonCanWalkTo(getPosition().getX() - 1, getPosition()
 						.getY()))
 					getPosition().setX(getPosition().getX() - 1);
+				break;
+			case NONE:
 				break;
 			}
 		}
 
 		if (behavior == DragonBehavior.MOVINGANDSLEEPING) {
+			Random r = new Random();
+
 			// making dragon sleep sometimes
 			int sleep = r.nextInt(2);
+
 			if (sleep == 1)
 				isSleeping = true;
 			else
@@ -73,10 +68,10 @@ public class Dragon extends LivingBeing {
 		}
 	}
 
-	public void draw() {
+	public String drawToString() {
 		if (isSleeping)
-			System.out.print("d ");
+			return "d ";
 		else
-			System.out.print("D ");
+			return "D ";
 	}
 }

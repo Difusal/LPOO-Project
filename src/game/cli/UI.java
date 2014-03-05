@@ -1,5 +1,6 @@
 package game.cli;
 
+import game.logic.Direction;
 import game.logic.Dragon.DragonBehavior;
 import game.logic.Game;
 
@@ -8,11 +9,12 @@ import java.util.Scanner;
 public class UI {
 	private static Game game = null;
 
-	private static int waitForUserInput(Scanner reader, String message, int min,
-			int max) {
+	private static int waitForUserInput(Scanner reader, String message,
+			int min, int max) {
 		int input;
 
 		// getting input
+		System.out.println();
 		do {
 			// displaying message
 			System.out.println(message);
@@ -21,9 +23,13 @@ public class UI {
 			// reading input
 			input = reader.nextInt();
 		} while (input < min || input > max);
-		System.out.println();
 
 		return input;
+	}
+
+	private static void printGameToConsole() {
+		System.out.println(game.getLabyrinth().drawToString(
+				game.getLivingBeings(), game.getSword(), game.getEagle()));
 	}
 
 	private static void displayMainMenu() {
@@ -48,12 +54,12 @@ public class UI {
 		int dimension = 10;
 		if (mazeToPlay == 1) {
 			// asking maze dimension
+			System.out.println();
 			do {
 				System.out.println("Insert an odd labyrinth size (>= 5): ");
 				System.out.print("> ");
 				dimension = reader.nextInt();
 			} while (dimension % 2 == 0 || dimension < 5);
-			System.out.println();
 		}
 
 		// asking dragon behavior
@@ -71,9 +77,63 @@ public class UI {
 		else if (mazeToPlay == 2)
 			game = new Game(dragonBehavior, numDragons);
 	}
-	
-	private static void startGame() {
-		
+
+	private static Direction getHeroDirection(Scanner reader) {
+		String dir;
+
+		// reading user input
+		do {
+			System.out.print("Type W/A/S/D to move or B to send eagle: ");
+			dir = reader.next();
+		} while (!dir.equals("w") && !dir.equals("a") && !dir.equals("s")
+				&& !dir.equals("d") && !dir.equals("b"));
+
+		Direction direction = Direction.NONE;
+		switch (dir) {
+		case "d":
+			direction = Direction.RIGHT;
+			break;
+		case "s":
+			direction = Direction.DOWN;
+			break;
+		case "a":
+			direction = Direction.LEFT;
+			break;
+		case "w":
+			direction = Direction.UP;
+			break;
+		// hero sent eagle
+		case "b":
+			if (game.getHero().hasEagle() && !game.getHero().hasSword())
+				game.getHero().sendEagle();
+			break;
+		default:
+			break;
+		}
+
+		return direction;
+	}
+
+	private static void startGame(Scanner reader) {
+		boolean done = false;
+
+		// print labyrinth for the first time
+		printGameToConsole();
+
+		while (!done) {
+			// getting user input and updating game
+			done = game.updateGame(getHeroDirection(reader));
+
+			// printing labyrinth
+			printGameToConsole();
+		}
+
+		// displaying notification message
+		if (game.getHero().isDead())
+			System.out.println("GAME OVER! You lost.");
+		else
+			System.out.println("CONGRATULATIONS! You won the game.");
+		System.out.println();
 	}
 
 	public static void main(String[] args) {
@@ -87,7 +147,6 @@ public class UI {
 			System.out.println("Choose what to do:");
 			System.out.print("> ");
 			int input = reader.nextInt();
-			System.out.println();
 
 			switch (input) {
 			case 1:
@@ -95,7 +154,7 @@ public class UI {
 				createGameUI(reader);
 
 				// starting game
-				game.startGame();
+				startGame(reader);
 
 				done = true;
 				break;

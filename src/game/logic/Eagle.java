@@ -33,7 +33,7 @@ public class Eagle extends LivingBeing {
 	public boolean hasSword() {
 		return hasSword;
 	}
-	
+
 	public void setHasSword(boolean hasSword) {
 		this.hasSword = hasSword;
 	}
@@ -103,10 +103,10 @@ public class Eagle extends LivingBeing {
 		}
 
 		// moving eagle
-		move(lab);
+		move(lab, Direction.NONE);
 	}
 
-	public void move(Labyrinth lab) {
+	public void move(Labyrinth lab, Direction direction) {
 		// if eagle moving
 		if (flying) {
 			// updating pathStep
@@ -167,8 +167,10 @@ public class Eagle extends LivingBeing {
 			setPosition(new Coord(hero.getPosition()));
 
 		// if hero sent eagle
-		if (hero.hasJustSentEagle())
+		if (hero.hasJustSentEagle()) {
 			startFlight(lab, sword);
+			hero.resetHasJustSentEagleValue();
+		}
 
 		// checking if hero caught eagle
 		if (!hero.hasEagle() && !isFlying() && !isDead()
@@ -177,13 +179,15 @@ public class Eagle extends LivingBeing {
 			hero.catchEagle(this);
 	}
 
-	public void draw() {
+	public String drawToString() {
 		if (flying || !withHero) {
 			if (hasSword)
-				System.out.print("BE");
+				return "BE";
 			else
-				System.out.print("B ");
+				return "B ";
 		}
+
+		return "";
 	}
 
 	public boolean isCatchingSword() {

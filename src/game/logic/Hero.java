@@ -1,7 +1,6 @@
 package game.logic;
 
 import java.util.Random;
-import java.util.Scanner;
 
 public class Hero extends LivingBeing {
 	private boolean hasSword = false;
@@ -24,42 +23,10 @@ public class Hero extends LivingBeing {
 		return hasSword;
 	}
 
-	public void arm() {
-		hasSword = true;
-		System.out.println("You have caught the sword.");
-	}
-
-	public boolean hasEagle() {
-		return hasEagle;
-	}
-
-	public boolean hasJustSentEagle() {
-		return hasJustSentEagle;
-	}
-
-	public void sendEagle() {
-		System.out.println("Eagle was sent.");
-		hasEagle = false;
-		hasJustSentEagle = true;
-	}
-
-	public void catchEagle(Eagle eagle) {
-		hasEagle = true;
-		eagle.setWithHero(true);
-
-		if (eagle.hasSword())
-			arm();
-
-		eagle.setHasSword(false);
-	}
-
-	public boolean hasKilledADragon() {
-		return hasKilledADragon;
-	}
-
-	public void killedADragon() {
-		hasKilledADragon = true;
-		System.out.println("You have killed the Dragon.");
+	public void move(Labyrinth lab, Direction direction) {
+		// if hero can go to direction, do go to that direction
+		if (direction != Direction.NONE && lab.heroCanWalk(direction, this))
+			go(direction);
 	}
 
 	public void go(Direction dir) {
@@ -81,68 +48,49 @@ public class Hero extends LivingBeing {
 		}
 	}
 
-	public void move(Labyrinth lab) {
-		// resetting hasJustSentEagle value
-		hasJustSentEagle = false;
-
-		// opening scanner
-		Scanner reader = new Scanner(System.in);
-
-		// reading user input
-		String dir;
-		System.out.println();
-		do {
-			System.out.print("Type W/A/S/D to move or B to send eagle: ");
-			dir = reader.next();
-		} while (dir.length() != 1);
-
-		// closing scanner
-		// reader.close();
-		// TODO why does the previous line cause a runtime exception?
-
-		boolean validMove = true;
-		Direction direction = Direction.NONE;
-
-		switch (dir) {
-		// right
-		case "d":
-			direction = Direction.RIGHT;
-			break;
-		// down
-		case "s":
-			direction = Direction.DOWN;
-			break;
-		// left
-		case "a":
-			direction = Direction.LEFT;
-			break;
-		// up
-		case "w":
-			direction = Direction.UP;
-			break;
-		// hero sent eagle
-		case "b":
-			if (hasEagle && !hasSword)
-				sendEagle();
-			break;
-		default:
-			validMove = false;
-			break;
-		}
-
-		// if hero can go to direction, do go to that direction
-		if (direction != Direction.NONE && lab.heroCanWalk(direction, this))
-			go(direction);
-
-		// if invalid input detected
-		if (!validMove)
-			System.out.println("Invalid input.");
+	public String drawToString() {
+		if (hasSword)
+			return "A ";
+		else
+			return "H ";
 	}
 
-	public void draw() {
-		if (hasSword)
-			System.out.print("A ");
-		else
-			System.out.print("H ");
+	public void arm() {
+		hasSword = true;
+	}
+
+	public boolean hasEagle() {
+		return hasEagle;
+	}
+
+	public boolean hasJustSentEagle() {
+		return hasJustSentEagle;
+	}
+
+	public void resetHasJustSentEagleValue() {
+		hasJustSentEagle = false;
+	}
+
+	public void sendEagle() {
+		hasEagle = false;
+		hasJustSentEagle = true;
+	}
+
+	public void catchEagle(Eagle eagle) {
+		hasEagle = true;
+		eagle.setWithHero(true);
+
+		if (eagle.hasSword())
+			arm();
+
+		eagle.setHasSword(false);
+	}
+
+	public boolean hasKilledADragon() {
+		return hasKilledADragon;
+	}
+
+	public void killedADragon() {
+		hasKilledADragon = true;
 	}
 }

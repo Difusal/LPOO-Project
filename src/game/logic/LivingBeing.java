@@ -7,9 +7,9 @@ public abstract class LivingBeing {
 	protected int life = 100;
 	protected boolean isSleeping = false;
 
-	public abstract void move(Labyrinth lab);
+	public abstract void move(Labyrinth lab, Direction direction);
 
-	public abstract void draw();
+	public abstract String drawToString();
 
 	public enum Type {
 		HERO, EAGLE, DRAGON

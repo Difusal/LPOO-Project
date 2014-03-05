@@ -16,19 +16,22 @@ public class Labyrinth {
 		this.lab = lab;
 	}
 
-	public void draw() {
-		System.out.println();
+	public String drawToString() {
+		String str = "\n";
 
 		for (int i = 0; i < lab.length; i++) {
 			for (int j = 0; j < lab[i].length; j++)
-				System.out.print(lab[i][j] + " ");
+				str += lab[i][j] + " ";
 
-			System.out.println();
+			str += "\n";
 		}
+
+		return str;
 	}
 
-	public void draw(Vector<LivingBeing> livingBeings, Sword sword, Eagle eagle) {
-		System.out.println();
+	public String drawToString(Vector<LivingBeing> livingBeings, Sword sword,
+			Eagle eagle) {
+		String str = "\n\n";
 
 		for (int i = 0; i < lab.length; i++) {
 			for (int j = 0; j < lab[i].length; j++) {
@@ -42,7 +45,7 @@ public class Labyrinth {
 						if (k.getType() == Type.HERO
 								|| (k.getType() == Type.EAGLE && !eagle
 										.isWithHero())) {
-							k.draw();
+							str += k.drawToString();
 							somethingWasDrawn = true;
 						}
 						// drawing dragon
@@ -50,11 +53,11 @@ public class Labyrinth {
 							// if sword is under the dragon
 							if (sword.isVisible() && sword.isOn(j, i)) {
 								if (k.isSleeping)
-									System.out.print("f ");
+									str += "f ";
 								else
-									System.out.print("F ");
+									str += "F ";
 							} else
-								k.draw();
+								str += k.drawToString();
 
 							somethingWasDrawn = true;
 						}
@@ -67,7 +70,7 @@ public class Labyrinth {
 				if (!somethingWasDrawn) {
 					if (sword.isOn(j, i) && sword.isVisible()) {
 						// draw sword
-						sword.draw();
+						str += sword.drawToString();
 						somethingWasDrawn = true;
 					}
 				}
@@ -75,11 +78,13 @@ public class Labyrinth {
 				// if nothing was drawn yet
 				if (!somethingWasDrawn)
 					// draw maze
-					System.out.print(lab[i][j] + " ");
+					str += lab[i][j] + " ";
 			}
 
-			System.out.println();
+			str += "\n";
 		}
+
+		return str;
 	}
 
 	public boolean heroCanWalk(Direction dir, Hero hero) {
@@ -114,10 +119,8 @@ public class Labyrinth {
 		// if hero is trying to walk to maze exit
 		if (hero.hasKilledADragon())
 			return true;
-		else {
-			System.out.println("You have to kill a Dragon to exit.");
+		else
 			return false;
-		}
 	}
 
 	public boolean dragonCanWalkTo(int x, int y) {

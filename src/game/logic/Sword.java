@@ -22,8 +22,8 @@ public class Sword {
 		position.setY(y);
 	}
 
-	public void draw() {
-		System.out.print("E ");
+	public String drawToString() {
+		return "E ";
 	}
 
 	public boolean isOn(int x, int y) {
