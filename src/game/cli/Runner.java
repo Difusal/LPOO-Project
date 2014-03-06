@@ -6,7 +6,7 @@ import game.logic.Game;
 
 import java.util.Scanner;
 
-public class CLI {
+public class Runner {
 	private static Game game = null;
 
 	private static int waitForUserInput(Scanner reader, String message,
