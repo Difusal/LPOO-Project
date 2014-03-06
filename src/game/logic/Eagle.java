@@ -18,26 +18,6 @@ public class Eagle extends LivingBeing {
 		type = Type.EAGLE;
 	}
 
-	public boolean isFlying() {
-		return flying;
-	}
-
-	public boolean isWithHero() {
-		return withHero;
-	}
-
-	public void setWithHero(boolean withHero) {
-		this.withHero = withHero;
-	}
-
-	public boolean hasSword() {
-		return hasSword;
-	}
-
-	public void setHasSword(boolean hasSword) {
-		this.hasSword = hasSword;
-	}
-
 	public void startFlight(Labyrinth lab, Sword sword) {
 		// preparing variables
 		flying = true;
@@ -188,6 +168,26 @@ public class Eagle extends LivingBeing {
 		}
 
 		return "";
+	}
+
+	public boolean isFlying() {
+		return flying;
+	}
+
+	public boolean isWithHero() {
+		return withHero;
+	}
+
+	public void setWithHero(boolean withHero) {
+		this.withHero = withHero;
+	}
+
+	public boolean hasSword() {
+		return hasSword;
+	}
+
+	public void setHasSword(boolean hasSword) {
+		this.hasSword = hasSword;
 	}
 
 	public boolean isCatchingSword() {
