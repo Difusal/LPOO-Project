@@ -21,14 +21,17 @@ public class GamePanel extends JPanel {
 	private Image wall;
 
 	public GamePanel() {
-		game = new Game(11, DragonBehavior.NOTMOVING, 1);
+		game = new Game(5, DragonBehavior.NOTMOVING, 1);
 		setUpPanel();
 	}
 
 	private void setUpPanel() {
 		setBackground(Color.GREEN);
 
-		// loading images
+		loadImages();
+	}
+
+	private void loadImages() {
 		ImageIcon ii;
 
 		// loading path
@@ -53,43 +56,43 @@ public class GamePanel extends JPanel {
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
-		// drawing maze
+		drawMaze(g2d);
+	}
+
+	private void drawMaze(Graphics2D g2d) {
 		Symbols[][] maze = game.getLabyrinth().getLab();
+
 		for (int i = 0; i < game.getLabyrinth().getDimension(); i++) {
 			for (int j = 0; j < game.getLabyrinth().getDimension(); j++) {
 				if (maze[i][j] == Symbols.WALL)
-					g2d.drawImage(wall, j * wall.getWidth(null),
-							i * wall.getHeight(null) - 10 - 50 * i, null);
+					drawTile(g2d, wall, j, i);
 				else {
 					// display shadow on both sides
 					if (j - 1 >= 0 && j + 1 < maze.length
 							&& maze[i][j - 1] == Symbols.WALL
 							&& maze[i][j + 1] == Symbols.WALL)
-						g2d.drawImage(pathWithShadows,
-								j * pathWithShadows.getWidth(null), i
-										* pathWithShadows.getHeight(null) + 24
-										- 50 * i, null);
+						drawTile(g2d, pathWithShadows, j, i);
 					// display shadow on left side
 					else if (j - 1 >= 0 && maze[i][j - 1] == Symbols.WALL)
-						g2d.drawImage(pathWithLeftShadows, j
-								* pathWithLeftShadows.getWidth(null), i
-								* pathWithLeftShadows.getHeight(null) + 24 - 50
-								* i, null);
+						drawTile(g2d, pathWithLeftShadows, j, i);
 					// display shadow on right side
 					else if (j + 1 < maze.length
 							&& maze[i][j + 1] == Symbols.WALL)
-						g2d.drawImage(pathWithRightShadows, j
-								* pathWithRightShadows.getWidth(null), i
-								* pathWithRightShadows.getHeight(null) + 24
-								- 50 * i, null);
+						drawTile(g2d, pathWithRightShadows, j, i);
 					// display path with no shadows
 					else
-						g2d.drawImage(pathWithNoShadows,
-								j * pathWithNoShadows.getWidth(null), i
-										* pathWithNoShadows.getHeight(null)
-										+ 24 - 50 * i, null);
+						drawTile(g2d, pathWithNoShadows, j, i);
 				}
 			}
 		}
+	}
+
+	private void drawTile(Graphics2D g2d, Image tile, int x, int y) {
+		if (tile == wall)
+			g2d.drawImage(tile, x * tile.getWidth(null),
+					y * tile.getHeight(null) - 10 - 50 * y, null);
+		else
+			g2d.drawImage(tile, x * tile.getWidth(null),
+					y * tile.getHeight(null) + 24 - 50 * y, null);
 	}
 }
