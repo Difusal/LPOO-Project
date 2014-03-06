@@ -1,5 +1,7 @@
 package game.logic;
 
+import game.logic.Labyrinth.Symbols;
+
 import java.util.Random;
 import java.util.Vector;
 
@@ -28,7 +30,7 @@ public class Dragon extends LivingBeing {
 
 			// while dragon is not generated on a free cell
 			// or while distance to hero is < 2
-		} while (lab.getLab()[position.getY()][position.getX()] != ' '
+		} while (lab.getLab()[position.getY()][position.getX()] != Symbols.PATH
 				|| distanceTo(livingBeings.get(0)) < 2);
 	}
 

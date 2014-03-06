@@ -1,5 +1,7 @@
 package game.logic;
 
+import game.logic.Labyrinth.Symbols;
+
 import java.util.Random;
 
 public class Hero extends LivingBeing {
@@ -16,7 +18,7 @@ public class Hero extends LivingBeing {
 		do {
 			position.setX(r.nextInt(lab.getDimension() - 2) + 1);
 			position.setY(r.nextInt(lab.getDimension() - 2) + 1);
-		} while (lab.getLab()[position.getY()][position.getX()] != ' ');
+		} while (lab.getLab()[position.getY()][position.getX()] != Symbols.PATH);
 	}
 
 	public Hero(String name, Coord position) {

@@ -2,6 +2,7 @@ package game.gui;
 
 import game.logic.Dragon.DragonBehavior;
 import game.logic.Game;
+import game.logic.Labyrinth.Symbols;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -49,12 +50,17 @@ public class GamePanel extends JPanel {
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		// g2d.drawImage(smaug, 0, 0, null);
-		
+
 		// drawing maze
-		char[][] maze = game.getLabyrinth().getLab();
+		Symbols[][] maze = game.getLabyrinth().getLab();
 		for (int i = 0; i < game.getLabyrinth().getDimension(); i++) {
 			for (int j = 0; j < game.getLabyrinth().getDimension(); j++) {
-				;
+				if (maze[i][j] == Symbols.PATH)
+					g2d.drawImage(path, j * 50, i * 50, null);
+				else if (maze[i][j] == Symbols.WALL)
+					g2d.drawImage(wall, j * 50, i * 50, null);
+				else if (maze[i][j] == Symbols.EXIT)
+					g2d.drawImage(exit, j * 50, i * 50, null);
 			}
 		}
 	}

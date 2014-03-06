@@ -6,6 +6,7 @@ import game.logic.Direction;
 import game.logic.Dragon;
 import game.logic.Hero;
 import game.logic.Labyrinth;
+import game.logic.Labyrinth.Symbols;
 import game.logic.MazeBuilder;
 import game.logic.Sword;
 import game.logic.Dragon.DragonBehavior;
@@ -195,7 +196,7 @@ public class HeroTests {
 
 			// if hero is able to step on Exit, game is done
 			if (lab.getLab()[hero.getPosition().getY()][hero.getPosition()
-					.getX()] == 'S')
+					.getX()] == Symbols.EXIT)
 				done = true;
 		}
 
@@ -244,7 +245,7 @@ public class HeroTests {
 
 			// if hero is able to step on Exit, game is done
 			if (lab.getLab()[hero.getPosition().getY()][hero.getPosition()
-					.getX()] == 'S')
+					.getX()] == Symbols.EXIT)
 				done = true;
 		}
 

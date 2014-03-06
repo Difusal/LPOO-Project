@@ -1,32 +1,51 @@
 package game.logic;
 
+import game.logic.Labyrinth.Symbols;
+
 import java.util.Random;
 import java.util.Stack;
 import java.util.Vector;
 
 public class MazeBuilder {
-	private char[][] maze;
+	private Symbols[][] maze;
 	private boolean[][] visitedCells;
 	private Stack<Coord> pathHistory;
 	private Coord guideCell;
 	private Coord exit;
 
-	public char wallChar = 'X';
-	public char exitChar = 'S';
-
 	// demo labyrinth builder
 	public Labyrinth buildDemo() {
-		maze = new char[][] {
-				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'S' },
-				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-				{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-				{ 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
-				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' } };
+		maze = new Symbols[][] {
+				{ Symbols.WALL, Symbols.WALL, Symbols.WALL, Symbols.WALL,
+						Symbols.WALL, Symbols.WALL, Symbols.WALL, Symbols.WALL,
+						Symbols.WALL, Symbols.WALL },
+				{ Symbols.WALL, Symbols.PATH, Symbols.PATH, Symbols.PATH,
+						Symbols.PATH, Symbols.PATH, Symbols.PATH, Symbols.PATH,
+						Symbols.PATH, Symbols.WALL },
+				{ Symbols.WALL, Symbols.PATH, Symbols.WALL, Symbols.WALL,
+						Symbols.PATH, Symbols.WALL, Symbols.PATH, Symbols.WALL,
+						Symbols.PATH, Symbols.WALL },
+				{ Symbols.WALL, Symbols.PATH, Symbols.WALL, Symbols.WALL,
+						Symbols.PATH, Symbols.WALL, Symbols.PATH, Symbols.WALL,
+						Symbols.PATH, Symbols.WALL },
+				{ Symbols.WALL, Symbols.PATH, Symbols.WALL, Symbols.WALL,
+						Symbols.PATH, Symbols.WALL, Symbols.PATH, Symbols.WALL,
+						Symbols.PATH, Symbols.WALL },
+				{ Symbols.WALL, Symbols.PATH, Symbols.PATH, Symbols.PATH,
+						Symbols.PATH, Symbols.PATH, Symbols.PATH, Symbols.WALL,
+						Symbols.PATH, Symbols.EXIT },
+				{ Symbols.WALL, Symbols.PATH, Symbols.WALL, Symbols.WALL,
+						Symbols.PATH, Symbols.WALL, Symbols.PATH, Symbols.WALL,
+						Symbols.PATH, Symbols.WALL },
+				{ Symbols.WALL, Symbols.PATH, Symbols.WALL, Symbols.WALL,
+						Symbols.PATH, Symbols.WALL, Symbols.PATH, Symbols.WALL,
+						Symbols.PATH, Symbols.WALL },
+				{ Symbols.WALL, Symbols.PATH, Symbols.WALL, Symbols.WALL,
+						Symbols.PATH, Symbols.PATH, Symbols.PATH, Symbols.PATH,
+						Symbols.PATH, Symbols.WALL },
+				{ Symbols.WALL, Symbols.WALL, Symbols.WALL, Symbols.WALL,
+						Symbols.WALL, Symbols.WALL, Symbols.WALL, Symbols.WALL,
+						Symbols.WALL, Symbols.WALL } };
 
 		return new Labyrinth(10, maze);
 	}
@@ -34,16 +53,16 @@ public class MazeBuilder {
 	// random labyrinth builder
 	public Labyrinth build(int dimension) {
 		Random r = new Random();
-		maze = new char[dimension][dimension];
+		maze = new Symbols[dimension][dimension];
 		visitedCells = new boolean[dimension - 2][dimension - 2];
 
 		// filling maze with 'X'
 		for (int i = 0; i < dimension; i++) {
 			for (int j = 0; j < dimension; j++) {
 				if (i % 2 != 0 && j % 2 != 0)
-					maze[i][j] = ' ';
+					maze[i][j] = Symbols.PATH;
 				else
-					maze[i][j] = wallChar;
+					maze[i][j] = Symbols.WALL;
 			}
 		}
 
@@ -83,16 +102,16 @@ public class MazeBuilder {
 			// updating maze
 			switch (direction) {
 			case UP:
-				maze[guideCell.getY() * 2][guideCell.getX() * 2 + 1] = ' ';
+				maze[guideCell.getY() * 2][guideCell.getX() * 2 + 1] = Symbols.PATH;
 				break;
 			case RIGHT:
-				maze[guideCell.getY() * 2 + 1][(guideCell.getX() + 1) * 2] = ' ';
+				maze[guideCell.getY() * 2 + 1][(guideCell.getX() + 1) * 2] = Symbols.PATH;
 				break;
 			case DOWN:
-				maze[(guideCell.getY() + 1) * 2][guideCell.getX() * 2 + 1] = ' ';
+				maze[(guideCell.getY() + 1) * 2][guideCell.getX() * 2 + 1] = Symbols.PATH;
 				break;
 			case LEFT:
-				maze[guideCell.getY() * 2 + 1][guideCell.getX() * 2] = ' ';
+				maze[guideCell.getY() * 2 + 1][guideCell.getX() * 2] = Symbols.PATH;
 				break;
 			case NONE:
 				break;
@@ -142,7 +161,7 @@ public class MazeBuilder {
 		}
 
 		// placing exit character at exit
-		maze[exit.getY()][exit.getX()] = exitChar;
+		maze[exit.getY()][exit.getX()] = Symbols.EXIT;
 	}
 
 	private void initializeGuideCell() {

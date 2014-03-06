@@ -5,17 +5,32 @@ import game.logic.LivingBeing.Type;
 import java.util.Vector;
 
 public class Labyrinth {
-	public char wallChar = 'X';
-	public char exitChar = 'S';
-
 	private int dimension;
-	private char[][] lab;
+	private Symbols[][] lab;
 
 	public enum Symbols {
 		PATH, WALL, EXIT
 	}
 
-	public Labyrinth(int dimension, char[][] lab) {
+	public char getSymbolChar(Symbols symbol) {
+		char res = '.';
+
+		switch (symbol) {
+		case PATH:
+			res = ' ';
+			break;
+		case WALL:
+			res = 'X';
+			break;
+		case EXIT:
+			res = 'S';
+			break;
+		}
+
+		return res;
+	}
+
+	public Labyrinth(int dimension, Symbols[][] lab) {
 		this.dimension = dimension;
 		this.lab = lab;
 	}
@@ -25,7 +40,7 @@ public class Labyrinth {
 
 		for (int i = 0; i < lab.length; i++) {
 			for (int j = 0; j < lab[i].length; j++)
-				str += lab[i][j] + " ";
+				str += getSymbolChar(lab[i][j]) + " ";
 
 			str += "\n";
 		}
@@ -82,7 +97,7 @@ public class Labyrinth {
 				// if nothing was drawn yet
 				if (!somethingWasDrawn)
 					// draw maze
-					str += lab[i][j] + " ";
+					str += getSymbolChar(lab[i][j]) + " ";
 			}
 
 			str += "\n";
@@ -98,23 +113,23 @@ public class Labyrinth {
 		switch (dir) {
 		// scanning cell to the right
 		case RIGHT:
-			if (lab[y][x + 1] != exitChar)
-				return lab[y][x + 1] != wallChar;
+			if (lab[y][x + 1] != Symbols.EXIT)
+				return lab[y][x + 1] != Symbols.WALL;
 			break;
 		// scanning cell to the south
 		case DOWN:
-			if (lab[y + 1][x] != exitChar)
-				return lab[y + 1][x] != wallChar;
+			if (lab[y + 1][x] != Symbols.EXIT)
+				return lab[y + 1][x] != Symbols.WALL;
 			break;
 		// scanning cell to the left
 		case LEFT:
-			if (lab[y][x - 1] != exitChar)
-				return lab[y][x - 1] != wallChar;
+			if (lab[y][x - 1] != Symbols.EXIT)
+				return lab[y][x - 1] != Symbols.WALL;
 			break;
 		// scanning cell to the north
 		case UP:
-			if (lab[y - 1][x] != exitChar)
-				return lab[y - 1][x] != wallChar;
+			if (lab[y - 1][x] != Symbols.EXIT)
+				return lab[y - 1][x] != Symbols.WALL;
 			break;
 		default:
 			break;
@@ -128,10 +143,10 @@ public class Labyrinth {
 	}
 
 	public boolean dragonCanWalkTo(int x, int y) {
-		return lab[y][x] == ' ';
+		return lab[y][x] == Symbols.PATH;
 	}
 
-	public char[][] getLab() {
+	public Symbols[][] getLab() {
 		return lab;
 	}
 

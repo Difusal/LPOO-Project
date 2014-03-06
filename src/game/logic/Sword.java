@@ -1,5 +1,7 @@
 package game.logic;
 
+import game.logic.Labyrinth.Symbols;
+
 import java.util.Random;
 
 public class Sword {
@@ -12,7 +14,7 @@ public class Sword {
 			do {
 				position.setX(r.nextInt(lab.getDimension() - 2) + 1);
 				position.setY(r.nextInt(lab.getDimension() - 2) + 1);
-			} while (lab.getLab()[position.getY()][position.getX()] != ' ');
+			} while (lab.getLab()[position.getY()][position.getX()] != Symbols.PATH);
 		} while (position.getX() == hero.getPosition().getX()
 				&& position.getY() == hero.getPosition().getY());
 	}

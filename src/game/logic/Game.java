@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import game.logic.Dragon.DragonBehavior;
+import game.logic.Labyrinth.Symbols;
 import game.logic.LivingBeing.Type;
 
 public class Game {
@@ -96,7 +97,7 @@ public class Game {
 		}
 
 		// if hero is able to step on Exit, game is done
-		if (lab.getLab()[hero.getPosition().getY()][hero.getPosition().getX()] == 'S')
+		if (lab.getLab()[hero.getPosition().getY()][hero.getPosition().getX()] == Symbols.EXIT)
 			done = true;
 
 		return done;
