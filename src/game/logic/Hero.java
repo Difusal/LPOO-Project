@@ -19,8 +19,10 @@ public class Hero extends LivingBeing {
 		} while (lab.getLab()[position.getY()][position.getX()] != ' ');
 	}
 
-	public boolean hasSword() {
-		return hasSword;
+	public Hero(String name, Coord position) {
+		this.name = name;
+		this.type = Type.HERO;
+		this.position = position;
 	}
 
 	public void move(Labyrinth lab, Direction direction) {
@@ -59,11 +61,15 @@ public class Hero extends LivingBeing {
 
 			// arm hero
 			arm();
-			
+
 			return true;
 		}
-		
+
 		return false;
+	}
+
+	public boolean hasSword() {
+		return hasSword;
 	}
 
 	public void arm() {

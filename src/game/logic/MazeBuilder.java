@@ -2,6 +2,7 @@ package game.logic;
 
 import java.util.Random;
 import java.util.Stack;
+import java.util.Vector;
 
 public class MazeBuilder {
 	private char[][] maze;
@@ -14,7 +15,7 @@ public class MazeBuilder {
 	public char exitChar = 'S';
 
 	// demo labyrinth builder
-	public Labyrinth Build() {
+	public Labyrinth buildDemo() {
 		maze = new char[][] {
 				{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 				{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
@@ -31,7 +32,7 @@ public class MazeBuilder {
 	}
 
 	// random labyrinth builder
-	public Labyrinth Build(int dimension) {
+	public Labyrinth build(int dimension) {
 		Random r = new Random();
 		maze = new char[dimension][dimension];
 		visitedCells = new boolean[dimension - 2][dimension - 2];
@@ -240,5 +241,44 @@ public class MazeBuilder {
 
 	private void addGuideCellPositionToStack() {
 		pathHistory.push(new Coord(guideCell.getX(), guideCell.getY()));
+	}
+
+	public Vector<Direction> getDemoSolution() {
+		Vector<Direction> path = new Vector<Direction>();
+
+		path.add(Direction.RIGHT);
+		path.add(Direction.RIGHT);
+		path.add(Direction.RIGHT);
+		path.add(Direction.DOWN);
+		path.add(Direction.DOWN);
+		path.add(Direction.DOWN);
+		path.add(Direction.DOWN);
+		path.add(Direction.LEFT);
+		path.add(Direction.LEFT);
+		path.add(Direction.LEFT);
+		path.add(Direction.DOWN);
+		path.add(Direction.DOWN);
+		path.add(Direction.DOWN);
+		path.add(Direction.UP);
+		path.add(Direction.UP);
+		path.add(Direction.UP);
+		path.add(Direction.UP);
+		path.add(Direction.DOWN);
+		path.add(Direction.RIGHT);
+		path.add(Direction.RIGHT);
+		path.add(Direction.RIGHT);
+		path.add(Direction.RIGHT);
+		path.add(Direction.RIGHT);
+		path.add(Direction.DOWN);
+		path.add(Direction.DOWN);
+		path.add(Direction.DOWN);
+		path.add(Direction.RIGHT);
+		path.add(Direction.RIGHT);
+		path.add(Direction.UP);
+		path.add(Direction.UP);
+		path.add(Direction.UP);
+		path.add(Direction.RIGHT);
+
+		return path;
 	}
 }

@@ -16,14 +16,14 @@ public class Game {
 
 	public Game(DragonBehavior dragonBehavior, int numDragons) {
 		// initializing variables
-		lab = mazeBuilder.Build();
+		lab = mazeBuilder.buildDemo();
 
 		initializeVariables(dragonBehavior, numDragons);
 	}
 
 	public Game(int dimension, DragonBehavior dragonBehavior, int numDragons) {
 		// initializing variables
-		lab = mazeBuilder.Build(dimension);
+		lab = mazeBuilder.build(dimension);
 
 		initializeVariables(dragonBehavior, numDragons);
 	}
@@ -79,20 +79,18 @@ public class Game {
 				continue;
 
 			// if dragon is not dead nor sleeping
-			if (!i.isDead()) {
-				if (hero.distanceTo(i) <= 1) {
-					// if hero has sword
-					if (hero.hasSword()) {
-						// kill the dragon
-						i.setLife(0);
-						// active hero flag
-						hero.killedADragon();
-					} else if (!hero.isSleeping()) {
-						// if hero has no sword and dragon is not sleeping,
-						// kill hero
-						hero.setLife(0);
-						done = true;
-					}
+			if (!i.isDead() && hero.distanceTo(i) <= 1) {
+				// if hero has sword
+				if (hero.hasSword()) {
+					// kill the dragon
+					i.kill();
+
+					// activate hero flag
+					hero.killedADragon();
+				} else if (!i.isSleeping()) {
+					// if hero has no sword and dragon is not sleeping
+					hero.kill();
+					done = true;
 				}
 			}
 		}

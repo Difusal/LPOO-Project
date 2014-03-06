@@ -48,6 +48,10 @@ public abstract class LivingBeing {
 		return life == 0;
 	}
 
+	public void kill() {
+		this.life = 0;
+	}
+
 	public void setLife(int life) {
 		this.life = life;
 	}

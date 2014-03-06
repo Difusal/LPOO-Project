@@ -10,6 +10,12 @@ public class Dragon extends LivingBeing {
 		NOTMOVING, MOVING, MOVINGANDSLEEPING
 	}
 
+	public Dragon(DragonBehavior behavior, Coord coord) {
+		this.type = Type.DRAGON;
+		this.behavior = behavior;
+		position = new Coord(coord);
+	}
+
 	public Dragon(DragonBehavior behavior, Labyrinth lab,
 			Vector<LivingBeing> livingBeings, Sword sword) {
 		this.type = Type.DRAGON;
