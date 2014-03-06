@@ -11,6 +11,10 @@ public class Labyrinth {
 	private int dimension;
 	private char[][] lab;
 
+	public enum Symbols {
+		PATH, WALL, EXIT
+	}
+
 	public Labyrinth(int dimension, char[][] lab) {
 		this.dimension = dimension;
 		this.lab = lab;
