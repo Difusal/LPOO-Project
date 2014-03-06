@@ -68,9 +68,9 @@ public class Dragon extends LivingBeing {
 			int sleep = r.nextInt(2);
 
 			if (sleep == 1)
-				isSleeping = true;
+				sleep();
 			else
-				isSleeping = false;
+				wakeUp();
 		}
 	}
 

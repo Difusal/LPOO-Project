@@ -59,4 +59,12 @@ public abstract class LivingBeing {
 	public boolean isSleeping() {
 		return isSleeping;
 	}
+	
+	public void sleep() {
+		isSleeping = true;
+	}
+	
+	public void wakeUp() {
+		isSleeping = false;
+	}
 }

@@ -83,7 +83,7 @@ public class HeroTests {
 		Coord currentPosition = new Coord(hero.getPosition().getX(), hero
 				.getPosition().getY());
 
-		// checking if hero really moved
+		// checking if hero did not move
 		assertEquals("Hero did move.", startPosition, currentPosition);
 	}
 
