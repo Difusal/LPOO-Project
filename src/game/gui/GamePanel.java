@@ -21,7 +21,7 @@ public class GamePanel extends JPanel {
 	private Image wall;
 
 	public GamePanel() {
-		game = new Game(5, DragonBehavior.NOTMOVING, 1);
+		game = new Game(17, DragonBehavior.NOTMOVING, 1);
 		setUpPanel();
 	}
 
@@ -88,11 +88,26 @@ public class GamePanel extends JPanel {
 	}
 
 	private void drawTile(Graphics2D g2d, Image tile, int x, int y) {
+		int imageWidth = 50;
+		int imageHeight = (int) (imageWidth * (131.0 / 101.0));
+
+		int dstX = x * imageWidth;
+		
+		int dstY, yCorrection;
 		if (tile == wall)
-			g2d.drawImage(tile, x * tile.getWidth(null),
-					y * tile.getHeight(null) - 10 - 50 * y, null);
+			yCorrection = (int) (-10.0 * imageHeight / 131.0);
 		else
-			g2d.drawImage(tile, x * tile.getWidth(null),
-					y * tile.getHeight(null) + 24 - 50 * y, null);
+			yCorrection = (int) (24.0 * imageHeight / 131.0);
+		
+		dstY = y * imageHeight + yCorrection;
+		
+		yCorrection = (int) (50.0 * imageHeight / 131.0);
+		dstY -= yCorrection * y;
+
+		dstX += 20;
+		dstY += 20;
+
+		g2d.drawImage(tile, dstX, dstY, dstX + imageWidth, dstY + imageHeight,
+				0, 0, tile.getWidth(null), tile.getHeight(null), null);
 	}
 }
