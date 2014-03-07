@@ -12,8 +12,8 @@ public class Sword {
 		Random r = new Random();
 		do {
 			do {
-				position.setX(r.nextInt(lab.getDimension() - 2) + 1);
-				position.setY(r.nextInt(lab.getDimension() - 2) + 1);
+				position.setX(r.nextInt(lab.getWidth() - 2) + 1);
+				position.setY(r.nextInt(lab.getHeight() - 2) + 1);
 			} while (lab.getLab()[position.getY()][position.getX()] != Symbols.PATH);
 		} while (position.getX() == hero.getPosition().getX()
 				&& position.getY() == hero.getPosition().getY());

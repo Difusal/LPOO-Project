@@ -27,9 +27,9 @@ public class HeroTests {
 		assertTrue("Hero x <= 0", hero.getPosition().getX() > 0);
 		assertTrue("Hero y <= 0", hero.getPosition().getY() > 0);
 		assertTrue("Hero x > maze dimension",
-				hero.getPosition().getX() < lab.getDimension() - 1);
+				hero.getPosition().getX() < lab.getWidth() - 1);
 		assertTrue("Hero y > maze dimension",
-				hero.getPosition().getY() < lab.getDimension() - 1);
+				hero.getPosition().getY() < lab.getHeight() - 1);
 	}
 
 	@Test

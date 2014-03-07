@@ -5,7 +5,7 @@ import game.logic.LivingBeing.Type;
 import java.util.Vector;
 
 public class Labyrinth {
-	private int dimension;
+	private int width, height;
 	private Symbols[][] lab;
 
 	public enum Symbols {
@@ -30,8 +30,9 @@ public class Labyrinth {
 		return res;
 	}
 
-	public Labyrinth(int dimension, Symbols[][] lab) {
-		this.dimension = dimension;
+	public Labyrinth(int width, int height, Symbols[][] lab) {
+		this.width = width;
+		this.height = height;
 		this.lab = lab;
 	}
 
@@ -150,11 +151,19 @@ public class Labyrinth {
 		return lab;
 	}
 
-	public int getDimension() {
-		return dimension;
+	public int getWidth() {
+		return width;
 	}
 
-	public void setDimension(int dimension) {
-		this.dimension = dimension;
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
 	}
 }

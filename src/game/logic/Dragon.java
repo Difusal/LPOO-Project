@@ -25,8 +25,8 @@ public class Dragon extends LivingBeing {
 
 		Random r = new Random();
 		do {
-			position.setX(r.nextInt(lab.getDimension() - 2) + 1);
-			position.setY(r.nextInt(lab.getDimension() - 2) + 1);
+			position.setX(r.nextInt(lab.getWidth() - 2) + 1);
+			position.setY(r.nextInt(lab.getHeight() - 2) + 1);
 
 			// while dragon is not generated on a free cell
 			// or while distance to hero is < 2

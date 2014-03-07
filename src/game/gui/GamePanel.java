@@ -21,7 +21,7 @@ public class GamePanel extends JPanel {
 	private Image wall;
 
 	public GamePanel() {
-		game = new Game(17, DragonBehavior.NOTMOVING, 1);
+		game = new Game(25, 17, DragonBehavior.NOTMOVING, 1);
 		setUpPanel();
 	}
 
@@ -62,8 +62,8 @@ public class GamePanel extends JPanel {
 	private void drawMaze(Graphics2D g2d) {
 		Symbols[][] maze = game.getLabyrinth().getLab();
 
-		for (int i = 0; i < game.getLabyrinth().getDimension(); i++) {
-			for (int j = 0; j < game.getLabyrinth().getDimension(); j++) {
+		for (int i = 0; i < game.getLabyrinth().getHeight(); i++) {
+			for (int j = 0; j < game.getLabyrinth().getWidth(); j++) {
 				if (maze[i][j] == Symbols.WALL)
 					drawTile(g2d, wall, j, i);
 				else {
@@ -92,15 +92,15 @@ public class GamePanel extends JPanel {
 		int imageHeight = (int) (imageWidth * (131.0 / 101.0));
 
 		int dstX = x * imageWidth;
-		
+
 		int dstY, yCorrection;
 		if (tile == wall)
 			yCorrection = (int) (-10.0 * imageHeight / 131.0);
 		else
 			yCorrection = (int) (24.0 * imageHeight / 131.0);
-		
+
 		dstY = y * imageHeight + yCorrection;
-		
+
 		yCorrection = (int) (50.0 * imageHeight / 131.0);
 		dstY -= yCorrection * y;
 

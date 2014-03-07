@@ -23,9 +23,9 @@ public class DragonTests {
 		assertTrue("Dragon x <= 0", dragon.getPosition().getX() > 0);
 		assertTrue("Dragon y <= 0", dragon.getPosition().getY() > 0);
 		assertTrue("Dragon x > maze dimension",
-				dragon.getPosition().getX() < lab.getDimension() - 1);
+				dragon.getPosition().getX() < lab.getWidth() - 1);
 		assertTrue("Dragon y > maze dimension",
-				dragon.getPosition().getY() < lab.getDimension() - 1);
+				dragon.getPosition().getY() < lab.getHeight() - 1);
 	}
 
 	@Test
@@ -76,7 +76,8 @@ public class DragonTests {
 				1, 1));
 
 		// dragon is created awake by default
-		assertFalse("Dragon was not created awake by default.", dragon.isSleeping());
+		assertFalse("Dragon was not created awake by default.",
+				dragon.isSleeping());
 
 		// testing sleeping
 		dragon.sleep();

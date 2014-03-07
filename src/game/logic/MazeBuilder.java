@@ -47,18 +47,18 @@ public class MazeBuilder {
 						Symbols.WALL, Symbols.WALL, Symbols.WALL, Symbols.WALL,
 						Symbols.WALL, Symbols.WALL } };
 
-		return new Labyrinth(10, maze);
+		return new Labyrinth(10, 10, maze);
 	}
 
 	// random labyrinth builder
-	public Labyrinth build(int dimension) {
+	public Labyrinth build(int width, int height) {
 		Random r = new Random();
-		maze = new Symbols[dimension][dimension];
-		visitedCells = new boolean[dimension - 2][dimension - 2];
+		maze = new Symbols[height][width];
+		visitedCells = new boolean[height - 2][width - 2];
 
 		// filling maze with 'X'
-		for (int i = 0; i < dimension; i++) {
-			for (int j = 0; j < dimension; j++) {
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
 				if (i % 2 != 0 && j % 2 != 0)
 					maze[i][j] = Symbols.PATH;
 				else
@@ -123,7 +123,7 @@ public class MazeBuilder {
 		}
 
 		// creating labyrinth
-		return new Labyrinth(dimension, maze);
+		return new Labyrinth(width, height, maze);
 	}
 
 	private void generateExit(Random r) {
@@ -143,7 +143,7 @@ public class MazeBuilder {
 			break;
 		// right
 		case 1:
-			exit.setX(maze.length - 1);
+			exit.setX(maze[0].length - 1);
 			exit.setY(exitZ);
 			break;
 		// bottom
@@ -203,7 +203,7 @@ public class MazeBuilder {
 		// checking if trying to move outside maze borders
 		switch (direction) {
 		case RIGHT:
-			if (guideCell.getX() + 1 >= (maze.length - 1) / 2)
+			if (guideCell.getX() + 1 >= (maze[0].length - 1) / 2)
 				return false;
 			break;
 		case DOWN:

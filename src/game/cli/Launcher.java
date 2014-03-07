@@ -73,7 +73,7 @@ public class Launcher {
 
 		// creating game
 		if (mazeToPlay == 1)
-			game = new Game(dimension, dragonBehavior, numDragons);
+			game = new Game(dimension, dimension, dragonBehavior, numDragons);
 		else if (mazeToPlay == 2)
 			game = new Game(dragonBehavior, numDragons);
 	}

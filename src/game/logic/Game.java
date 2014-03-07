@@ -22,9 +22,10 @@ public class Game {
 		initializeVariables(dragonBehavior, numDragons);
 	}
 
-	public Game(int dimension, DragonBehavior dragonBehavior, int numDragons) {
+	public Game(int width, int height, DragonBehavior dragonBehavior,
+			int numDragons) {
 		// initializing variables
-		lab = mazeBuilder.build(dimension);
+		lab = mazeBuilder.build(width, height);
 
 		initializeVariables(dragonBehavior, numDragons);
 	}
