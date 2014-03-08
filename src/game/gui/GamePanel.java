@@ -19,9 +19,11 @@ public class GamePanel extends JPanel {
 	private Image pathWithRightShadows;
 	private Image pathWithNoShadows;
 	private Image wall;
+	private Image dragon;
+	private int tileWidth, tileHeight;
 
 	public GamePanel() {
-		game = new Game(25, 17, DragonBehavior.NOTMOVING, 1);
+		game = new Game(11, 11, DragonBehavior.NOTMOVING, 1);
 		setUpPanel();
 	}
 
@@ -34,7 +36,7 @@ public class GamePanel extends JPanel {
 	private void loadImages() {
 		ImageIcon ii;
 
-		// loading path
+		// path
 		ii = new ImageIcon(this.getClass().getResource(
 				"res/pathWithShadows.png"));
 		pathWithShadows = ii.getImage();
@@ -48,9 +50,13 @@ public class GamePanel extends JPanel {
 				"res/pathWithNoShadows.png"));
 		pathWithNoShadows = ii.getImage();
 
-		// loading wall
+		// wall
 		ii = new ImageIcon(this.getClass().getResource("res/wall.png"));
 		wall = ii.getImage();
+
+		// dragon sprite
+		ii = new ImageIcon(this.getClass().getResource("res/dragon.png"));
+		dragon = ii.getImage();
 	}
 
 	public void paint(Graphics g) {
@@ -64,6 +70,7 @@ public class GamePanel extends JPanel {
 
 		for (int i = 0; i < game.getLabyrinth().getHeight(); i++) {
 			for (int j = 0; j < game.getLabyrinth().getWidth(); j++) {
+				// drawing maze
 				if (maze[i][j] == Symbols.WALL)
 					drawTile(g2d, wall, j, i);
 				else {
@@ -83,31 +90,44 @@ public class GamePanel extends JPanel {
 					else
 						drawTile(g2d, pathWithNoShadows, j, i);
 				}
+
+				// drawing dragons
+				if (i == 0 && j == 1)
+					drawDragon(g2d, dragon, j, i);
 			}
 		}
 	}
 
 	private void drawTile(Graphics2D g2d, Image tile, int x, int y) {
-		int imageWidth = 50;
-		int imageHeight = (int) (imageWidth * (131.0 / 101.0));
+		tileWidth = this.getWidth() / game.getLabyrinth().getWidth();
+		tileHeight = (int) (tileWidth * (131.0 / 101.0));
 
-		int dstX = x * imageWidth;
+		int dstX = x * tileWidth;
 
 		int dstY, yCorrection;
 		if (tile == wall)
-			yCorrection = (int) (-10.0 * imageHeight / 131.0);
+			yCorrection = (int) (-11.0 * tileHeight / 131.0);
 		else
-			yCorrection = (int) (24.0 * imageHeight / 131.0);
+			yCorrection = (int) (23.0 * tileHeight / 131.0);
 
-		dstY = y * imageHeight + yCorrection;
+		dstY = y * tileHeight + yCorrection;
 
-		yCorrection = (int) (50.0 * imageHeight / 131.0);
+		yCorrection = (int) (50.0 * tileHeight / 131.0);
 		dstY -= yCorrection * y;
 
-		dstX += 20;
-		dstY += 20;
+		g2d.drawImage(tile, dstX, dstY, dstX + tileWidth, dstY + tileHeight, 0,
+				0, tile.getWidth(null), tile.getHeight(null), null);
+	}
 
-		g2d.drawImage(tile, dstX, dstY, dstX + imageWidth, dstY + imageHeight,
-				0, 0, tile.getWidth(null), tile.getHeight(null), null);
+	private void drawDragon(Graphics2D g2d, Image sprite, int x, int y) {
+		// change this according to sprite sheet
+		int frames = 4;
+
+		int dstX = x * tileWidth;
+		int dstY = y * tileHeight;
+
+		g2d.drawImage(dragon, dstX, dstY, dstX + tileWidth, dstY + tileHeight,
+				0, 0, dragon.getWidth(null) / frames,
+				dragon.getHeight(null) / 4, null);
 	}
 }

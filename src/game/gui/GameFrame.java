@@ -17,7 +17,7 @@ public class GameFrame extends JFrame {
 	}
 
 	public void start() {
-		this.setSize(600, 500);
+		this.setSize(720, 480);
 		this.setVisible(true);
 	}
 }
