@@ -93,6 +93,11 @@ public class Game {
 				} else if (!i.isSleeping()) {
 					// if hero has no sword and dragon is not sleeping
 					hero.kill();
+					
+					// killing eagle if it is with hero
+					if (hero.hasEagle())
+						eagle.kill();
+					
 					done = true;
 				}
 			}

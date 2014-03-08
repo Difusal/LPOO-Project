@@ -50,6 +50,9 @@ public class Dragon extends LivingBeing {
 	}
 
 	public void move(Labyrinth lab, Direction direction) {
+		// updating facing direction
+		facingDir = direction;
+		
 		if (behavior != DragonBehavior.NOTMOVING && !isSleeping) {
 			// moving dragon randomly
 			switch (direction) {

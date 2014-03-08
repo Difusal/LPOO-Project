@@ -14,7 +14,7 @@ public class Hero extends LivingBeing {
 	public enum SpriteDirection {
 		DOWN, LEFT, RIGHT, UP
 	}
-	
+
 	public Hero(String name, Labyrinth lab) {
 		this.name = name;
 		this.type = Type.HERO;
@@ -32,7 +32,7 @@ public class Hero extends LivingBeing {
 		this.name = name;
 		this.type = Type.HERO;
 		this.position = position;
-		
+
 		prepareSpriteData();
 	}
 
@@ -43,6 +43,10 @@ public class Hero extends LivingBeing {
 	}
 
 	public void move(Labyrinth lab, Direction direction) {
+		// updating direction hero is facing
+		if (direction != Direction.NONE)
+			facingDir = direction;
+
 		// if hero can go to direction, do go to that direction
 		if (direction != Direction.NONE && lab.heroCanWalk(direction, this)) {
 			switch (direction) {

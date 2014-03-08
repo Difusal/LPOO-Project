@@ -6,6 +6,7 @@ public abstract class LivingBeing {
 	protected Coord position = new Coord();
 	protected int life = 100;
 	protected boolean isSleeping = false;
+	protected Direction facingDir = Direction.DOWN;
 	protected int frames, currentFrame;
 
 	public enum Type {
@@ -90,5 +91,13 @@ public abstract class LivingBeing {
 
 		if (this.currentFrame >= this.frames)
 			this.currentFrame = 0;
+	}
+
+	public Direction getFacingDir() {
+		return facingDir;
+	}
+
+	public void setFacingDir(Direction facingDir) {
+		this.facingDir = facingDir;
 	}
 }

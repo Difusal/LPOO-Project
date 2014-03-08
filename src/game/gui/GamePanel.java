@@ -37,11 +37,12 @@ public class GamePanel extends JPanel implements ActionListener {
 	private Image heroWithSword;
 	private Image sword;
 	private Image dragon;
+	private Image dragonSleeping;
 	private Image eagle;
 
 	public GamePanel() {
-		game = new Game(DragonBehavior.NOTMOVING, 1);
-		// game = new Game(11, 9, DragonBehavior.NOTMOVING, 5);
+		// game = new Game(DragonBehavior.NOTMOVING, 1);
+		game = new Game(11, 11, DragonBehavior.MOVINGANDSLEEPING, 5);
 
 		setUpPanel();
 	}
@@ -133,6 +134,9 @@ public class GamePanel extends JPanel implements ActionListener {
 		// dragon sprite
 		ii = new ImageIcon(this.getClass().getResource("res/dragon.png"));
 		dragon = ii.getImage();
+		ii = new ImageIcon(this.getClass()
+				.getResource("res/dragonSleeping.png"));
+		dragonSleeping = ii.getImage();
 
 		// eagle sprite
 		ii = new ImageIcon(this.getClass().getResource("res/eagle.png"));
@@ -158,19 +162,29 @@ public class GamePanel extends JPanel implements ActionListener {
 				if (game.getSword().isOn(j, i) && game.getSword().isVisible())
 					drawSword(g2d, game.getSword(), j, i);
 
-				// drawing dragons and hero and eagle
+				// drawing dragons and hero and eagle (if catching sword)
 				for (LivingBeing k : game.getLivingBeings()) {
 					if (!k.isDead() && k.isOn(j, i)) {
 						if (k.getType() == Type.DRAGON)
 							drawDragon(g2d, k, j, i);
 						else if (k.getType() == Type.HERO)
 							drawHero(g2d, k, j, i);
-						else if (k.getType() == Type.EAGLE)
+						else if (k.getType() == Type.EAGLE
+								&& (game.getEagle().isCatchingSword() || (!game
+										.getEagle().isFlying() && !game
+										.getEagle().isWithHero())))
 							drawEagle(g2d, k, j, i);
 					}
 				}
 			}
 		}
+
+		// drawing eagle
+		if (!game.getEagle().isDead()
+				&& !(game.getEagle().isCatchingSword() || (!game.getEagle()
+						.isFlying() && !game.getEagle().isWithHero())))
+			drawEagle(g2d, game.getEagle(), game.getEagle().getPosition()
+					.getX(), game.getEagle().getPosition().getY());
 	}
 
 	private void drawMaze(Graphics2D g2d, int j, int i) {
@@ -242,10 +256,12 @@ public class GamePanel extends JPanel implements ActionListener {
 				(int) (dstY + 2.0 * tileHeight / 3.0),
 				hero.getCurrentFrame() * sprite.getWidth(null)
 						/ hero.getFrames(),
-				0,
+				hero.getFacingDir().getValue() * sprite.getHeight(null) / 4,
 				hero.getCurrentFrame() * sprite.getWidth(null)
 						/ hero.getFrames() + sprite.getWidth(null)
-						/ hero.getFrames(), sprite.getHeight(null) / 4, null);
+						/ hero.getFrames(), hero.getFacingDir().getValue()
+						* sprite.getHeight(null) / 4 + sprite.getHeight(null)
+						/ 4, null);
 
 		// hero.nextFrame();
 	}
@@ -269,11 +285,20 @@ public class GamePanel extends JPanel implements ActionListener {
 		int yCorrection = (int) (-50.0 * tileHeight / 131.0);
 		dstY += y * yCorrection;
 
-		g2d.drawImage(dragon, dstX, dstY, dstX + tileWidth, dstY + tileHeight,
-				k.getCurrentFrame() * dragon.getWidth(null) / k.getFrames(), 0,
-				k.getCurrentFrame() * dragon.getWidth(null) / k.getFrames()
-						+ dragon.getWidth(null) / k.getFrames(),
-				dragon.getHeight(null) / 4, null);
+		if (k.isSleeping())
+			g2d.drawImage(dragonSleeping, dstX, dstY, dstX + tileWidth, dstY
+					+ tileHeight, 0, 0, dragonSleeping.getWidth(null),
+					dragonSleeping.getHeight(null), null);
+		else
+			g2d.drawImage(dragon, dstX, dstY, dstX + tileWidth, dstY
+					+ tileHeight, k.getCurrentFrame() * dragon.getWidth(null)
+					/ k.getFrames(),
+					k.getFacingDir().getValue() * dragon.getHeight(null) / 4,
+					k.getCurrentFrame() * dragon.getWidth(null) / k.getFrames()
+							+ dragon.getWidth(null) / k.getFrames(), k
+							.getFacingDir().getValue()
+							* dragon.getHeight(null)
+							/ 4 + dragon.getHeight(null) / 4, null);
 
 		k.nextFrame();
 	}
@@ -283,7 +308,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
 		if (game.getEagle().hasSword())
 			drawSword(g2d, game.getSword(), x, y);
-		
+
 		int dstX = x * tileWidth;
 		int dstY = (int) (y * tileHeight - (12 * tileHeight / 131.0));
 		int yCorrection = (int) (-50.0 * tileHeight / 131.0);
@@ -292,19 +317,27 @@ public class GamePanel extends JPanel implements ActionListener {
 		int dstWidth = tileWidth;
 		int dstHeight = tileHeight;
 
-		if (game.getEagle().isWithHero() || game.getEagle().isCatchingSword()) {
+		if (game.getEagle().isWithHero()
+				|| game.getEagle().isCatchingSword()
+				|| (!game.getEagle().isWithHero() && !game.getEagle()
+						.isFlying())) {
 			// resizing
 			dstWidth = (int) (tileWidth / 1.5);
 			dstHeight = (int) (dstWidth * 131.0 / 101.0);
 
 			// replacing
-			if (game.getEagle().isCatchingSword()) {
+			if (game.getEagle().isCatchingSword()
+					|| (!game.getEagle().isWithHero() && !game.getEagle()
+							.isFlying())) {
 				dstX += (tileWidth - dstWidth) / 2.0;
 				dstY += (tileHeight - dstHeight) / 2.0;
 			} else {
 				dstX -= 0.15 * tileWidth;
 				dstY -= 0.15 * tileHeight;
 			}
+
+			if (!game.getEagle().isWithHero() && !game.getEagle().isFlying())
+				game.getEagle().setCurrentFrame(1);
 		}
 
 		g2d.drawImage(
@@ -314,11 +347,13 @@ public class GamePanel extends JPanel implements ActionListener {
 				dstX + dstWidth,
 				dstY + dstHeight,
 				k.getCurrentFrame() * img.getWidth(null) / k.getFrames(),
-				0,
+				k.getFacingDir().getValue() * img.getHeight(null) / 4,
 				k.getCurrentFrame() * img.getWidth(null) / k.getFrames()
 						+ img.getWidth(null) / k.getFrames(),
-				img.getHeight(null) / 4, null);
+				k.getFacingDir().getValue() * img.getHeight(null) / 4
+						+ img.getHeight(null) / 4, null);
 
-		k.nextFrame();
+		if (game.getEagle().isFlying() || game.getEagle().isWithHero())
+			k.nextFrame();
 	}
 }

@@ -122,9 +122,23 @@ public class Eagle extends LivingBeing {
 			if (pathStep == 0 && state == FlightState.RETURNING)
 				flying = false;
 
+			// saving previous position to know which direction is facing
+			int prevX = position.getX();
+			int prevY = position.getY();
+
 			// updating eagle position
 			getPosition().setX(path.get(pathStep).getX());
 			getPosition().setY(path.get(pathStep).getY());
+
+			// updating sprite
+			if (position.getY() > prevY)
+				facingDir = Direction.DOWN;
+			else if (position.getY() < prevY)
+				facingDir = Direction.UP;
+			else if (position.getX() > prevX)
+				facingDir = Direction.RIGHT;
+			else if (position.getX() < prevX)
+				facingDir = Direction.LEFT;
 		}
 	}
 
@@ -157,8 +171,10 @@ public class Eagle extends LivingBeing {
 		}
 
 		// updating eagle position if it is on hero's shoulder
-		if (hero.hasEagle())
+		if (hero.hasEagle()) {
 			setPosition(new Coord(hero.getPosition()));
+			facingDir = hero.getFacingDir();
+		}
 
 		// if hero sent eagle
 		if (hero.hasJustSentEagle()) {
