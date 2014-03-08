@@ -10,6 +10,11 @@ public class Hero extends LivingBeing {
 	private boolean hasJustSentEagle = false;
 	private boolean hasKilledADragon = false;
 
+	// change order according to sprite sheet
+	public enum SpriteDirection {
+		DOWN, LEFT, RIGHT, UP
+	}
+	
 	public Hero(String name, Labyrinth lab) {
 		this.name = name;
 		this.type = Type.HERO;
@@ -19,12 +24,22 @@ public class Hero extends LivingBeing {
 			position.setX(r.nextInt(lab.getWidth() - 2) + 1);
 			position.setY(r.nextInt(lab.getHeight() - 2) + 1);
 		} while (lab.getLab()[position.getY()][position.getX()] != Symbols.PATH);
+
+		prepareSpriteData();
 	}
 
 	public Hero(String name, Coord position) {
 		this.name = name;
 		this.type = Type.HERO;
 		this.position = position;
+		
+		prepareSpriteData();
+	}
+
+	private void prepareSpriteData() {
+		// change this according to sprite sheet
+		frames = 4;
+		currentFrame = 1;
 	}
 
 	public void move(Labyrinth lab, Direction direction) {

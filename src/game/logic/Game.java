@@ -14,6 +14,7 @@ public class Game {
 	private Hero hero;
 	private Eagle eagle;
 	private Sword sword;
+	private boolean exitIsOpen = false;
 
 	public Game(DragonBehavior dragonBehavior, int numDragons) {
 		// initializing variables
@@ -96,6 +97,10 @@ public class Game {
 				}
 			}
 		}
+		
+		// updating exit state
+		if (hero.hasKilledADragon())
+			exitIsOpen = true;
 
 		// if hero is able to step on Exit, game is done
 		if (lab.getLab()[hero.getPosition().getY()][hero.getPosition().getX()] == Symbols.EXIT)
@@ -122,5 +127,9 @@ public class Game {
 
 	public Eagle getEagle() {
 		return eagle;
+	}
+
+	public boolean exitIsOpen() {
+		return exitIsOpen;
 	}
 }

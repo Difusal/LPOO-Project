@@ -14,6 +14,11 @@ public class Eagle extends LivingBeing {
 		GOING, RETURNING
 	}
 
+	// change order according to sprite sheet
+	public enum SpriteDirection {
+		DOWN, LEFT, RIGHT, UP
+	}
+
 	public Eagle() {
 		type = Type.EAGLE;
 	}

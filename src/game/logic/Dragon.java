@@ -12,6 +12,11 @@ public class Dragon extends LivingBeing {
 		NOTMOVING, MOVING, MOVINGANDSLEEPING
 	}
 
+	// change order according to sprite sheet
+	public enum SpriteDirection {
+		DOWN, LEFT, RIGHT, UP
+	}
+
 	public Dragon(DragonBehavior behavior, Coord coord) {
 		this.type = Type.DRAGON;
 		this.behavior = behavior;

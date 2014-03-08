@@ -2,9 +2,11 @@ package game.gui;
 
 import game.logic.Dragon.DragonBehavior;
 import game.logic.Game;
+import game.logic.Hero;
 import game.logic.LivingBeing;
 import game.logic.Labyrinth.Symbols;
 import game.logic.LivingBeing.Type;
+import game.logic.Sword;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -13,20 +15,25 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.util.Random;
 
 public class GamePanel extends JPanel {
 	private static Game game = null;
+	private int tileWidth, tileHeight;
 	private Image pathWithShadows;
 	private Image pathWithLeftShadows;
 	private Image pathWithRightShadows;
 	private Image pathWithNoShadows;
 	private Image wall;
+	private Image exit;
+	private Image heroWithoutSword;
+	private Image heroWithSword;
+	private Image sword;
 	private Image dragon;
-	private int tileWidth, tileHeight;
+	private Image eagle;
 
 	public GamePanel() {
-		game = new Game(11, 11, DragonBehavior.NOTMOVING, 5);
+		game = new Game(DragonBehavior.NOTMOVING, 1);
+		// game = new Game(11, 9, DragonBehavior.NOTMOVING, 5);
 		setUpPanel();
 	}
 
@@ -56,9 +63,28 @@ public class GamePanel extends JPanel {
 		ii = new ImageIcon(this.getClass().getResource("res/wall.png"));
 		wall = ii.getImage();
 
+		// exit
+		ii = new ImageIcon(this.getClass().getResource("res/closedExit.png"));
+		exit = ii.getImage();
+
+		// hero sprite
+		ii = new ImageIcon(this.getClass().getResource(
+				"res/heroWithoutSword.png"));
+		heroWithoutSword = ii.getImage();
+		ii = new ImageIcon(this.getClass().getResource("res/heroWithSword.png"));
+		heroWithSword = ii.getImage();
+
+		// sword
+		ii = new ImageIcon(this.getClass().getResource("res/sword.png"));
+		sword = ii.getImage();
+
 		// dragon sprite
 		ii = new ImageIcon(this.getClass().getResource("res/dragon.png"));
 		dragon = ii.getImage();
+
+		// eagle sprite
+		ii = new ImageIcon(this.getClass().getResource("res/eagle.png"));
+		eagle = ii.getImage();
 	}
 
 	public void paint(Graphics g) {
@@ -68,17 +94,24 @@ public class GamePanel extends JPanel {
 	}
 
 	private void drawGame(Graphics2D g2d) {
-
 		for (int i = 0; i < game.getLabyrinth().getHeight(); i++) {
 			for (int j = 0; j < game.getLabyrinth().getWidth(); j++) {
 				// drawing maze
 				drawMaze(g2d, j, i);
 
-				// drawing dragons
-				for (LivingBeing k : game.getLivingBeings())
-					if (!k.isDead() && k.getType() == Type.DRAGON
-							&& k.isOn(j, i))
-						drawDragon(g2d, k, j, i);
+				// drawing sword
+				if (game.getSword().isOn(j, i) && game.getSword().isVisible())
+					drawSword(g2d, game.getSword(), j, i);
+
+				// drawing dragons and hero
+				for (LivingBeing k : game.getLivingBeings()) {
+					if (!k.isDead() && k.isOn(j, i)) {
+						if (k.getType() == Type.DRAGON)
+							drawDragon(g2d, k, j, i);
+						else if (k.getType() == Type.HERO)
+							drawHero(g2d, k, j, i);
+					}
+				}
 			}
 		}
 	}
@@ -88,6 +121,8 @@ public class GamePanel extends JPanel {
 
 		if (maze[i][j] == Symbols.WALL)
 			drawTile(g2d, wall, j, i);
+		else if (maze[i][j] == Symbols.EXIT)
+			drawTile(g2d, exit, j, i);
 		else {
 			// display shadow on both sides
 			if (j - 1 >= 0 && j + 1 < maze.length
@@ -114,7 +149,7 @@ public class GamePanel extends JPanel {
 		int dstX = x * tileWidth;
 
 		int dstY, yCorrection;
-		if (tile == wall)
+		if (tile == wall || (tile == exit && !game.exitIsOpen()))
 			yCorrection = (int) (-11.0 * tileHeight / 131.0);
 		else
 			yCorrection = (int) (23.0 * tileHeight / 131.0);
@@ -126,6 +161,50 @@ public class GamePanel extends JPanel {
 
 		g2d.drawImage(tile, dstX, dstY, dstX + tileWidth, dstY + tileHeight, 0,
 				0, tile.getWidth(null), tile.getHeight(null), null);
+	}
+
+	private void drawHero(Graphics2D g2d, LivingBeing hero, int x, int y) {
+		int dstX = x * tileWidth;
+		int dstY = (int) (y * tileHeight - (15 * tileHeight / 131.0));
+		int yCorrection = (int) (-50.0 * tileHeight / 131.0);
+		dstY += y * yCorrection;
+
+		dstX += tileWidth / 6.0;
+		dstY += tileHeight / 6.0;
+
+		Image sprite;
+		if (((Hero) hero).hasSword())
+			sprite = heroWithSword;
+		else
+			sprite = heroWithoutSword;
+
+		g2d.drawImage(
+				sprite,
+				dstX,
+				dstY,
+				(int) (dstX + 2.0 * tileWidth / 3.0),
+				(int) (dstY + 2.0 * tileHeight / 3.0),
+				hero.getCurrentFrame() * sprite.getWidth(null)
+						/ hero.getFrames(),
+				0,
+				hero.getCurrentFrame() * sprite.getWidth(null)
+						/ hero.getFrames() + sprite.getWidth(null)
+						/ hero.getFrames(), sprite.getHeight(null) / 4, null);
+
+		// hero.nextFrame();
+	}
+
+	private void drawSword(Graphics2D g2d, Sword k, int x, int y) {
+		int dstX = x * tileWidth;
+		int dstY = (int) (y * tileHeight + (24 * tileHeight / 131.0));
+		int yCorrection = (int) (-50.0 * tileHeight / 131.0);
+		dstY += y * yCorrection;
+
+		int border = (int) (tileWidth / 5.0);
+
+		g2d.drawImage(sword, dstX + border, dstY + border, dstX + tileWidth
+				- border, dstY + tileWidth - border, 0, 0,
+				sword.getWidth(null), sword.getHeight(null), null);
 	}
 
 	private void drawDragon(Graphics2D g2d, LivingBeing k, int x, int y) {
