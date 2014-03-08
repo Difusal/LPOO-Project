@@ -1,5 +1,6 @@
 package game.gui;
 
+import game.logic.Direction;
 import game.logic.Dragon.DragonBehavior;
 import game.logic.Game;
 import game.logic.Hero;
@@ -10,13 +11,20 @@ import game.logic.Sword;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel implements ActionListener {
+	private Timer timer;
 	private static Game game = null;
 	private int tileWidth, tileHeight;
 	private Image pathWithShadows;
@@ -34,12 +42,56 @@ public class GamePanel extends JPanel {
 	public GamePanel() {
 		game = new Game(DragonBehavior.NOTMOVING, 1);
 		// game = new Game(11, 9, DragonBehavior.NOTMOVING, 5);
+
 		setUpPanel();
 	}
 
 	private void setUpPanel() {
+		addKeyListener(new TAdapter());
+		setFocusable(true);
 		setBackground(Color.GREEN);
+		setDoubleBuffered(true);
+
 		loadImages();
+
+		timer = new Timer(150, (ActionListener) this);
+		timer.start();
+	}
+
+	private class TAdapter extends KeyAdapter {
+		public void keyPressed(KeyEvent e) {
+			int key = e.getKeyCode();
+
+			Direction dir = Direction.NONE;
+			switch (key) {
+			case KeyEvent.VK_RIGHT:
+			case KeyEvent.VK_D:
+				dir = Direction.RIGHT;
+				break;
+			case KeyEvent.VK_DOWN:
+			case KeyEvent.VK_S:
+				dir = Direction.DOWN;
+				break;
+			case KeyEvent.VK_LEFT:
+			case KeyEvent.VK_A:
+				dir = Direction.LEFT;
+				break;
+			case KeyEvent.VK_UP:
+			case KeyEvent.VK_W:
+				dir = Direction.UP;
+				break;
+			case KeyEvent.VK_B:
+				if (game.getHero().hasEagle() && !game.getHero().hasSword())
+					game.getHero().sendEagle();
+				break;
+			}
+
+			game.updateGame(dir);
+		}
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		repaint();
 	}
 
 	private void loadImages() {
@@ -91,6 +143,9 @@ public class GamePanel extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 
 		drawGame(g2d);
+
+		Toolkit.getDefaultToolkit().sync();
+		g.dispose();
 	}
 
 	private void drawGame(Graphics2D g2d) {
@@ -103,13 +158,15 @@ public class GamePanel extends JPanel {
 				if (game.getSword().isOn(j, i) && game.getSword().isVisible())
 					drawSword(g2d, game.getSword(), j, i);
 
-				// drawing dragons and hero
+				// drawing dragons and hero and eagle
 				for (LivingBeing k : game.getLivingBeings()) {
 					if (!k.isDead() && k.isOn(j, i)) {
 						if (k.getType() == Type.DRAGON)
 							drawDragon(g2d, k, j, i);
 						else if (k.getType() == Type.HERO)
 							drawHero(g2d, k, j, i);
+						else if (k.getType() == Type.EAGLE)
+							drawEagle(g2d, k, j, i);
 					}
 				}
 			}
@@ -142,7 +199,6 @@ public class GamePanel extends JPanel {
 	}
 
 	private void drawTile(Graphics2D g2d, Image tile, int x, int y) {
-		// tileWidth = 101;
 		tileWidth = this.getWidth() / game.getLabyrinth().getWidth();
 		tileHeight = (int) (tileWidth * (131.0 / 101.0));
 
@@ -218,6 +274,50 @@ public class GamePanel extends JPanel {
 				k.getCurrentFrame() * dragon.getWidth(null) / k.getFrames()
 						+ dragon.getWidth(null) / k.getFrames(),
 				dragon.getHeight(null) / 4, null);
+
+		k.nextFrame();
+	}
+
+	private void drawEagle(Graphics2D g2d, LivingBeing k, int x, int y) {
+		Image img = eagle;
+
+		if (game.getEagle().hasSword())
+			drawSword(g2d, game.getSword(), x, y);
+		
+		int dstX = x * tileWidth;
+		int dstY = (int) (y * tileHeight - (12 * tileHeight / 131.0));
+		int yCorrection = (int) (-50.0 * tileHeight / 131.0);
+		dstY += y * yCorrection;
+
+		int dstWidth = tileWidth;
+		int dstHeight = tileHeight;
+
+		if (game.getEagle().isWithHero() || game.getEagle().isCatchingSword()) {
+			// resizing
+			dstWidth = (int) (tileWidth / 1.5);
+			dstHeight = (int) (dstWidth * 131.0 / 101.0);
+
+			// replacing
+			if (game.getEagle().isCatchingSword()) {
+				dstX += (tileWidth - dstWidth) / 2.0;
+				dstY += (tileHeight - dstHeight) / 2.0;
+			} else {
+				dstX -= 0.15 * tileWidth;
+				dstY -= 0.15 * tileHeight;
+			}
+		}
+
+		g2d.drawImage(
+				img,
+				dstX,
+				dstY,
+				dstX + dstWidth,
+				dstY + dstHeight,
+				k.getCurrentFrame() * img.getWidth(null) / k.getFrames(),
+				0,
+				k.getCurrentFrame() * img.getWidth(null) / k.getFrames()
+						+ img.getWidth(null) / k.getFrames(),
+				img.getHeight(null) / 4, null);
 
 		k.nextFrame();
 	}

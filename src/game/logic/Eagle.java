@@ -1,5 +1,6 @@
 package game.logic;
 
+import java.util.Random;
 import java.util.Vector;
 
 public class Eagle extends LivingBeing {
@@ -21,6 +22,14 @@ public class Eagle extends LivingBeing {
 
 	public Eagle() {
 		type = Type.EAGLE;
+		prepareSpriteData();
+	}
+
+	private void prepareSpriteData() {
+		// change this according to sprite sheet
+		frames = 4;
+		Random r = new Random();
+		currentFrame = r.nextInt(frames);
 	}
 
 	public void startFlight(Labyrinth lab, Sword sword) {
