@@ -19,5 +19,21 @@ public class GameFrame extends JFrame {
 	public void start() {
 		this.setSize(720, 480);
 		this.setVisible(true);
+
+		update();
+	}
+
+	private void update() {
+		boolean done = false;
+
+		while (!done) {
+			try {
+				Thread.sleep(150);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			repaint();
+		}
 	}
 }

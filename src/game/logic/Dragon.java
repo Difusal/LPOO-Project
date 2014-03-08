@@ -16,6 +16,7 @@ public class Dragon extends LivingBeing {
 		this.type = Type.DRAGON;
 		this.behavior = behavior;
 		position = new Coord(coord);
+		prepareSpriteData();
 	}
 
 	public Dragon(DragonBehavior behavior, Labyrinth lab,
@@ -32,6 +33,15 @@ public class Dragon extends LivingBeing {
 			// or while distance to hero is < 2
 		} while (lab.getLab()[position.getY()][position.getX()] != Symbols.PATH
 				|| distanceTo(livingBeings.get(0)) < 2);
+
+		prepareSpriteData();
+	}
+
+	private void prepareSpriteData() {
+		// change this according to sprite sheet
+		frames = 4;
+		Random r = new Random();
+		currentFrame = r.nextInt(frames);
 	}
 
 	public void move(Labyrinth lab, Direction direction) {

@@ -6,6 +6,7 @@ public abstract class LivingBeing {
 	protected Coord position = new Coord();
 	protected int life = 100;
 	protected boolean isSleeping = false;
+	protected int frames, currentFrame;
 
 	public enum Type {
 		HERO, EAGLE, DRAGON
@@ -59,12 +60,35 @@ public abstract class LivingBeing {
 	public boolean isSleeping() {
 		return isSleeping;
 	}
-	
+
 	public void sleep() {
 		isSleeping = true;
 	}
-	
+
 	public void wakeUp() {
 		isSleeping = false;
+	}
+
+	public int getFrames() {
+		return frames;
+	}
+
+	public void setFrames(int frames) {
+		this.frames = frames;
+	}
+
+	public int getCurrentFrame() {
+		return currentFrame;
+	}
+
+	public void setCurrentFrame(int currentFrame) {
+		this.currentFrame = currentFrame;
+	}
+
+	public void nextFrame() {
+		this.currentFrame++;
+
+		if (this.currentFrame >= this.frames)
+			this.currentFrame = 0;
 	}
 }
