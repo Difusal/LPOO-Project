@@ -1,5 +1,7 @@
 package game.gui;
 
+import game.logic.GameConfig;
+
 import java.io.IOException;
 
 import javax.swing.JDialog;
@@ -21,6 +23,7 @@ public class GameFrame extends JFrame {
 	private JPanel buttonsPanel;
 	private GamePanel gamePanel;
 	private JDialog options;
+	private GameConfig gameConfig;
 
 	public GameFrame() throws IOException {
 		setTitle("Dungeon Explorer");
@@ -28,10 +31,12 @@ public class GameFrame extends JFrame {
 
 		gamePanel = new GamePanel();
 		buttonsPanel = new JPanel();
-		options =  new OptionsDialog(this, gamePanel);
+		gameConfig = new GameConfig();
+		options = new OptionsDialog(this, gamePanel, gameConfig);
 
 		setUpButtons();
 		addButtons();
+		getContentPane().add(gamePanel);
 	}
 
 	private void setUpButtons() {
@@ -44,12 +49,17 @@ public class GameFrame extends JFrame {
 
 				if (res == JOptionPane.YES_OPTION) {
 					setSize(642, 598);
-					gamePanel.startNewDemoGame();
+
+					// starting new game with new options
+					gamePanel.startNewGame(gameConfig.getWidth(),
+							gameConfig.getHeight(),
+							gameConfig.getDragonBehavior(),
+							gameConfig.getNumDragons());
 				}
 			}
 		});
 
-		// Settings button
+		// Options button
 		btnOptions = new JButton("Options");
 		btnOptions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -77,7 +87,6 @@ public class GameFrame extends JFrame {
 		buttonsPanel.add(btnOptions);
 		buttonsPanel.add(btnQuitGame);
 		getContentPane().add(buttonsPanel, BorderLayout.NORTH);
-		getContentPane().add(gamePanel);
 	}
 
 	public void start() {

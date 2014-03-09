@@ -1,29 +1,29 @@
 package game.gui;
 
 import game.logic.Dragon.DragonBehavior;
-
-import javax.swing.JDialog;
-
-import java.awt.GridLayout;
-
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-
-import java.awt.FlowLayout;
-
-import javax.swing.JSlider;
-import javax.swing.JButton;
+import game.logic.GameConfig;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
-import javax.swing.SwingConstants;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
 
 public class OptionsDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
+	GameConfig config;
 
-	public OptionsDialog(final GameFrame frame, final GamePanel gamePanel) {
+	public OptionsDialog(final GameFrame frame, final GamePanel gamePanel,
+			GameConfig gameConfig) {
+		config = gameConfig;
+
 		setTitle("Options");
 		getContentPane().setLayout(new GridLayout(7, 1));
 
@@ -96,9 +96,9 @@ public class OptionsDialog extends JDialog {
 		numDragonsSlider.setPaintLabels(true);
 		numDragonsSlider.setMinorTickSpacing(5);
 		numDragonsSlider.setMajorTickSpacing(10);
-		numDragonsSlider.setValue(5);
 		numDragonsSlider.setMaximum(51);
 		numDragonsSlider.setMinimum(1);
+		numDragonsSlider.setValue(5);
 
 		JPanel buttons = new JPanel();
 		getContentPane().add(buttons);
@@ -114,8 +114,8 @@ public class OptionsDialog extends JDialog {
 				DragonBehavior behavior = DragonBehavior.values()[behaviorIndex];
 				int numDragons = numDragonsSlider.getValue();
 
-				// starting new game with new options
-				gamePanel.startNewGame(width, height, behavior, numDragons);
+				// update game configurations
+				config.setGameConfig(width, height, behavior, numDragons);
 
 				// closing options dialog
 				setVisible(false);
@@ -136,5 +136,9 @@ public class OptionsDialog extends JDialog {
 		setLocation(frame.getLocation().x + frame.getSize().width / 2
 				- getSize().width / 2, frame.getLocation().y
 				+ frame.getSize().height / 2 - getSize().height / 2);
+	}
+
+	public GameConfig getConfig() {
+		return config;
 	}
 }
