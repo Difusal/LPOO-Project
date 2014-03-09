@@ -36,8 +36,10 @@ public class Dragon extends LivingBeing {
 
 			// while dragon is not generated on a free cell
 			// or while distance to hero is < 2
+			// or while distance to sword is < 2 if behavior is NOTMOVING
 		} while (lab.getLab()[position.getY()][position.getX()] != Symbols.PATH
-				|| distanceTo(livingBeings.get(0)) < 2);
+				|| distanceTo(livingBeings.get(0)) < 2
+				|| (behavior == DragonBehavior.NOTMOVING && distanceTo(sword) < 2));
 
 		prepareSpriteData();
 	}
@@ -52,7 +54,7 @@ public class Dragon extends LivingBeing {
 	public void move(Labyrinth lab, Direction direction) {
 		// updating facing direction
 		facingDir = direction;
-		
+
 		if (behavior != DragonBehavior.NOTMOVING && !isSleeping) {
 			// moving dragon randomly
 			switch (direction) {

@@ -46,6 +46,13 @@ public abstract class LivingBeing {
 		return (int) Math.round(Math.sqrt(dx * dx + dy * dy));
 	}
 
+	public int distanceTo(Sword sword) {
+		int dx = Math.abs(getPosition().getX() - sword.getPosition().getX());
+		int dy = Math.abs(getPosition().getY() - sword.getPosition().getY());
+
+		return (int) Math.round(Math.sqrt(dx * dx + dy * dy));
+	}
+
 	public boolean isDead() {
 		return life == 0;
 	}

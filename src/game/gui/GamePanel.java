@@ -26,8 +26,6 @@ public class GamePanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private boolean showBackground = true;
 	private Timer timer;
-	private static Game game = null;
-	private int tileWidth, tileHeight;
 	private Image background;
 	private Image pathWithShadows;
 	private Image pathWithLeftShadows;
@@ -41,6 +39,8 @@ public class GamePanel extends JPanel implements ActionListener {
 	private Image dragon;
 	private Image dragonSleeping;
 	private Image eagle;
+	private int tileWidth, tileHeight;
+	private Game game = null;
 
 	public GamePanel() {
 		addKeyListener(new TAdapter());

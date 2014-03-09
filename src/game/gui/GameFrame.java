@@ -2,6 +2,7 @@ package game.gui;
 
 import java.io.IOException;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -19,6 +20,7 @@ public class GameFrame extends JFrame {
 	private JButton btnQuitGame;
 	private JPanel buttonsPanel;
 	private GamePanel gamePanel;
+	private JDialog options;
 
 	public GameFrame() throws IOException {
 		setTitle("Dungeon Explorer");
@@ -26,6 +28,7 @@ public class GameFrame extends JFrame {
 
 		gamePanel = new GamePanel();
 		buttonsPanel = new JPanel();
+		options =  new OptionsDialog(this, gamePanel);
 
 		setUpButtons();
 		addButtons();
@@ -50,8 +53,7 @@ public class GameFrame extends JFrame {
 		btnOptions = new JButton("Options");
 		btnOptions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String msg = "This is not implemented yet.";
-				JOptionPane.showMessageDialog(rootPane, msg);
+				options.setVisible(true);
 			}
 		});
 
