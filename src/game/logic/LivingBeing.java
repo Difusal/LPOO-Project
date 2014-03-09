@@ -4,6 +4,7 @@ public abstract class LivingBeing {
 	protected String name;
 	protected Type type;
 	protected Coord position = new Coord();
+	protected boolean moving = false;
 	protected int life = 100;
 	protected boolean isSleeping = false;
 	protected Direction facingDir = Direction.DOWN;
@@ -53,6 +54,14 @@ public abstract class LivingBeing {
 		return (int) Math.round(Math.sqrt(dx * dx + dy * dy));
 	}
 
+	public boolean isMoving() {
+		return moving;
+	}
+
+	public void setMoving(boolean moving) {
+		this.moving = moving;
+	}
+
 	public boolean isDead() {
 		return life == 0;
 	}
@@ -96,8 +105,10 @@ public abstract class LivingBeing {
 	public void nextFrame() {
 		this.currentFrame++;
 
-		if (this.currentFrame >= this.frames)
+		if (this.currentFrame >= this.frames) {
 			this.currentFrame = 0;
+			this.moving = false;
+		}
 	}
 
 	public Direction getFacingDir() {

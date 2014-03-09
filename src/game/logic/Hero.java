@@ -39,7 +39,7 @@ public class Hero extends LivingBeing {
 	private void prepareSpriteData() {
 		// change this according to sprite sheet
 		frames = 4;
-		currentFrame = 1;
+		currentFrame = 0;
 	}
 
 	public void move(Labyrinth lab, Direction direction) {

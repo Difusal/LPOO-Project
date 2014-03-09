@@ -60,12 +60,16 @@ public class Game {
 		for (LivingBeing i : livingBeings) {
 			Random r = new Random();
 
-			if (i.getType() == Type.HERO)
-				// moving hero
-				i.move(lab, directionToMoveHero);
-			else {
-				// move dragon randomly
-				i.move(lab, Direction.values()[r.nextInt(4)]);
+			if (!i.isMoving()) {
+				i.setMoving(true);
+				
+				if (i.getType() == Type.HERO)
+					// moving hero
+					i.move(lab, directionToMoveHero);
+				else {
+					// move dragon randomly
+					i.move(lab, Direction.values()[r.nextInt(4)]);
+				}
 			}
 		}
 
@@ -93,16 +97,16 @@ public class Game {
 				} else if (!i.isSleeping()) {
 					// if hero has no sword and dragon is not sleeping
 					hero.kill();
-					
+
 					// killing eagle if it is with hero
 					if (hero.hasEagle())
 						eagle.kill();
-					
+
 					done = true;
 				}
 			}
 		}
-		
+
 		// updating exit state
 		if (hero.hasKilledADragon())
 			exitIsOpen = true;

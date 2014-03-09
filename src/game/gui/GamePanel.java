@@ -10,6 +10,7 @@ import game.logic.LivingBeing.Type;
 import game.logic.Sword;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -52,14 +53,14 @@ public class GamePanel extends JPanel implements ActionListener {
 		timer = new Timer(150, (ActionListener) this);
 	}
 
-	public void startNewGame(int width, int height, DragonBehavior behavior,
-			int numDragons) {
-		game = new Game(width, height, behavior, numDragons);
+	public void startNewDemoGame() {
+		game = new Game(DragonBehavior.NOTMOVING, 1);
 		initGame();
 	}
 
-	public void startNewDemoGame() {
-		game = new Game(DragonBehavior.NOTMOVING, 1);
+	public void startNewGame(int width, int height, DragonBehavior behavior,
+			int numDragons) {
+		game = new Game(width, height, behavior, numDragons);
 		initGame();
 	}
 
@@ -71,6 +72,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	private class TAdapter extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
+			if (showBackground)
+				return;
+
 			int key = e.getKeyCode();
 
 			Direction dir = Direction.NONE;
@@ -97,7 +101,19 @@ public class GamePanel extends JPanel implements ActionListener {
 				break;
 			}
 
-			game.updateGame(dir);
+			if (game.updateGame(dir)) {
+				// Game Over
+				if (game.getHero().isDead()) {
+					String msg = "Game Over!";
+					JOptionPane.showMessageDialog(getRootPane(), msg);
+				} else {
+					String msg = "You win!";
+					JOptionPane.showMessageDialog(getRootPane(), msg);
+				}
+
+				timer.stop();
+				showBackground = true;
+			}
 		}
 	}
 
@@ -271,6 +287,21 @@ public class GamePanel extends JPanel implements ActionListener {
 		dstX += tileWidth / 6.0;
 		dstY += tileHeight / 6.0;
 
+		if (hero.isMoving()) {
+			if (hero.getFacingDir() == Direction.RIGHT)
+				dstX += hero.getCurrentFrame() * tileWidth / hero.getFrames()
+						- tileWidth;
+			else if (hero.getFacingDir() == Direction.LEFT)
+				dstX -= hero.getCurrentFrame() * tileWidth / hero.getFrames()
+						- tileWidth;
+			else if (hero.getFacingDir() == Direction.DOWN)
+				dstY += hero.getCurrentFrame() * tileHeight / hero.getFrames()
+						- tileHeight;
+			else if (hero.getFacingDir() == Direction.UP)
+				dstY -= hero.getCurrentFrame() * tileHeight / hero.getFrames()
+						- tileHeight;
+		}
+
 		Image sprite;
 		if (((Hero) hero).hasSword())
 			sprite = heroWithSword;
@@ -292,7 +323,8 @@ public class GamePanel extends JPanel implements ActionListener {
 						* sprite.getHeight(null) / 4 + sprite.getHeight(null)
 						/ 4, null);
 
-		// hero.nextFrame();
+		if (hero.isMoving())
+			hero.nextFrame();
 	}
 
 	private void drawSword(Graphics2D g2d, Sword k, int x, int y) {
