@@ -13,7 +13,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -24,9 +23,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class GamePanel extends JPanel implements ActionListener {
+	private static final long serialVersionUID = 1L;
+	private boolean showBackground = true;
 	private Timer timer;
 	private static Game game = null;
 	private int tileWidth, tileHeight;
+	private Image background;
 	private Image pathWithShadows;
 	private Image pathWithLeftShadows;
 	private Image pathWithRightShadows;
@@ -41,22 +43,30 @@ public class GamePanel extends JPanel implements ActionListener {
 	private Image eagle;
 
 	public GamePanel() {
-		// game = new Game(DragonBehavior.NOTMOVING, 1);
-		game = new Game(11, 11, DragonBehavior.MOVINGANDSLEEPING, 5);
-
-		setUpPanel();
-	}
-
-	private void setUpPanel() {
 		addKeyListener(new TAdapter());
 		setFocusable(true);
-		setBackground(Color.GREEN);
 		setDoubleBuffered(true);
 
 		loadImages();
 
 		timer = new Timer(150, (ActionListener) this);
+	}
+
+	public void startNewGame(int width, int height, DragonBehavior behavior,
+			int numDragons) {
+		game = new Game(width, height, behavior, numDragons);
+		initGame();
+	}
+
+	public void startNewDemoGame() {
+		game = new Game(DragonBehavior.NOTMOVING, 1);
+		initGame();
+	}
+
+	private void initGame() {
+		showBackground = false;
 		timer.start();
+		requestFocus();
 	}
 
 	private class TAdapter extends KeyAdapter {
@@ -97,6 +107,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	private void loadImages() {
 		ImageIcon ii;
+
+		// background
+		ii = new ImageIcon(this.getClass().getResource("res/background.png"));
+		background = ii.getImage();
 
 		// path
 		ii = new ImageIcon(this.getClass().getResource(
@@ -146,7 +160,12 @@ public class GamePanel extends JPanel implements ActionListener {
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
-		drawGame(g2d);
+		if (showBackground)
+			g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(),
+					0, 0, background.getWidth(null),
+					background.getHeight(null), null);
+		else
+			drawGame(g2d);
 
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
@@ -162,7 +181,8 @@ public class GamePanel extends JPanel implements ActionListener {
 				if (game.getSword().isOn(j, i) && game.getSword().isVisible())
 					drawSword(g2d, game.getSword(), j, i);
 
-				// drawing dragons and hero and eagle (if catching sword)
+				// drawing dragons and hero and
+				// eagle (if catching sword or waiting for hero)
 				for (LivingBeing k : game.getLivingBeings()) {
 					if (!k.isDead() && k.isOn(j, i)) {
 						if (k.getType() == Type.DRAGON)
@@ -179,7 +199,7 @@ public class GamePanel extends JPanel implements ActionListener {
 			}
 		}
 
-		// drawing eagle
+		// drawing eagle when not catching sword nor waiting for hero
 		if (!game.getEagle().isDead()
 				&& !(game.getEagle().isCatchingSword() || (!game.getEagle()
 						.isFlying() && !game.getEagle().isWithHero())))
@@ -213,8 +233,17 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 
 	private void drawTile(Graphics2D g2d, Image tile, int x, int y) {
+		// scaling tiles
 		tileWidth = this.getWidth() / game.getLabyrinth().getWidth();
 		tileHeight = (int) (tileWidth * (131.0 / 101.0));
+
+		// correcting scaling
+		int temp = (int) (81.0 * tileHeight / 131.0);
+		if (this.getHeight() < temp * game.getLabyrinth().getHeight()) {
+			tileHeight = this.getHeight() / game.getLabyrinth().getHeight();
+			tileHeight += 81.0 * tileHeight / 131.0;
+			tileWidth = (int) (tileHeight * 101.0 / 131.0);
+		}
 
 		int dstX = x * tileWidth;
 
@@ -226,8 +255,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
 		dstY = y * tileHeight + yCorrection;
 
-		yCorrection = (int) (50.0 * tileHeight / 131.0);
-		dstY -= y * yCorrection;
+		yCorrection = (int) (-50.0 * tileHeight / 131.0);
+		dstY += y * yCorrection;
 
 		g2d.drawImage(tile, dstX, dstY, dstX + tileWidth, dstY + tileHeight, 0,
 				0, tile.getWidth(null), tile.getHeight(null), null);
