@@ -57,7 +57,7 @@ public class HeroTests {
 				.getPosition().getY());
 
 		// checking if hero really moved
-		assertNotEquals("Hero did not move.", startPosition, currentPosition);
+		assertTrue(!startPosition.equals(currentPosition));
 	}
 
 	@Test

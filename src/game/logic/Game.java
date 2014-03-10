@@ -61,8 +61,8 @@ public class Game {
 			Random r = new Random();
 
 			if (!i.isMoving()) {
-				i.setMoving(true);
-				
+				// i.setMoving(true);
+
 				if (i.getType() == Type.HERO)
 					// moving hero
 					i.move(lab, directionToMoveHero);

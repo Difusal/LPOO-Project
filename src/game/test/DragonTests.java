@@ -46,7 +46,7 @@ public class DragonTests {
 				.getPosition().getY());
 
 		// checking if dragon really moved
-		assertNotEquals("Dragon did not move.", startPosition, currentPosition);
+		assertTrue(!startPosition.equals(currentPosition));
 	}
 
 	@Test

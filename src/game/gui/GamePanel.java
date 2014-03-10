@@ -287,20 +287,17 @@ public class GamePanel extends JPanel implements ActionListener {
 		dstX += tileWidth / 6.0;
 		dstY += tileHeight / 6.0;
 
-		if (hero.isMoving()) {
-			if (hero.getFacingDir() == Direction.RIGHT)
-				dstX += hero.getCurrentFrame() * tileWidth / hero.getFrames()
-						- tileWidth;
-			else if (hero.getFacingDir() == Direction.LEFT)
-				dstX -= hero.getCurrentFrame() * tileWidth / hero.getFrames()
-						- tileWidth;
-			else if (hero.getFacingDir() == Direction.DOWN)
-				dstY += hero.getCurrentFrame() * tileHeight / hero.getFrames()
-						- tileHeight;
-			else if (hero.getFacingDir() == Direction.UP)
-				dstY -= hero.getCurrentFrame() * tileHeight / hero.getFrames()
-						- tileHeight;
-		}
+		/*
+		 * if (hero.isMoving()) { if (hero.getFacingDir() == Direction.RIGHT)
+		 * dstX += hero.getCurrentFrame() * tileWidth / hero.getFrames() -
+		 * tileWidth; else if (hero.getFacingDir() == Direction.LEFT) dstX -=
+		 * hero.getCurrentFrame() * tileWidth / hero.getFrames() - tileWidth;
+		 * else if (hero.getFacingDir() == Direction.DOWN) dstY +=
+		 * hero.getCurrentFrame() * tileHeight / hero.getFrames() - tileHeight;
+		 * else if (hero.getFacingDir() == Direction.UP) dstY -=
+		 * hero.getCurrentFrame() * tileHeight / hero.getFrames() - tileHeight;
+		 * }
+		 */
 
 		Image sprite;
 		if (((Hero) hero).hasSword())
@@ -323,8 +320,9 @@ public class GamePanel extends JPanel implements ActionListener {
 						* sprite.getHeight(null) / 4 + sprite.getHeight(null)
 						/ 4, null);
 
-		if (hero.isMoving())
-			hero.nextFrame();
+		/*
+		 * if (hero.isMoving()) hero.nextFrame();
+		 */
 	}
 
 	private void drawSword(Graphics2D g2d, Sword k, int x, int y) {
