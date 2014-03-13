@@ -51,10 +51,7 @@ public class GameFrame extends JFrame {
 					setSize(642, 598);
 
 					// starting new game with new options
-					gamePanel.startNewGame(gameConfig.getWidth(),
-							gameConfig.getHeight(),
-							gameConfig.getDragonBehavior(),
-							gameConfig.getNumDragons());
+					gamePanel.startNewGame(gameConfig);
 				}
 			}
 		});

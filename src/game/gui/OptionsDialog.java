@@ -18,14 +18,14 @@ import javax.swing.SwingConstants;
 
 public class OptionsDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
-	GameConfig config;
+	private GameConfig config;
 
 	public OptionsDialog(final GameFrame frame, final GamePanel gamePanel,
 			GameConfig gameConfig) {
 		config = gameConfig;
 
 		setTitle("Options");
-		getContentPane().setLayout(new GridLayout(7, 1));
+		getContentPane().setLayout(new GridLayout(9, 1));
 
 		JLabel lblMazeDimension = new JLabel("Maze Dimension");
 		lblMazeDimension.setHorizontalAlignment(SwingConstants.CENTER);
@@ -99,6 +99,30 @@ public class OptionsDialog extends JDialog {
 		numDragonsSlider.setMaximum(51);
 		numDragonsSlider.setMinimum(1);
 		numDragonsSlider.setValue(5);
+
+		JLabel lblGameControls = new JLabel("Game Controls");
+		lblGameControls.setHorizontalAlignment(SwingConstants.CENTER);
+		getContentPane().add(lblGameControls);
+
+		JPanel controls = new JPanel();
+		getContentPane().add(controls);
+		controls.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+		JButton btnUp = new JButton("Up: "
+				+ Utilities.getKeyChar(config.getUpKeyAssignment()));
+		controls.add(btnUp);
+
+		JButton btnDown = new JButton("Down: "
+				+ Utilities.getKeyChar(config.getDownKeyAssignment()));
+		controls.add(btnDown);
+
+		JButton btnLeft = new JButton("Left: "
+				+ Utilities.getKeyChar(config.getLeftKeyAssignment()));
+		controls.add(btnLeft);
+
+		JButton btnRight = new JButton("Right: "
+				+ Utilities.getKeyChar(config.getRightKeyAssignment()));
+		controls.add(btnRight);
 
 		JPanel buttons = new JPanel();
 		getContentPane().add(buttons);

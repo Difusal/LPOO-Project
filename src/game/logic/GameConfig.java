@@ -1,11 +1,17 @@
 package game.logic;
 
+import java.awt.event.KeyEvent;
+
 import game.logic.Dragon.DragonBehavior;
 
 public class GameConfig {
-	int width, height;
-	DragonBehavior dragonBehavior;
-	int numDragons;
+	private int width, height;
+	private DragonBehavior dragonBehavior;
+	private int numDragons;
+	private int downKeyAssignment = KeyEvent.VK_S;
+	private int leftKeyAssignment = KeyEvent.VK_A;
+	private int rightKeyAssignment = KeyEvent.VK_D;
+	private int upKeyAssignment = KeyEvent.VK_W;
 
 	public GameConfig() {
 		width = 11;
@@ -52,5 +58,37 @@ public class GameConfig {
 
 	public void setNumDragons(int numDragons) {
 		this.numDragons = numDragons;
+	}
+
+	public int getDownKeyAssignment() {
+		return downKeyAssignment;
+	}
+
+	public void setDownKeyAssignment(int downKeyAssignment) {
+		this.downKeyAssignment = downKeyAssignment;
+	}
+
+	public int getLeftKeyAssignment() {
+		return leftKeyAssignment;
+	}
+
+	public void setLeftKeyAssignment(int leftKeyAssignment) {
+		this.leftKeyAssignment = leftKeyAssignment;
+	}
+
+	public int getRightKeyAssignment() {
+		return rightKeyAssignment;
+	}
+
+	public void setRightKeyAssignment(int rightKeyAssignment) {
+		this.rightKeyAssignment = rightKeyAssignment;
+	}
+
+	public int getUpKeyAssignment() {
+		return upKeyAssignment;
+	}
+
+	public void setUpKeyAssignment(int upKeyAssignment) {
+		this.upKeyAssignment = upKeyAssignment;
 	}
 }

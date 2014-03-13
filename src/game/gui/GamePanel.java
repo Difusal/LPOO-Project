@@ -3,6 +3,7 @@ package game.gui;
 import game.logic.Direction;
 import game.logic.Dragon.DragonBehavior;
 import game.logic.Game;
+import game.logic.GameConfig;
 import game.logic.Hero;
 import game.logic.LivingBeing;
 import game.logic.Labyrinth.Symbols;
@@ -42,6 +43,11 @@ public class GamePanel extends JPanel implements ActionListener {
 	private Image eagle;
 	private int tileWidth, tileHeight;
 	private Game game = null;
+	private int upKey = KeyEvent.VK_W;
+	private int leftKey = KeyEvent.VK_A;
+	private int rightKey = KeyEvent.VK_D;
+	private int downKey = KeyEvent.VK_S;
+	private int sendEagleKey = KeyEvent.VK_B;
 
 	public GamePanel() {
 		addKeyListener(new TAdapter());
@@ -64,6 +70,19 @@ public class GamePanel extends JPanel implements ActionListener {
 		initGame();
 	}
 
+	public void startNewGame(GameConfig gameConfig) {
+		game = new Game(gameConfig.getWidth(), gameConfig.getHeight(),
+				gameConfig.getDragonBehavior(), gameConfig.getNumDragons());
+
+		// reassigning movement keys
+		upKey = gameConfig.getUpKeyAssignment();
+		leftKey = gameConfig.getLeftKeyAssignment();
+		rightKey = gameConfig.getRightKeyAssignment();
+		downKey = gameConfig.getDownKeyAssignment();
+
+		initGame();
+	}
+
 	private void initGame() {
 		showBackground = false;
 		timer.start();
@@ -78,28 +97,17 @@ public class GamePanel extends JPanel implements ActionListener {
 			int key = e.getKeyCode();
 
 			Direction dir = Direction.NONE;
-			switch (key) {
-			case KeyEvent.VK_RIGHT:
-			case KeyEvent.VK_D:
+			if (key == KeyEvent.VK_RIGHT || key == rightKey)
 				dir = Direction.RIGHT;
-				break;
-			case KeyEvent.VK_DOWN:
-			case KeyEvent.VK_S:
+			else if (key == KeyEvent.VK_DOWN || key == downKey)
 				dir = Direction.DOWN;
-				break;
-			case KeyEvent.VK_LEFT:
-			case KeyEvent.VK_A:
+			else if (key == KeyEvent.VK_LEFT || key == leftKey)
 				dir = Direction.LEFT;
-				break;
-			case KeyEvent.VK_UP:
-			case KeyEvent.VK_W:
+			else if (key == KeyEvent.VK_UP || key == upKey)
 				dir = Direction.UP;
-				break;
-			case KeyEvent.VK_B:
+			else if (key == sendEagleKey)
 				if (game.getHero().hasEagle() && !game.getHero().hasSword())
 					game.getHero().sendEagle();
-				break;
-			}
 
 			if (game.updateGame(dir)) {
 				// Game Over
