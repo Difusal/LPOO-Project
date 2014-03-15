@@ -15,6 +15,12 @@ import java.awt.event.ActionListener;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 
+/**
+ * Represents the game window.
+ * 
+ * @author Henrique Ferrolho
+ * @version 1.0
+ */
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JButton btnNewGame;
@@ -25,6 +31,12 @@ public class GameFrame extends JFrame {
 	private JDialog options;
 	private GameConfig gameConfig;
 
+	/**
+	 * 
+	 * Class constructor.
+	 * 
+	 * @throws IOException
+	 */
 	public GameFrame() throws IOException {
 		setTitle("Dungeon Explorer");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -39,6 +51,9 @@ public class GameFrame extends JFrame {
 		getContentPane().add(gamePanel);
 	}
 
+	/**
+	 * Sets up the game window "Play", "Options" and "Quit Game" buttons.
+	 */
 	private void setUpButtons() {
 		// Play Game button
 		btnNewGame = new JButton("New Game");
@@ -77,6 +92,9 @@ public class GameFrame extends JFrame {
 		});
 	}
 
+	/**
+	 * Adds buttons to game windows layout.
+	 */
 	private void addButtons() {
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		buttonsPanel.setLayout(new GridLayout(1, 3));
@@ -86,6 +104,9 @@ public class GameFrame extends JFrame {
 		getContentPane().add(buttonsPanel, BorderLayout.NORTH);
 	}
 
+	/**
+	 * Starts the game window.
+	 */
 	public void start() {
 		setSize(534, 401);
 		setVisible(true);

@@ -2,7 +2,19 @@ package game.gui;
 
 import java.awt.event.KeyEvent;
 
+/**
+ * Utilities class.
+ * 
+ * @author Henrique Ferrolho
+ *
+ */
 public class Utilities {
+	/**
+	 * Gets the letter corresponding to a key.
+	 * 
+	 * @param key
+	 * @return letter
+	 */
 	public static String getStringOfKey(int key) {
 		switch (key) {
 		case KeyEvent.VK_A: return "A";
@@ -36,6 +48,13 @@ public class Utilities {
 		return "";
 	}
 	
+	/**
+	 * Gets the key corresponding to the letter specified.
+	 * 
+	 * @param str
+	 *            letter to get key from
+	 * @return the matching key
+	 */
 	public static int getKeyFromString(String str) {
 		str = str.toUpperCase();
 		

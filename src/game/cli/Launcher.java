@@ -7,7 +7,7 @@ import game.logic.Game;
 import java.util.Scanner;
 
 /**
- * Launcher is the base class to control the command line interface.
+ * Launcher is the base class to control the CLI - Command Line Interface.
  * 
  * @author Henrique Ferrolho
  * @version 1.0

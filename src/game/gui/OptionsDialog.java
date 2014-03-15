@@ -17,6 +17,12 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
+/**
+ * Class to control game settings.
+ * 
+ * @author Henrique Ferrolho
+ * 
+ */
 public class OptionsDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private GameConfig config;
@@ -33,6 +39,13 @@ public class OptionsDialog extends JDialog {
 	private JTextField txtRight;
 	private JTextField txtSendEagle;
 
+	/**
+	 * Class constructor.
+	 * 
+	 * @param frame
+	 * @param gamePanel
+	 * @param gameConfig
+	 */
 	public OptionsDialog(GameFrame frame, GamePanel gamePanel,
 			GameConfig gameConfig) {
 		this.panel = gamePanel;
@@ -54,6 +67,9 @@ public class OptionsDialog extends JDialog {
 				+ frame.getSize().height / 2 - getSize().height / 2);
 	}
 
+	/**
+	 * Sets up the maze dimension section.
+	 */
 	public void SetUpMazeDimensionSection() {
 		JLabel lblMazeDimension = new JLabel("Maze Dimension");
 		lblMazeDimension.setHorizontalAlignment(SwingConstants.CENTER);
@@ -91,6 +107,9 @@ public class OptionsDialog extends JDialog {
 		mazeH.add(heightSlider);
 	}
 
+	/**
+	 * Sets up the dragon settings section
+	 */
 	public void SetUpDragonSettingsSection() {
 		JLabel lblDragonsSettings = new JLabel("Dragon Settings");
 		lblDragonsSettings.setHorizontalAlignment(SwingConstants.CENTER);
@@ -122,6 +141,9 @@ public class OptionsDialog extends JDialog {
 		numDragonsSlider.setValue(5);
 	}
 
+	/**
+	 * Sets up the game controls section
+	 */
 	public void SetUpGameControlsSection() {
 		JLabel lblGameControls = new JLabel("Game Controls");
 		lblGameControls.setHorizontalAlignment(SwingConstants.CENTER);
@@ -170,6 +192,9 @@ public class OptionsDialog extends JDialog {
 		sendEagleControl.add(txtSendEagle);
 	}
 
+	/**
+	 * Sets up the buttons section
+	 */
 	public void SetUpButtonsSection() {
 		JPanel buttons = new JPanel();
 		getContentPane().add(buttons);
@@ -222,6 +247,11 @@ public class OptionsDialog extends JDialog {
 		buttons.add(btnCancel);
 	}
 
+	/**
+	 * Gets this game configuration
+	 * 
+	 * @return this game configuration
+	 */
 	public GameConfig getConfig() {
 		return config;
 	}

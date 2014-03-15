@@ -1,10 +1,12 @@
 package game.gui;
 
 import game.logic.Direction;
+import game.logic.Dragon;
 import game.logic.Dragon.DragonBehavior;
 import game.logic.Game;
 import game.logic.GameConfig;
 import game.logic.Hero;
+import game.logic.Labyrinth;
 import game.logic.LivingBeing;
 import game.logic.Labyrinth.Symbols;
 import game.logic.LivingBeing.Type;
@@ -24,6 +26,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * 
+ * Game Panel is the main game panel. It is where the game board and characters
+ * will be drawn.
+ * 
+ * @author Henrique Ferrolho
+ * 
+ */
 public class GamePanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private boolean showBackground = true;
@@ -49,6 +59,9 @@ public class GamePanel extends JPanel implements ActionListener {
 	private int downKey = KeyEvent.VK_S;
 	private int sendEagleKey = KeyEvent.VK_B;
 
+	/**
+	 * Class constructor.
+	 */
 	public GamePanel() {
 		addKeyListener(new TAdapter());
 		setFocusable(true);
@@ -59,17 +72,44 @@ public class GamePanel extends JPanel implements ActionListener {
 		timer = new Timer(150, (ActionListener) this);
 	}
 
+	/**
+	 * Starts a new Demo game. The Demo labyrinth is 10x10. There is 1 dragon
+	 * and it does not move.
+	 */
 	public void startNewDemoGame() {
 		game = new Game(DragonBehavior.NOTMOVING, 1);
 		initGame();
 	}
 
+	/**
+	 * Starts a new game with the information specified. The labyrinth width and
+	 * height should both be an odd number.
+	 * 
+	 * @param width
+	 *            Labyrinth width
+	 * @param height
+	 *            Labyrinth height
+	 * @param behavior
+	 *            Dragons behavior
+	 * @param numDragons
+	 *            Number of dragons to spawn
+	 * 
+	 * @see {@link Labyrinth}, {@link Dragon}, {@link DragonBehavior}
+	 */
 	public void startNewGame(int width, int height, DragonBehavior behavior,
 			int numDragons) {
 		game = new Game(width, height, behavior, numDragons);
 		initGame();
 	}
 
+	/**
+	 * Starts a new game from a previous game configuration.
+	 * 
+	 * @param gameConfig
+	 *            The GameConfig with the new game configuration
+	 * 
+	 * @see {@link GameConfig}
+	 */
 	public void startNewGame(GameConfig gameConfig) {
 		game = new Game(gameConfig.getWidth(), gameConfig.getHeight(),
 				gameConfig.getDragonBehavior(), gameConfig.getNumDragons());
@@ -83,6 +123,9 @@ public class GamePanel extends JPanel implements ActionListener {
 		initGame();
 	}
 
+	/**
+	 * Initiates the game.
+	 */
 	private void initGame() {
 		showBackground = false;
 		timer.start();
@@ -129,6 +172,9 @@ public class GamePanel extends JPanel implements ActionListener {
 		repaint();
 	}
 
+	/**
+	 * Loads game images.
+	 */
 	private void loadImages() {
 		ImageIcon ii;
 
@@ -181,6 +227,9 @@ public class GamePanel extends JPanel implements ActionListener {
 		eagle = ii.getImage();
 	}
 
+	/**
+	 * Draws the game state.
+	 */
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
@@ -195,6 +244,11 @@ public class GamePanel extends JPanel implements ActionListener {
 		g.dispose();
 	}
 
+	/**
+	 * Draws the game board and characters.
+	 * 
+	 * @param g2d
+	 */
 	private void drawGame(Graphics2D g2d) {
 		for (int i = 0; i < game.getLabyrinth().getHeight(); i++) {
 			for (int j = 0; j < game.getLabyrinth().getWidth(); j++) {
@@ -231,6 +285,13 @@ public class GamePanel extends JPanel implements ActionListener {
 					.getX(), game.getEagle().getPosition().getY());
 	}
 
+	/**
+	 * Chooses correct maze tile to be drawn.
+	 * 
+	 * @param g2d
+	 * @param j
+	 * @param i
+	 */
 	private void drawMaze(Graphics2D g2d, int j, int i) {
 		Symbols[][] maze = game.getLabyrinth().getLab();
 
@@ -256,6 +317,14 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * Draws a maze tile.
+	 * 
+	 * @param g2d
+	 * @param tile
+	 * @param x
+	 * @param y
+	 */
 	private void drawTile(Graphics2D g2d, Image tile, int x, int y) {
 		// scaling tiles
 		tileWidth = this.getWidth() / game.getLabyrinth().getWidth();
@@ -286,6 +355,14 @@ public class GamePanel extends JPanel implements ActionListener {
 				0, tile.getWidth(null), tile.getHeight(null), null);
 	}
 
+	/**
+	 * Draws hero.
+	 * 
+	 * @param g2d
+	 * @param hero
+	 * @param x
+	 * @param y
+	 */
 	private void drawHero(Graphics2D g2d, LivingBeing hero, int x, int y) {
 		int dstX = x * tileWidth;
 		int dstY = (int) (y * tileHeight - (15 * tileHeight / 131.0));
@@ -333,6 +410,14 @@ public class GamePanel extends JPanel implements ActionListener {
 		 */
 	}
 
+	/**
+	 * Draws sword.
+	 * 
+	 * @param g2d
+	 * @param k
+	 * @param x
+	 * @param y
+	 */
 	private void drawSword(Graphics2D g2d, Sword k, int x, int y) {
 		int dstX = x * tileWidth;
 		int dstY = (int) (y * tileHeight + (24 * tileHeight / 131.0));
@@ -346,6 +431,14 @@ public class GamePanel extends JPanel implements ActionListener {
 				sword.getWidth(null), sword.getHeight(null), null);
 	}
 
+	/**
+	 * Draws dragon.
+	 * 
+	 * @param g2d
+	 * @param k
+	 * @param x
+	 * @param y
+	 */
 	private void drawDragon(Graphics2D g2d, LivingBeing k, int x, int y) {
 		int dstX = x * tileWidth;
 		int dstY = (int) (y * tileHeight - (12 * tileHeight / 131.0));
@@ -370,6 +463,14 @@ public class GamePanel extends JPanel implements ActionListener {
 		k.nextFrame();
 	}
 
+	/**
+	 * Draws eagle.
+	 * 
+	 * @param g2d
+	 * @param k
+	 * @param x
+	 * @param y
+	 */
 	private void drawEagle(Graphics2D g2d, LivingBeing k, int x, int y) {
 		Image img = eagle;
 
@@ -424,10 +525,21 @@ public class GamePanel extends JPanel implements ActionListener {
 			k.nextFrame();
 	}
 
+	/**
+	 * Gets the key assigned to move hero up.
+	 * 
+	 * @return key assigned to move hero up.
+	 */
 	public int getUpKey() {
 		return upKey;
 	}
 
+	/**
+	 * Sets key to move user up.
+	 * 
+	 * @param upKey
+	 *            key to move user up
+	 */
 	public void setUpKey(int upKey) {
 		this.upKey = upKey;
 	}
