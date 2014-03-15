@@ -423,4 +423,40 @@ public class GamePanel extends JPanel implements ActionListener {
 		if (game.getEagle().isFlying() || game.getEagle().isWithHero())
 			k.nextFrame();
 	}
+
+	public int getUpKey() {
+		return upKey;
+	}
+
+	public void setUpKey(int upKey) {
+		this.upKey = upKey;
+	}
+
+	public int getLeftKey() {
+		return leftKey;
+	}
+
+	public void setLeftKey(int leftKey) {
+		this.leftKey = leftKey;
+	}
+
+	public int getRightKey() {
+		return rightKey;
+	}
+
+	public void setRightKey(int rightKey) {
+		this.rightKey = rightKey;
+	}
+
+	public int getDownKey() {
+		return downKey;
+	}
+
+	public void setDownKey(int downKey) {
+		this.downKey = downKey;
+	}
+
+	public void setSendEagleKey(int sendEagleKey) {
+		this.sendEagleKey = sendEagleKey;
+	}
 }

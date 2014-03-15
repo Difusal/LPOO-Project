@@ -15,29 +15,55 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import javax.swing.JTextField;
 
 public class OptionsDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private GameConfig config;
+	private GamePanel panel;
 
-	public OptionsDialog(final GameFrame frame, final GamePanel gamePanel,
+	private JSlider widthSlider;
+	private JSlider heightSlider;
+	private JSlider numDragonsSlider;
+	private JComboBox<?> behaviorSelector;
+
+	private JTextField txtUp;
+	private JTextField txtDown;
+	private JTextField txtLeft;
+	private JTextField txtRight;
+	private JTextField txtSendEagle;
+
+	public OptionsDialog(GameFrame frame, GamePanel gamePanel,
 			GameConfig gameConfig) {
+		this.panel = gamePanel;
 		config = gameConfig;
 
 		setTitle("Options");
-		getContentPane().setLayout(new GridLayout(9, 1));
+		getContentPane().setLayout(new GridLayout(11, 1));
 
+		// Setting up dialog content
+		SetUpMazeDimensionSection();
+		SetUpDragonSettingsSection();
+		SetUpGameControlsSection();
+		SetUpButtonsSection();
+
+		// Dialog Details
+		pack();
+		setLocation(frame.getLocation().x + frame.getSize().width / 2
+				- getSize().width / 2, frame.getLocation().y
+				+ frame.getSize().height / 2 - getSize().height / 2);
+	}
+
+	public void SetUpMazeDimensionSection() {
 		JLabel lblMazeDimension = new JLabel("Maze Dimension");
 		lblMazeDimension.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblMazeDimension);
 
 		JPanel mazeW = new JPanel();
 		getContentPane().add(mazeW);
-
 		JLabel lblWidth = new JLabel("Width");
 		mazeW.add(lblWidth);
-
-		final JSlider widthSlider = new JSlider();
+		widthSlider = new JSlider();
 		widthSlider.setMinorTickSpacing(2);
 		widthSlider.setPaintLabels(true);
 		widthSlider.setPaintTicks(true);
@@ -51,11 +77,9 @@ public class OptionsDialog extends JDialog {
 		JPanel mazeH = new JPanel();
 		getContentPane().add(mazeH);
 		mazeH.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
 		JLabel lblHeight = new JLabel("Height");
 		mazeH.add(lblHeight);
-
-		final JSlider heightSlider = new JSlider();
+		heightSlider = new JSlider();
 		heightSlider.setSnapToTicks(true);
 		heightSlider.setPaintTicks(true);
 		heightSlider.setPaintLabels(true);
@@ -65,32 +89,29 @@ public class OptionsDialog extends JDialog {
 		heightSlider.setMajorTickSpacing(10);
 		heightSlider.setValue(11);
 		mazeH.add(heightSlider);
+	}
 
+	public void SetUpDragonSettingsSection() {
 		JLabel lblDragonsSettings = new JLabel("Dragon Settings");
 		lblDragonsSettings.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblDragonsSettings);
 
 		JPanel dragonsBehavior = new JPanel();
 		getContentPane().add(dragonsBehavior);
-
 		JLabel lblDragons = new JLabel("Behavior");
 		lblDragons.setHorizontalAlignment(SwingConstants.LEFT);
 		dragonsBehavior.add(lblDragons);
-
 		String[] behaviorStrings = { "Not Moving", "Moving",
 				"Moving and Sleeping" };
-		final JComboBox<?> behaviorSelector = new JComboBox<Object>(
-				behaviorStrings);
+		behaviorSelector = new JComboBox<Object>(behaviorStrings);
 		behaviorSelector.setSelectedIndex(0);
 		dragonsBehavior.add(behaviorSelector);
 
 		JPanel numDragonsPanel = new JPanel();
 		getContentPane().add(numDragonsPanel);
-
 		JLabel lblNumDragonsSlideLabel = new JLabel("Dragons to spawn");
 		numDragonsPanel.add(lblNumDragonsSlideLabel);
-
-		final JSlider numDragonsSlider = new JSlider();
+		numDragonsSlider = new JSlider();
 		numDragonsPanel.add(numDragonsSlider);
 		numDragonsSlider.setPaintTicks(true);
 		numDragonsSlider.setPaintLabels(true);
@@ -99,31 +120,57 @@ public class OptionsDialog extends JDialog {
 		numDragonsSlider.setMaximum(51);
 		numDragonsSlider.setMinimum(1);
 		numDragonsSlider.setValue(5);
+	}
 
+	public void SetUpGameControlsSection() {
 		JLabel lblGameControls = new JLabel("Game Controls");
 		lblGameControls.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblGameControls);
 
-		JPanel controls = new JPanel();
-		getContentPane().add(controls);
-		controls.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JPanel upAndDownControl = new JPanel();
+		getContentPane().add(upAndDownControl);
+		upAndDownControl.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		JLabel lblUp = new JLabel("Up:");
+		upAndDownControl.add(lblUp);
+		txtUp = new JTextField();
+		txtUp.setText(Utilities.getStringOfKey(config.getUpKeyAssignment()));
+		upAndDownControl.add(txtUp);
+		txtUp.setColumns(10);
+		JLabel lblDown = new JLabel("Down:");
+		upAndDownControl.add(lblDown);
+		txtDown = new JTextField();
+		upAndDownControl.add(txtDown);
+		txtDown.setText(Utilities.getStringOfKey(config.getDownKeyAssignment()));
+		txtDown.setColumns(10);
 
-		JButton btnUp = new JButton("Up: "
-				+ Utilities.getKeyChar(config.getUpKeyAssignment()));
-		controls.add(btnUp);
+		JPanel leftAndRightControl = new JPanel();
+		getContentPane().add(leftAndRightControl);
+		JLabel lblLeft = new JLabel("Left:");
+		leftAndRightControl.add(lblLeft);
+		txtLeft = new JTextField();
+		txtLeft.setText(Utilities.getStringOfKey(config.getLeftKeyAssignment()));
+		txtLeft.setColumns(10);
+		leftAndRightControl.add(txtLeft);
+		JLabel lblRight = new JLabel("Right:");
+		leftAndRightControl.add(lblRight);
+		txtRight = new JTextField();
+		leftAndRightControl.add(txtRight);
+		txtRight.setText(Utilities.getStringOfKey(config
+				.getRightKeyAssignment()));
+		txtRight.setColumns(10);
 
-		JButton btnDown = new JButton("Down: "
-				+ Utilities.getKeyChar(config.getDownKeyAssignment()));
-		controls.add(btnDown);
+		JPanel sendEagleControl = new JPanel();
+		getContentPane().add(sendEagleControl);
+		JLabel lblSendEagle = new JLabel("Send Eagle:");
+		sendEagleControl.add(lblSendEagle);
+		txtSendEagle = new JTextField();
+		txtSendEagle.setText(Utilities.getStringOfKey(config
+				.getSendEagleKeyAssignment()));
+		txtSendEagle.setColumns(10);
+		sendEagleControl.add(txtSendEagle);
+	}
 
-		JButton btnLeft = new JButton("Left: "
-				+ Utilities.getKeyChar(config.getLeftKeyAssignment()));
-		controls.add(btnLeft);
-
-		JButton btnRight = new JButton("Right: "
-				+ Utilities.getKeyChar(config.getRightKeyAssignment()));
-		controls.add(btnRight);
-
+	public void SetUpButtonsSection() {
 		JPanel buttons = new JPanel();
 		getContentPane().add(buttons);
 
@@ -138,8 +185,26 @@ public class OptionsDialog extends JDialog {
 				DragonBehavior behavior = DragonBehavior.values()[behaviorIndex];
 				int numDragons = numDragonsSlider.getValue();
 
-				// update game configurations
+				// updating game configurations
 				config.setGameConfig(width, height, behavior, numDragons);
+				config.setUpKeyAssignment(Utilities.getKeyFromString(txtUp
+						.getText()));
+				config.setDownKeyAssignment(Utilities.getKeyFromString(txtDown
+						.getText()));
+				config.setLeftKeyAssignment(Utilities.getKeyFromString(txtLeft
+						.getText()));
+				config.setRightKeyAssignment(Utilities
+						.getKeyFromString(txtRight.getText()));
+				config.setSendEagleKeyAssignment(Utilities
+						.getKeyFromString(txtSendEagle.getText()));
+
+				// updating game controls
+				panel.setUpKey(Utilities.getKeyFromString(txtUp.getText()));
+				panel.setDownKey(Utilities.getKeyFromString(txtDown.getText()));
+				panel.setLeftKey(Utilities.getKeyFromString(txtLeft.getText()));
+				panel.setRightKey(Utilities.getKeyFromString(txtRight.getText()));
+				panel.setSendEagleKey(Utilities.getKeyFromString(txtSendEagle
+						.getText()));
 
 				// closing options dialog
 				setVisible(false);
@@ -155,11 +220,6 @@ public class OptionsDialog extends JDialog {
 			}
 		});
 		buttons.add(btnCancel);
-
-		pack();
-		setLocation(frame.getLocation().x + frame.getSize().width / 2
-				- getSize().width / 2, frame.getLocation().y
-				+ frame.getSize().height / 2 - getSize().height / 2);
 	}
 
 	public GameConfig getConfig() {

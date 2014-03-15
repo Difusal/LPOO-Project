@@ -12,6 +12,7 @@ public class GameConfig {
 	private int leftKeyAssignment = KeyEvent.VK_A;
 	private int rightKeyAssignment = KeyEvent.VK_D;
 	private int upKeyAssignment = KeyEvent.VK_W;
+	private int sendEagleKeyAssignment = KeyEvent.VK_B;
 
 	public GameConfig() {
 		width = 11;
@@ -90,5 +91,13 @@ public class GameConfig {
 
 	public void setUpKeyAssignment(int upKeyAssignment) {
 		this.upKeyAssignment = upKeyAssignment;
+	}
+
+	public int getSendEagleKeyAssignment() {
+		return sendEagleKeyAssignment;
+	}
+
+	public void setSendEagleKeyAssignment(int sendEagleKeyAssignment) {
+		this.sendEagleKeyAssignment = sendEagleKeyAssignment;
 	}
 }
