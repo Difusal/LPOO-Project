@@ -39,10 +39,6 @@ public class GameFrame extends JFrame {
 		getContentPane().add(gamePanel);
 	}
 
-	private void updateOptionsDialog() {
-		options = new OptionsDialog(this, gamePanel, gameConfig);
-	}
-	
 	private void setUpButtons() {
 		// Play Game button
 		btnNewGame = new JButton("New Game");
@@ -64,7 +60,6 @@ public class GameFrame extends JFrame {
 		btnOptions = new JButton("Options");
 		btnOptions.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				updateOptionsDialog();
 				options.setVisible(true);
 			}
 		});
