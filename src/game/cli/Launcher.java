@@ -6,9 +6,30 @@ import game.logic.Game;
 
 import java.util.Scanner;
 
+/**
+ * Launcher is the base class to control the command line interface.
+ * 
+ * @author Henrique Ferrolho
+ * @version 1.0
+ */
 public class Launcher {
 	private static Game game = null;
 
+	/**
+	 * Returns an integer between min and max inputed by user. The message is
+	 * the String used when prompting user input.
+	 * 
+	 * @param reader
+	 *            the Scanner to be used
+	 * @param message
+	 *            the message used to prompt for user input
+	 * @param min
+	 *            minimum user input value
+	 * @param max
+	 *            maximum user input value
+	 * @return the integer inputed by user between min and max.
+	 * @see Scanner
+	 */
 	private static int waitForUserInput(Scanner reader, String message,
 			int min, int max) {
 		int input;
@@ -27,11 +48,17 @@ public class Launcher {
 		return input;
 	}
 
+	/**
+	 * Prints game to standard output.
+	 */
 	private static void printGameToConsole() {
 		System.out.println(game.getLabyrinth().drawToString(
 				game.getLivingBeings(), game.getSword(), game.getEagle()));
 	}
 
+	/**
+	 * Displays the Main Menu.
+	 */
 	private static void displayMainMenu() {
 		// printing main menu
 		System.out.println("--------------");
@@ -43,6 +70,13 @@ public class Launcher {
 		System.out.println();
 	}
 
+	/**
+	 * Prompts user various game details and creates a game with that
+	 * information.
+	 * 
+	 * @param reader
+	 *            the Scanner to be used
+	 */
 	private static void createGameUI(Scanner reader) {
 		String msg;
 
@@ -78,6 +112,15 @@ public class Launcher {
 			game = new Game(dragonBehavior, numDragons);
 	}
 
+	/**
+	 * Prompts user which direction he/she wants to move hero. Returns that
+	 * direction.
+	 * 
+	 * @param reader
+	 *            the Scanner to be used
+	 * @return the direction hero will try to move to.
+	 * @see Direction
+	 */
 	private static Direction getHeroDirection(Scanner reader) {
 		String dir;
 
@@ -114,6 +157,11 @@ public class Launcher {
 		return direction;
 	}
 
+	/**
+	 * Starts the game.
+	 * 
+	 * @param reader
+	 */
 	private static void startGame(Scanner reader) {
 		boolean done = false;
 
@@ -143,6 +191,11 @@ public class Launcher {
 		System.out.println();
 	}
 
+	/**
+	 * Main function.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		displayMainMenu();
 
