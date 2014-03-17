@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import sun.misc.Cleaner;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -231,8 +233,9 @@ public class GamePanel extends JPanel implements ActionListener {
 	 * Draws the game state.
 	 */
 	public void paint(Graphics g) {
+		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-
+		
 		if (showBackground)
 			g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(),
 					0, 0, background.getWidth(null),
@@ -240,8 +243,8 @@ public class GamePanel extends JPanel implements ActionListener {
 		else
 			drawGame(g2d);
 
-		Toolkit.getDefaultToolkit().sync();
-		g.dispose();
+		//Toolkit.getDefaultToolkit().sync();
+		//g.dispose();
 	}
 
 	/**

@@ -19,6 +19,10 @@ public class Eagle extends LivingBeing {
 	private int pathStep;
 	Vector<Coord> path = new Vector<Coord>();
 
+	/**
+	 * Represents an eagle flight state.
+	 *
+	 */
 	public enum FlightState {
 		GOING, RETURNING
 	}
@@ -28,6 +32,9 @@ public class Eagle extends LivingBeing {
 		DOWN, LEFT, RIGHT, UP
 	}
 
+	/**
+	 * Constructs and initializes
+	 */
 	public Eagle() {
 		type = Type.EAGLE;
 		prepareSpriteData();
