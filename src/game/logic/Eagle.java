@@ -21,7 +21,7 @@ public class Eagle extends LivingBeing {
 
 	/**
 	 * Represents an eagle flight state.
-	 *
+	 * 
 	 */
 	public enum FlightState {
 		GOING, RETURNING
@@ -33,7 +33,7 @@ public class Eagle extends LivingBeing {
 	}
 
 	/**
-	 * Constructs and initializes
+	 * Constructs and initializes an eagle.
 	 */
 	public Eagle() {
 		type = Type.EAGLE;
@@ -47,6 +47,12 @@ public class Eagle extends LivingBeing {
 		currentFrame = r.nextInt(frames);
 	}
 
+	/**
+	 * Starts eagle flight and calculates shortest path to catch sword.
+	 * 
+	 * @param lab
+	 * @param sword
+	 */
 	public void startFlight(Labyrinth lab, Sword sword) {
 		// preparing variables
 		flying = true;
@@ -115,8 +121,18 @@ public class Eagle extends LivingBeing {
 		move(lab, Direction.NONE);
 	}
 
+	/**
+	 * Moves eagle in a certain direction or along the shortest path to catch
+	 * the sword.
+	 * 
+	 * @param lab
+	 *            labyrinth
+	 * @param direction
+	 *            to move eagle
+	 * 
+	 */
 	public void move(Labyrinth lab, Direction direction) {
-		// if eagle moving
+		// if eagle is moving
 		if (flying) {
 			// updating pathStep
 			if (state == FlightState.GOING)
@@ -157,6 +173,19 @@ public class Eagle extends LivingBeing {
 		}
 	}
 
+	/**
+	 * Updates eagle: checks if sword was caught, if eagle was killed by any
+	 * dragon or if eagle was caught by hero.
+	 * 
+	 * @param lab
+	 *            game labyrinth
+	 * @param livingBeings
+	 *            container with game living beings
+	 * @param hero
+	 *            game hero
+	 * @param sword
+	 *            game sword
+	 */
 	public void update(Labyrinth lab, Vector<LivingBeing> livingBeings,
 			Hero hero, Sword sword) {
 		// if eagle got the sword
@@ -204,6 +233,9 @@ public class Eagle extends LivingBeing {
 			hero.catchEagle(this);
 	}
 
+	/**
+	 * Draws eagle to string.
+	 */
 	public String drawToString() {
 		if (flying || !withHero) {
 			if (hasSword)
@@ -215,10 +247,20 @@ public class Eagle extends LivingBeing {
 		return "";
 	}
 
+	/**
+	 * Returns true if eagle is flying and false otherwise.
+	 * 
+	 * @return <code>true<code> if eagle is flying, <code>false<code> otherwise.
+	 */
 	public boolean isFlying() {
 		return flying;
 	}
 
+	/**
+	 * Returns true if eagle is with hero; false otherwise.
+	 * 
+	 * @return <code>true<code> if eagle is with hero; <code>false<code> otherwise.
+	 */
 	public boolean isWithHero() {
 		return withHero;
 	}
@@ -227,6 +269,11 @@ public class Eagle extends LivingBeing {
 		this.withHero = withHero;
 	}
 
+	/**
+	 * Returns true if eagle has sword; false otherwise.
+	 * 
+	 * @return <code>true<code> if eagle has sword; <code>false<code> otherwise.
+	 */
 	public boolean hasSword() {
 		return hasSword;
 	}
@@ -235,6 +282,11 @@ public class Eagle extends LivingBeing {
 		this.hasSword = hasSword;
 	}
 
+	/**
+	 * Returns true if eagle is catching the sword; false otherwise.
+	 * 
+	 * @return <code>true<code> if eagle is catching the sword; <code>false<code> otherwise.
+	 */
 	public boolean isCatchingSword() {
 		return pathStep == path.size() - 1;
 	}
