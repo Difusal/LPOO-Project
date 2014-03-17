@@ -7,6 +7,20 @@ import game.logic.Dragon.DragonBehavior;
 import game.logic.Labyrinth.Symbols;
 import game.logic.LivingBeing.Type;
 
+/**
+ * 
+ * Represents a Game.
+ * 
+ * @author Henrique Ferrolho
+ * @see MazeBuilder
+ * @see Labyrinth
+ * @see LivingBeing
+ * @see Dragon
+ * @see Eagle
+ * @see Hero
+ * @see Sword
+ * 
+ */
 public class Game {
 	private MazeBuilder mazeBuilder = new MazeBuilder();
 	private Labyrinth lab;
