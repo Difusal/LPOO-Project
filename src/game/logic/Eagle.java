@@ -3,6 +3,14 @@ package game.logic;
 import java.util.Random;
 import java.util.Vector;
 
+/**
+ * 
+ * Represents a Eagle.
+ * 
+ * @author Henrique Ferrolho
+ * @see LivingBeing
+ * 
+ */
 public class Eagle extends LivingBeing {
 	private boolean flying = false;
 	private boolean withHero = true;
