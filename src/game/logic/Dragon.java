@@ -14,6 +14,7 @@ import java.util.Vector;
  * 
  */
 public class Dragon extends LivingBeing {
+	private static final long serialVersionUID = 1L;
 	DragonBehavior behavior = DragonBehavior.MOVING;
 
 	/**

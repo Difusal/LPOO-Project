@@ -5,6 +5,7 @@ import game.logic.Labyrinth.Symbols;
 import java.util.Random;
 
 public class Hero extends LivingBeing {
+	private static final long serialVersionUID = 1L;
 	private boolean hasSword = false;
 	private boolean hasEagle = true;
 	private boolean hasJustSentEagle = false;

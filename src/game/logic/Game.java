@@ -1,5 +1,6 @@
 package game.logic;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Vector;
 
@@ -7,7 +8,8 @@ import game.logic.Dragon.DragonBehavior;
 import game.logic.Labyrinth.Symbols;
 import game.logic.LivingBeing.Type;
 
-public class Game {
+public class Game implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private MazeBuilder mazeBuilder = new MazeBuilder();
 	private Labyrinth lab;
 	private Vector<LivingBeing> livingBeings;
@@ -140,5 +142,13 @@ public class Game {
 
 	public boolean exitIsOpen() {
 		return exitIsOpen;
+	}
+
+	@Override
+	public String toString() {
+		return new StringBuffer("Labyrinth: ").append(lab)
+				.append("Living Beings: ").append(livingBeings)
+				.append("Hero: ").append(hero).append("Eagle: ").append(eagle)
+				.append("Sword: ").append(sword).toString();
 	}
 }

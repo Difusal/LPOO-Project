@@ -12,6 +12,7 @@ import java.util.Vector;
  * 
  */
 public class Eagle extends LivingBeing {
+	private static final long serialVersionUID = 1L;
 	private boolean flying = false;
 	private boolean withHero = true;
 	private boolean hasSword = false;
@@ -28,6 +29,9 @@ public class Eagle extends LivingBeing {
 		DOWN, LEFT, RIGHT, UP
 	}
 
+	/**
+	 * Constructs and initializes an eagle.
+	 */
 	public Eagle() {
 		type = Type.EAGLE;
 		prepareSpriteData();
@@ -230,5 +234,10 @@ public class Eagle extends LivingBeing {
 
 	public boolean isCatchingSword() {
 		return pathStep == path.size() - 1;
+	}
+
+	@Override
+	public String toString() {
+		return new StringBuffer("Position: ").append(position).toString();
 	}
 }

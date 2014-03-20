@@ -1,5 +1,7 @@
 package game.logic;
 
+import java.io.Serializable;
+
 /**
  * 
  * A coordinate representing a location in (x, y) point in space, specified in
@@ -8,7 +10,9 @@ package game.logic;
  * @author Henrique Ferrolho
  * 
  */
-public class Coord {
+public class Coord implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The X coordinate of this Coord.
 	 */

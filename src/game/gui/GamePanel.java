@@ -123,6 +123,15 @@ public class GamePanel extends JPanel implements ActionListener {
 		initGame();
 	}
 
+	public Game getGame() {
+		return game;
+	}
+
+	public void loadGame(Game game) {
+		this.game = game;
+		initGame();
+	}
+
 	/**
 	 * Initiates the game.
 	 */
@@ -570,5 +579,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
 	public void setSendEagleKey(int sendEagleKey) {
 		this.sendEagleKey = sendEagleKey;
+	}
+
+	public boolean hasAnActiveGame() {
+		return !showBackground;
 	}
 }

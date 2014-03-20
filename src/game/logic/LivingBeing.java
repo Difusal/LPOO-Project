@@ -1,6 +1,9 @@
 package game.logic;
 
-public abstract class LivingBeing {
+import java.io.Serializable;
+
+public abstract class LivingBeing implements Serializable {
+	private static final long serialVersionUID = 1L;
 	protected String name;
 	protected Type type;
 	protected Coord position = new Coord();

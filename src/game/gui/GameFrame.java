@@ -24,12 +24,14 @@ import java.awt.BorderLayout;
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JButton btnNewGame;
+	private JButton btnSaveload;
 	private JButton btnOptions;
 	private JButton btnQuitGame;
 	private JPanel buttonsPanel;
 	private GamePanel gamePanel;
-	private JDialog options;
 	private GameConfig gameConfig;
+	private JDialog options;
+	private SaveLoadDialog saveLoad;
 
 	/**
 	 * 
@@ -45,8 +47,10 @@ public class GameFrame extends JFrame {
 		buttonsPanel = new JPanel();
 		gameConfig = new GameConfig();
 		options = new OptionsDialog(this, gamePanel, gameConfig);
+		saveLoad = new SaveLoadDialog(this, gamePanel);
 
 		setUpButtons();
+		getContentPane().setLayout(new BorderLayout(0, 0));
 		addButtons();
 		getContentPane().add(gamePanel);
 	}
@@ -68,6 +72,15 @@ public class GameFrame extends JFrame {
 					// starting new game with new options
 					gamePanel.startNewGame(gameConfig);
 				}
+			}
+		});
+
+		// Save Load button
+		btnSaveload = new JButton("Save/Load");
+		btnSaveload.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				saveLoad.UpdateFilesList();
+				saveLoad.setVisible(true);
 			}
 		});
 
@@ -96,11 +109,13 @@ public class GameFrame extends JFrame {
 	 * Adds buttons to game windows layout.
 	 */
 	private void addButtons() {
-		getContentPane().setLayout(new BorderLayout(0, 0));
-		buttonsPanel.setLayout(new GridLayout(1, 3));
+		buttonsPanel.setLayout(new GridLayout(1, 4));
+
 		buttonsPanel.add(btnNewGame);
+		buttonsPanel.add(btnSaveload);
 		buttonsPanel.add(btnOptions);
 		buttonsPanel.add(btnQuitGame);
+
 		getContentPane().add(buttonsPanel, BorderLayout.NORTH);
 	}
 

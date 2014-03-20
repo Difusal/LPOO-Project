@@ -2,9 +2,11 @@ package game.logic;
 
 import game.logic.LivingBeing.Type;
 
+import java.io.Serializable;
 import java.util.Vector;
 
-public class Labyrinth {
+public class Labyrinth implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int width, height;
 	private Symbols[][] lab;
 
@@ -36,7 +38,8 @@ public class Labyrinth {
 		this.lab = lab;
 	}
 
-	public String drawToString() {
+	@Override
+	public String toString() {
 		String str = "\n";
 
 		for (int i = 0; i < lab.length; i++) {

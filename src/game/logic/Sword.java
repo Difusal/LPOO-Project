@@ -2,9 +2,11 @@ package game.logic;
 
 import game.logic.Labyrinth.Symbols;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Sword {
+public class Sword implements Serializable {
+	private static final long serialVersionUID = 1L;
 	protected Coord position = new Coord(1, 1);
 	private boolean show = true;
 

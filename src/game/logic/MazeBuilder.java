@@ -2,11 +2,13 @@ package game.logic;
 
 import game.logic.Labyrinth.Symbols;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Stack;
 import java.util.Vector;
 
-public class MazeBuilder {
+public class MazeBuilder implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private Symbols[][] maze;
 	private boolean[][] visitedCells;
 	private Stack<Coord> pathHistory;
