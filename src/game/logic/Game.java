@@ -8,10 +8,6 @@ import game.logic.Dragon.DragonBehavior;
 import game.logic.Labyrinth.Symbols;
 import game.logic.LivingBeing.Type;
 
-<<<<<<< HEAD
-public class Game implements Serializable {
-	private static final long serialVersionUID = 1L;
-=======
 /**
  * 
  * Represents a Game.
@@ -26,8 +22,8 @@ public class Game implements Serializable {
  * @see Sword
  * 
  */
-public class Game {
->>>>>>> 6bb628f9929d4843c588ba47a97ad232f8f9cad4
+public class Game implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private MazeBuilder mazeBuilder = new MazeBuilder();
 	private Labyrinth lab;
 	private Vector<LivingBeing> livingBeings;
