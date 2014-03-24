@@ -92,24 +92,20 @@ public class Eagle extends LivingBeing {
 			if (Math.abs(goal.getX() - position.getX()) > Math.abs(goal.getY()
 					- position.getY())) {
 				// if eagleX < swordX
-				if (position.getX() < goal.getX()) {
+				if (position.getX() < goal.getX())
 					position.setX(position.getX() + 1);
-				}
 				// if eagleX >= swordX
-				else {
+				else
 					position.setX(position.getX() - 1);
-				}
 			}
 			// if dy >= dx
 			else {
 				// if eagleY < swordY
-				if (position.getY() < goal.getY()) {
+				if (position.getY() < goal.getY())
 					position.setY(position.getY() + 1);
-				}
 				// if eagleY >= swordY
-				else {
+				else
 					position.setY(position.getY() - 1);
-				}
 			}
 
 			// if sword reached
@@ -158,7 +154,7 @@ public class Eagle extends LivingBeing {
 			sword.hide();
 
 		// if dragon nearby when waiting for hero or catching sword
-		if (!isDead() && ((!isFlying() && !isWithHero()) || isCatchingSword())) {
+		if (!isDead() && ((!flying && !withHero) || isCatchingSword())) {
 			for (LivingBeing i : livingBeings) {
 				// skipping if comparing to something other than a dragon
 				if (i.getType() != Type.DRAGON)
@@ -191,9 +187,8 @@ public class Eagle extends LivingBeing {
 		}
 
 		// checking if hero caught eagle
-		if (!hero.hasEagle() && !isFlying() && !isDead()
-				&& hero.getPosition().getX() == getPosition().getX()
-				&& hero.getPosition().getY() == getPosition().getY())
+		if (hero.getPosition().equals(position) && !hero.hasEagle()
+				&& !isFlying() && !isDead())
 			hero.catchEagle(this);
 	}
 

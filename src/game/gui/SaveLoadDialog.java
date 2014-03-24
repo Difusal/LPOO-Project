@@ -4,8 +4,6 @@ import game.logic.Game;
 
 import javax.swing.JDialog;
 
-import java.awt.GridLayout;
-
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -13,10 +11,15 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.List;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -56,26 +59,24 @@ public class SaveLoadDialog extends JDialog {
 		SetUpLoadSection();
 
 		pack();
-		setLocation(frame.getLocation().x + frame.getSize().width / 2
-				- getSize().width / 2, frame.getLocation().y
-				+ frame.getSize().height / 2 - getSize().height / 2);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height
+				/ 2 - this.getSize().height / 2);
 	}
 
 	private void SetUpSaveSection() {
 		JPanel SaveGameSection = new JPanel();
+		SaveGameSection.setBackground(Color.LIGHT_GRAY);
 		getContentPane().add(SaveGameSection);
-		SaveGameSection.setLayout(new GridLayout(3, 1, 0, 0));
-
-		JPanel SaveGameTitlePanel = new JPanel();
-		SaveGameTitlePanel.setBackground(Color.LIGHT_GRAY);
-		SaveGameSection.add(SaveGameTitlePanel);
+		SaveGameSection.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblSaveGame = new JLabel("Save Game");
-		SaveGameTitlePanel.add(lblSaveGame);
+		lblSaveGame.setBackground(Color.LIGHT_GRAY);
+		SaveGameSection.add(lblSaveGame, BorderLayout.NORTH);
 		lblSaveGame.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JPanel SaveGameInputPanel = new JPanel();
-		SaveGameSection.add(SaveGameInputPanel);
+		SaveGameSection.add(SaveGameInputPanel, BorderLayout.CENTER);
 
 		JLabel lblName = new JLabel("Name:");
 		SaveGameInputPanel.add(lblName);
@@ -84,29 +85,25 @@ public class SaveLoadDialog extends JDialog {
 		SaveGameInputPanel.add(saveName);
 		saveName.setColumns(10);
 
-		JPanel SaveButtonPanel = new JPanel();
-		SaveGameSection.add(SaveButtonPanel);
-
 		JButton saveButton = new JButton("Save");
+		SaveGameInputPanel.add(saveButton);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				SaveGame();
 			}
 		});
-		SaveButtonPanel.add(saveButton);
 	}
 
 	private void SetUpLoadSection() {
 		JPanel LoadGameSection = new JPanel();
+		LoadGameSection.setBackground(Color.LIGHT_GRAY);
 		getContentPane().add(LoadGameSection);
-		LoadGameSection.setLayout(new GridLayout(3, 1, 0, 0));
-
-		JPanel LoadGameTitlePanel = new JPanel();
-		LoadGameTitlePanel.setBackground(Color.LIGHT_GRAY);
-		LoadGameSection.add(LoadGameTitlePanel);
+		LoadGameSection.setLayout(new BorderLayout(0, 0));
 
 		JLabel lblLoadGame = new JLabel("Load Game");
-		LoadGameTitlePanel.add(lblLoadGame);
+		lblLoadGame.setBackground(Color.LIGHT_GRAY);
+		lblLoadGame.setHorizontalAlignment(SwingConstants.CENTER);
+		LoadGameSection.add(lblLoadGame, BorderLayout.NORTH);
 
 		JPanel GamesListPanel = new JPanel();
 		LoadGameSection.add(GamesListPanel);
@@ -114,10 +111,8 @@ public class SaveLoadDialog extends JDialog {
 		gamesList = new List();
 		GamesListPanel.add(gamesList);
 
-		JPanel LoadButtonPanel = new JPanel();
-		LoadGameSection.add(LoadButtonPanel);
-
 		JButton loadButton = new JButton("Load");
+		GamesListPanel.add(loadButton);
 		loadButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Game loadedGame = LoadGame();
@@ -126,7 +121,6 @@ public class SaveLoadDialog extends JDialog {
 					gamePanel.loadGame(loadedGame);
 			}
 		});
-		LoadButtonPanel.add(loadButton);
 	}
 
 	private void SaveGame() {

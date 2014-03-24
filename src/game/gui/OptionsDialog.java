@@ -5,8 +5,10 @@ import game.logic.GameConfig;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -62,9 +64,9 @@ public class OptionsDialog extends JDialog {
 
 		// Dialog Details
 		pack();
-		setLocation(frame.getLocation().x + frame.getSize().width / 2
-				- getSize().width / 2, frame.getLocation().y
-				+ frame.getSize().height / 2 - getSize().height / 2);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height
+				/ 2 - this.getSize().height / 2);
 	}
 
 	/**
