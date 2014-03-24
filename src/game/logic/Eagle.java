@@ -17,8 +17,7 @@ public class Eagle extends LivingBeing {
 	private boolean withHero = true;
 	private boolean hasSword = false;
 	private FlightState state;
-	private int pathStep;
-	Vector<Coord> path = new Vector<Coord>();
+	private Coord src, dest;
 
 	/**
 	 * Represents an eagle flight state.
@@ -59,64 +58,9 @@ public class Eagle extends LivingBeing {
 		flying = true;
 		withHero = false;
 		state = FlightState.GOING;
-		pathStep = 0;
 
-		// calculating path
-		path.clear();
-
-		// if dx > dy
-		if (Math.abs(sword.position.getX() - position.getX()) > Math
-				.abs(sword.position.getY() - position.getY())) {
-			// calculating m
-			double m;
-			if (sword.position.getX() == position.getX())
-				m = 0;
-			else
-				m = 1.0 * (sword.position.getY() - position.getY())
-						/ (sword.position.getX() - position.getX());
-
-			// calculating b
-			double b = position.getY() - m * position.getX();
-
-			// if eagleX < swordX
-			if (position.getX() < sword.position.getX()) {
-				for (int i = position.getX(); i <= sword.position.getX(); i++) {
-					path.add(new Coord(i, (int) Math.round(m * i + b)));
-				}
-			}
-			// if eagleX >= swordX
-			else {
-				for (int i = position.getX(); i >= sword.position.getX(); i--) {
-					path.add(new Coord(i, (int) Math.round(m * i + b)));
-				}
-			}
-		}
-		// if dy >= dx
-		else {
-			// calculating m
-			double m;
-			if (sword.position.getY() == position.getY())
-				m = 0;
-			else
-				m = 1.0 * (sword.position.getX() - position.getX())
-						/ (sword.position.getY() - position.getY());
-
-			// calculating b
-			double b = position.getX() - m * position.getY();
-
-			// if eagleY < swordY
-			if (position.getY() < sword.position.getY()) {
-				for (int i = position.getY(); i <= sword.position.getY(); i++) {
-					path.add(new Coord((int) Math.round(m * i + b), i));
-				}
-			}
-			// if eagleY >= swordY
-			else {
-				for (int i = position.getY(); i >= sword.position.getY(); i--) {
-					path.add(new Coord((int) Math.round(m * i + b), i));
-				}
-			}
-		}
+		src = new Coord(position);
+		dest = new Coord(sword.getPosition());
 
 		// moving eagle
 		move(lab, Direction.NONE);
@@ -135,14 +79,41 @@ public class Eagle extends LivingBeing {
 	public void move(Labyrinth lab, Direction direction) {
 		// if eagle is moving
 		if (flying) {
-			// updating pathStep
-			if (state == FlightState.GOING)
-				pathStep++;
-			else
-				pathStep--;
+			// saving previous position to know which direction is facing
+			int prevX = position.getX();
+			int prevY = position.getY();
 
-			// sword reached
-			if (pathStep >= path.size() - 1) {
+			Coord goal = src;
+			if (state == FlightState.GOING) {
+				goal = dest;
+			}
+
+			// if dx > dy
+			if (Math.abs(goal.getX() - position.getX()) > Math.abs(goal.getY()
+					- position.getY())) {
+				// if eagleX < swordX
+				if (position.getX() < goal.getX()) {
+					position.setX(position.getX() + 1);
+				}
+				// if eagleX >= swordX
+				else {
+					position.setX(position.getX() - 1);
+				}
+			}
+			// if dy >= dx
+			else {
+				// if eagleY < swordY
+				if (position.getY() < goal.getY()) {
+					position.setY(position.getY() + 1);
+				}
+				// if eagleY >= swordY
+				else {
+					position.setY(position.getY() - 1);
+				}
+			}
+
+			// if sword reached
+			if (state == FlightState.GOING && dest.equals(position)) {
 				// inverting flight direction
 				state = FlightState.RETURNING;
 
@@ -151,16 +122,8 @@ public class Eagle extends LivingBeing {
 			}
 
 			// if origin reached
-			if (pathStep == 0 && state == FlightState.RETURNING)
+			if (state == FlightState.RETURNING && position.equals(src))
 				flying = false;
-
-			// saving previous position to know which direction is facing
-			int prevX = position.getX();
-			int prevY = position.getY();
-
-			// updating eagle position
-			getPosition().setX(path.get(pathStep).getX());
-			getPosition().setY(path.get(pathStep).getY());
 
 			// updating sprite
 			if (position.getY() > prevY)
@@ -289,7 +252,7 @@ public class Eagle extends LivingBeing {
 	 * @return <code>true<code> if eagle is catching the sword; <code>false<code> otherwise.
 	 */
 	public boolean isCatchingSword() {
-		return pathStep == path.size() - 1;
+		return flying && dest.equals(position);
 	}
 
 	@Override
