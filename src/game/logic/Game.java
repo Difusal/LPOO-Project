@@ -58,7 +58,7 @@ public class Game implements Serializable {
 		livingBeings = new Vector<LivingBeing>();
 
 		// creating hero
-		livingBeings.add(new Hero("Hero"));
+		livingBeings.add(new Hero("Hero", new Coord(-1, -1)));
 		hero = (Hero) livingBeings.get(0);
 
 		// creating eagle
@@ -67,7 +67,7 @@ public class Game implements Serializable {
 		eagle.setPosition(new Coord(hero.getPosition()));
 
 		// creating sword
-		sword = new Sword();
+		sword = new Sword(-1, -1);
 	}
 
 	public void initializeVariables(DragonBehavior dragonBehavior,

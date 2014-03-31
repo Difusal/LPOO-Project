@@ -42,6 +42,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private boolean showBackground = true;
 	private boolean creatingLabyrinth = false;
+	private LivingBeing.Type elemBeingPlaced = null;
 	private Timer timer;
 	private Image background;
 	private Image pathWithShadows;
@@ -168,17 +169,35 @@ public class GamePanel extends JPanel implements ActionListener {
 			if (!creatingLabyrinth)
 				return;
 
-			if (0 < hoveredCell.getX()
-					&& hoveredCell.getX() < game.getLabyrinth().getWidth() - 1
-					&& 0 < hoveredCell.getY()
-					&& hoveredCell.getY() < game.getLabyrinth().getHeight() - 1) {
-				int button = e.getButton();
-				if (button == MouseEvent.BUTTON1)
+			switch (e.getButton()) {
+			case MouseEvent.BUTTON1:
+				if (0 < hoveredCell.getX()
+						&& hoveredCell.getX() < game.getLabyrinth().getWidth() - 1
+						&& 0 < hoveredCell.getY()
+						&& hoveredCell.getY() < game.getLabyrinth().getHeight() - 1)
 					game.getLabyrinth().getLab()[hoveredCell.getY()][hoveredCell
 							.getX()] = Symbols.PATH;
-				else if (button == MouseEvent.BUTTON3)
-					game.getLabyrinth().getLab()[hoveredCell.getY()][hoveredCell
-							.getX()] = Symbols.WALL;
+				if (elemBeingPlaced != null) {
+					if (elemBeingPlaced == Type.DRAGON) {
+						LivingBeing d = new Dragon(DragonBehavior.NOTMOVING,
+								hoveredCell);
+						game.getLivingBeings().add(d);
+					} else if (elemBeingPlaced == Type.EAGLE)
+						game.getSword().setPosition(new Coord(hoveredCell));
+					else if (elemBeingPlaced == Type.HERO) {
+						game.getHero().setPosition(new Coord(hoveredCell));
+						game.getEagle().setPosition(new Coord(hoveredCell));
+					}
+				}
+				break;
+			case MouseEvent.BUTTON2:
+				game.getLabyrinth().getLab()[hoveredCell.getY()][hoveredCell
+						.getX()] = Symbols.EXIT;
+				break;
+			case MouseEvent.BUTTON3:
+				game.getLabyrinth().getLab()[hoveredCell.getY()][hoveredCell
+						.getX()] = Symbols.WALL;
+				break;
 			}
 		}
 
@@ -201,9 +220,6 @@ public class GamePanel extends JPanel implements ActionListener {
 			if (!creatingLabyrinth)
 				return;
 
-			System.out.println("Dragged " + e.getButton() + " " + e.getX()
-					+ ", " + e.getY());
-
 			int x = (int) ((e.getX() - (getWidth() - tileWidth
 					* game.getLabyrinth().getWidth()) / 2.0) / tileWidth);
 			int y = (int) ((e.getY() - (getHeight() - (tileHeight - 0.37 * tileHeight)
@@ -219,10 +235,12 @@ public class GamePanel extends JPanel implements ActionListener {
 				if (SwingUtilities.isLeftMouseButton(e))
 					game.getLabyrinth().getLab()[hoveredCell.getY()][hoveredCell
 							.getX()] = Symbols.PATH;
-				else if (SwingUtilities.isRightMouseButton(e))
-					game.getLabyrinth().getLab()[hoveredCell.getY()][hoveredCell
-							.getX()] = Symbols.WALL;
-			}
+			} else if (SwingUtilities.isMiddleMouseButton(e))
+				game.getLabyrinth().getLab()[hoveredCell.getY()][hoveredCell
+						.getX()] = Symbols.EXIT;
+			if (SwingUtilities.isRightMouseButton(e))
+				game.getLabyrinth().getLab()[hoveredCell.getY()][hoveredCell
+						.getX()] = Symbols.WALL;
 
 			repaint();
 		}
@@ -233,33 +251,45 @@ public class GamePanel extends JPanel implements ActionListener {
 			if (showBackground)
 				return;
 
-			int key = e.getKeyCode();
+			if (creatingLabyrinth) {
+				int key = e.getKeyCode();
+				if (key == KeyEvent.VK_H)
+					elemBeingPlaced = Type.HERO;
+				else if (key == KeyEvent.VK_S)
+					elemBeingPlaced = Type.EAGLE;
+				else if (key == KeyEvent.VK_D)
+					elemBeingPlaced = Type.DRAGON;
+				else if (key == KeyEvent.VK_SPACE || key == KeyEvent.VK_ESCAPE)
+					elemBeingPlaced = null;
+			} else {
+				int key = e.getKeyCode();
 
-			Direction dir = Direction.NONE;
-			if (key == KeyEvent.VK_RIGHT || key == rightKey)
-				dir = Direction.RIGHT;
-			else if (key == KeyEvent.VK_DOWN || key == downKey)
-				dir = Direction.DOWN;
-			else if (key == KeyEvent.VK_LEFT || key == leftKey)
-				dir = Direction.LEFT;
-			else if (key == KeyEvent.VK_UP || key == upKey)
-				dir = Direction.UP;
-			else if (key == sendEagleKey)
-				if (game.getHero().hasEagle() && !game.getHero().hasSword())
-					game.getHero().sendEagle();
+				Direction dir = Direction.NONE;
+				if (key == KeyEvent.VK_RIGHT || key == rightKey)
+					dir = Direction.RIGHT;
+				else if (key == KeyEvent.VK_DOWN || key == downKey)
+					dir = Direction.DOWN;
+				else if (key == KeyEvent.VK_LEFT || key == leftKey)
+					dir = Direction.LEFT;
+				else if (key == KeyEvent.VK_UP || key == upKey)
+					dir = Direction.UP;
+				else if (key == sendEagleKey)
+					if (game.getHero().hasEagle() && !game.getHero().hasSword())
+						game.getHero().sendEagle();
 
-			if (game.updateGame(dir)) {
-				// Game Over
-				if (game.getHero().isDead()) {
-					String msg = "Game Over!";
-					JOptionPane.showMessageDialog(getRootPane(), msg);
-				} else {
-					String msg = "You win!";
-					JOptionPane.showMessageDialog(getRootPane(), msg);
+				if (game.updateGame(dir)) {
+					// Game Over
+					if (game.getHero().isDead()) {
+						String msg = "Game Over!";
+						JOptionPane.showMessageDialog(getRootPane(), msg);
+					} else {
+						String msg = "You win!";
+						JOptionPane.showMessageDialog(getRootPane(), msg);
+					}
+
+					timer.stop();
+					showBackground = true;
 				}
-
-				timer.stop();
-				showBackground = true;
 			}
 
 			repaint();
@@ -380,8 +410,9 @@ public class GamePanel extends JPanel implements ActionListener {
 			drawEagle(g2d, game.getEagle(), game.getEagle().getPosition()
 					.getX(), game.getEagle().getPosition().getY());
 
-		// drawing crosshair if creating maze
+		// if creating maze
 		if (creatingLabyrinth) {
+			// drawing crosshair
 			g2d.setColor(Color.YELLOW);
 
 			// vertical lines
@@ -397,6 +428,21 @@ public class GamePanel extends JPanel implements ActionListener {
 			dy1 += (getHeight() - (tileHeight - 0.37 * tileHeight)
 					* game.getLabyrinth().getHeight()) / 2.0;
 			int dy2 = (int) (dy1 + tileHeight - 0.15 * tileHeight);
+
+			if (elemBeingPlaced != null) {
+				if (elemBeingPlaced == Type.HERO)
+					drawHero(g2d, game.getHero(), hoveredCell.getX(),
+							hoveredCell.getY());
+				else if (elemBeingPlaced == Type.DRAGON) {
+					LivingBeing d = new Dragon(DragonBehavior.NOTMOVING,
+							new Coord());
+					drawDragon(g2d, d, hoveredCell.getX(), hoveredCell.getY());
+				} else if (elemBeingPlaced == Type.EAGLE) {
+					Sword sword = new Sword(new Coord());
+					drawSword(g2d, sword, hoveredCell.getX(),
+							hoveredCell.getY());
+				}
+			}
 
 			g2d.drawLine(0, dy1, getWidth(), dy1);
 			g2d.drawLine(0, dy2, getWidth(), dy2);

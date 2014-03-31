@@ -10,10 +10,6 @@ public class Sword implements Serializable {
 	protected Coord position = new Coord(1, 1);
 	private boolean show = true;
 
-	public Sword() {
-
-	}
-
 	public Sword(Labyrinth lab, LivingBeing hero) {
 		Random r = new Random();
 		do {
