@@ -32,6 +32,13 @@ public class Game implements Serializable {
 	private Sword sword;
 	private boolean exitIsOpen = false;
 
+	public Game() {
+		// initializing variables
+		lab = mazeBuilder.buildEmpty();
+
+		initializeVariables();
+	}
+
 	public Game(DragonBehavior dragonBehavior, int numDragons) {
 		// initializing variables
 		lab = mazeBuilder.buildDemo();
@@ -45,6 +52,22 @@ public class Game implements Serializable {
 		lab = mazeBuilder.build(width, height);
 
 		initializeVariables(dragonBehavior, numDragons);
+	}
+
+	public void initializeVariables() {
+		livingBeings = new Vector<LivingBeing>();
+
+		// creating hero
+		livingBeings.add(new Hero("Hero"));
+		hero = (Hero) livingBeings.get(0);
+
+		// creating eagle
+		livingBeings.add(new Eagle());
+		eagle = (Eagle) livingBeings.get(1);
+		eagle.setPosition(new Coord(hero.getPosition()));
+
+		// creating sword
+		sword = new Sword();
 	}
 
 	public void initializeVariables(DragonBehavior dragonBehavior,

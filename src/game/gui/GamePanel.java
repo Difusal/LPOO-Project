@@ -3,6 +3,7 @@ package game.gui;
 import game.logic.Direction;
 import game.logic.Dragon;
 import game.logic.Dragon.DragonBehavior;
+import game.logic.Coord;
 import game.logic.Game;
 import game.logic.GameConfig;
 import game.logic.Hero;
@@ -15,8 +16,10 @@ import game.logic.Sword;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -24,6 +27,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * 
@@ -36,6 +41,7 @@ import java.awt.event.KeyEvent;
 public class GamePanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private boolean showBackground = true;
+	private boolean creatingLabyrinth = false;
 	private Timer timer;
 	private Image background;
 	private Image pathWithShadows;
@@ -57,12 +63,16 @@ public class GamePanel extends JPanel implements ActionListener {
 	private int rightKey = KeyEvent.VK_D;
 	private int downKey = KeyEvent.VK_S;
 	private int sendEagleKey = KeyEvent.VK_B;
+	private Coord hoveredCell = new Coord();
 
 	/**
 	 * Class constructor.
 	 */
 	public GamePanel() {
-		addKeyListener(new TAdapter());
+		MyMouseAdapter mouseAdapter = new MyMouseAdapter();
+		addMouseListener(mouseAdapter);
+		addMouseMotionListener(mouseAdapter);
+		addKeyListener(new MyKeyboardAdapter());
 		setFocusable(true);
 		setDoubleBuffered(true);
 
@@ -77,6 +87,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	 */
 	public void startNewDemoGame() {
 		game = new Game(DragonBehavior.NOTMOVING, 1);
+		creatingLabyrinth = false;
 		initGame();
 	}
 
@@ -98,6 +109,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	public void startNewGame(int width, int height, DragonBehavior behavior,
 			int numDragons) {
 		game = new Game(width, height, behavior, numDragons);
+		creatingLabyrinth = false;
 		initGame();
 	}
 
@@ -112,6 +124,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	public void startNewGame(GameConfig gameConfig) {
 		game = new Game(gameConfig.getWidth(), gameConfig.getHeight(),
 				gameConfig.getDragonBehavior(), gameConfig.getNumDragons());
+		creatingLabyrinth = false;
 
 		// reassigning movement keys
 		upKey = gameConfig.getUpKeyAssignment();
@@ -122,12 +135,22 @@ public class GamePanel extends JPanel implements ActionListener {
 		initGame();
 	}
 
+	/**
+	 * TODO
+	 */
+	public void startGameCreation() {
+		game = new Game();
+		creatingLabyrinth = true;
+		initGame();
+	}
+
 	public Game getGame() {
 		return game;
 	}
 
 	public void loadGame(Game game) {
 		this.game = game;
+		creatingLabyrinth = false;
 		initGame();
 	}
 
@@ -140,7 +163,72 @@ public class GamePanel extends JPanel implements ActionListener {
 		requestFocus();
 	}
 
-	private class TAdapter extends KeyAdapter {
+	private class MyMouseAdapter extends MouseAdapter {
+		public void mouseClicked(MouseEvent e) {
+			if (!creatingLabyrinth)
+				return;
+
+			if (0 < hoveredCell.getX()
+					&& hoveredCell.getX() < game.getLabyrinth().getWidth() - 1
+					&& 0 < hoveredCell.getY()
+					&& hoveredCell.getY() < game.getLabyrinth().getHeight() - 1) {
+				int button = e.getButton();
+				if (button == MouseEvent.BUTTON1)
+					game.getLabyrinth().getLab()[hoveredCell.getY()][hoveredCell
+							.getX()] = Symbols.PATH;
+				else if (button == MouseEvent.BUTTON3)
+					game.getLabyrinth().getLab()[hoveredCell.getY()][hoveredCell
+							.getX()] = Symbols.WALL;
+			}
+		}
+
+		public void mouseMoved(MouseEvent e) {
+			if (!creatingLabyrinth)
+				return;
+
+			int x = (int) ((e.getX() - (getWidth() - tileWidth
+					* game.getLabyrinth().getWidth()) / 2.0) / tileWidth);
+			int y = (int) ((e.getY() - (getHeight() - (tileHeight - 0.37 * tileHeight)
+					* game.getLabyrinth().getHeight()) / 2.0) / (tileHeight - 0.37 * tileHeight));
+
+			hoveredCell.setX(x);
+			hoveredCell.setY(y);
+
+			repaint();
+		}
+
+		public void mouseDragged(MouseEvent e) {
+			if (!creatingLabyrinth)
+				return;
+
+			System.out.println("Dragged " + e.getButton() + " " + e.getX()
+					+ ", " + e.getY());
+
+			int x = (int) ((e.getX() - (getWidth() - tileWidth
+					* game.getLabyrinth().getWidth()) / 2.0) / tileWidth);
+			int y = (int) ((e.getY() - (getHeight() - (tileHeight - 0.37 * tileHeight)
+					* game.getLabyrinth().getHeight()) / 2.0) / (tileHeight - 0.37 * tileHeight));
+
+			hoveredCell.setX(x);
+			hoveredCell.setY(y);
+
+			if (0 < hoveredCell.getX()
+					&& hoveredCell.getX() < game.getLabyrinth().getWidth() - 1
+					&& 0 < hoveredCell.getY()
+					&& hoveredCell.getY() < game.getLabyrinth().getHeight() - 1) {
+				if (SwingUtilities.isLeftMouseButton(e))
+					game.getLabyrinth().getLab()[hoveredCell.getY()][hoveredCell
+							.getX()] = Symbols.PATH;
+				else if (SwingUtilities.isRightMouseButton(e))
+					game.getLabyrinth().getLab()[hoveredCell.getY()][hoveredCell
+							.getX()] = Symbols.WALL;
+			}
+
+			repaint();
+		}
+	}
+
+	private class MyKeyboardAdapter extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
 			if (showBackground)
 				return;
@@ -173,6 +261,8 @@ public class GamePanel extends JPanel implements ActionListener {
 				timer.stop();
 				showBackground = true;
 			}
+
+			repaint();
 		}
 	}
 
@@ -238,7 +328,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	/**
 	 * Draws the game state.
 	 */
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
 		Graphics2D g2d = (Graphics2D) g;
@@ -289,6 +379,28 @@ public class GamePanel extends JPanel implements ActionListener {
 						.isFlying() && !game.getEagle().isWithHero())))
 			drawEagle(g2d, game.getEagle(), game.getEagle().getPosition()
 					.getX(), game.getEagle().getPosition().getY());
+
+		// drawing crosshair if creating maze
+		if (creatingLabyrinth) {
+			g2d.setColor(Color.YELLOW);
+
+			// vertical lines
+			int dx1 = hoveredCell.getX() * tileWidth;
+			dx1 += (getWidth() - tileWidth * game.getLabyrinth().getWidth()) / 2.0;
+			int dx2 = dx1 + tileWidth;
+
+			g2d.drawLine(dx1, 0, dx1, getHeight());
+			g2d.drawLine(dx2, 0, dx2, getHeight());
+
+			// horizontal lines
+			int dy1 = (int) (hoveredCell.getY() * (tileHeight - 0.37 * tileHeight));
+			dy1 += (getHeight() - (tileHeight - 0.37 * tileHeight)
+					* game.getLabyrinth().getHeight()) / 2.0;
+			int dy2 = (int) (dy1 + tileHeight - 0.15 * tileHeight);
+
+			g2d.drawLine(0, dy1, getWidth(), dy1);
+			g2d.drawLine(0, dy2, getWidth(), dy2);
+		}
 	}
 
 	/**
@@ -357,6 +469,11 @@ public class GamePanel extends JPanel implements ActionListener {
 		yCorrection = (int) (-50.0 * tileHeight / 131.0);
 		dstY += y * yCorrection;
 
+		// centering board
+		dstX += (getWidth() - tileWidth * game.getLabyrinth().getWidth()) / 2.0;
+		dstY += (getHeight() - (tileHeight - 0.37 * tileHeight)
+				* game.getLabyrinth().getHeight()) / 2.0;
+
 		g2d.drawImage(tile, dstX, dstY, dstX + tileWidth, dstY + tileHeight, 0,
 				0, tile.getWidth(null), tile.getHeight(null), null);
 	}
@@ -374,6 +491,11 @@ public class GamePanel extends JPanel implements ActionListener {
 		int dstY = (int) (y * tileHeight - (15 * tileHeight / 131.0));
 		int yCorrection = (int) (-50.0 * tileHeight / 131.0);
 		dstY += y * yCorrection;
+
+		// centering board
+		dstX += (getWidth() - tileWidth * game.getLabyrinth().getWidth()) / 2.0;
+		dstY += (getHeight() - (tileHeight - 0.37 * tileHeight)
+				* game.getLabyrinth().getHeight()) / 2.0;
 
 		dstX += tileWidth / 6.0;
 		dstY += tileHeight / 6.0;
@@ -430,6 +552,11 @@ public class GamePanel extends JPanel implements ActionListener {
 		int yCorrection = (int) (-50.0 * tileHeight / 131.0);
 		dstY += y * yCorrection;
 
+		// centering board
+		dstX += (getWidth() - tileWidth * game.getLabyrinth().getWidth()) / 2.0;
+		dstY += (getHeight() - (tileHeight - 0.37 * tileHeight)
+				* game.getLabyrinth().getHeight()) / 2.0;
+
 		int border = (int) (tileWidth / 5.0);
 
 		g2d.drawImage(sword, dstX + border, dstY + border, dstX + tileWidth
@@ -450,6 +577,11 @@ public class GamePanel extends JPanel implements ActionListener {
 		int dstY = (int) (y * tileHeight - (12 * tileHeight / 131.0));
 		int yCorrection = (int) (-50.0 * tileHeight / 131.0);
 		dstY += y * yCorrection;
+
+		// centering board
+		dstX += (getWidth() - tileWidth * game.getLabyrinth().getWidth()) / 2.0;
+		dstY += (getHeight() - (tileHeight - 0.37 * tileHeight)
+				* game.getLabyrinth().getHeight()) / 2.0;
 
 		if (k.isSleeping())
 			g2d.drawImage(dragonSleeping, dstX, dstY, dstX + tileWidth, dstY
@@ -487,6 +619,11 @@ public class GamePanel extends JPanel implements ActionListener {
 		int dstY = (int) (y * tileHeight - (12 * tileHeight / 131.0));
 		int yCorrection = (int) (-50.0 * tileHeight / 131.0);
 		dstY += y * yCorrection;
+
+		// centering board
+		dstX += (getWidth() - tileWidth * game.getLabyrinth().getWidth()) / 2.0;
+		dstY += (getHeight() - (tileHeight - 0.37 * tileHeight)
+				* game.getLabyrinth().getHeight()) / 2.0;
 
 		int dstWidth = tileWidth;
 		int dstHeight = tileHeight;

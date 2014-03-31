@@ -16,6 +16,13 @@ public class Hero extends LivingBeing {
 		DOWN, LEFT, RIGHT, UP
 	}
 
+	public Hero(String name) {
+		this.name = name;
+		this.type = Type.HERO;
+
+		prepareSpriteData();
+	}
+
 	public Hero(String name, Labyrinth lab) {
 		this.name = name;
 		this.type = Type.HERO;

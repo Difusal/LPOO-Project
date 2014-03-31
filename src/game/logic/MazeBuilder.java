@@ -52,6 +52,17 @@ public class MazeBuilder implements Serializable {
 		return new Labyrinth(10, 10, maze);
 	}
 
+	public Labyrinth buildEmpty() {
+		maze = new Symbols[10][10];
+
+		// filling maze with 'X'
+		for (int i = 0; i < 10; i++)
+			for (int j = 0; j < 10; j++)
+				maze[i][j] = Symbols.WALL;
+
+		return new Labyrinth(10, 10, maze);
+	}
+
 	// random labyrinth builder
 	public Labyrinth build(int width, int height) {
 		Random r = new Random();
