@@ -195,7 +195,8 @@ public class Eagle extends LivingBeing {
 	/**
 	 * Draws eagle to string.
 	 */
-	public String drawToString() {
+	@Override
+	public String toString() {
 		if (flying || !withHero) {
 			if (hasSword)
 				return "BE";
@@ -248,10 +249,5 @@ public class Eagle extends LivingBeing {
 	 */
 	public boolean isCatchingSword() {
 		return flying && dest.equals(position);
-	}
-
-	@Override
-	public String toString() {
-		return new StringBuffer("Position: ").append(position).toString();
 	}
 }

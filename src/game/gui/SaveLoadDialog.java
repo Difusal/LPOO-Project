@@ -64,6 +64,9 @@ public class SaveLoadDialog extends JDialog {
 				/ 2 - this.getSize().height / 2);
 	}
 
+	/**
+	 * Sets up save game section of the panel
+	 */
 	private void SetUpSaveSection() {
 		JPanel SaveGameSection = new JPanel();
 		SaveGameSection.setBackground(Color.LIGHT_GRAY);
@@ -94,6 +97,9 @@ public class SaveLoadDialog extends JDialog {
 		});
 	}
 
+	/**
+	 * Sets up load game section of the panel
+	 */
 	private void SetUpLoadSection() {
 		JPanel LoadGameSection = new JPanel();
 		LoadGameSection.setBackground(Color.LIGHT_GRAY);
@@ -123,6 +129,9 @@ public class SaveLoadDialog extends JDialog {
 		});
 	}
 
+	/**
+	 * Saves game with the current name on the text box
+	 */
 	private void SaveGame() {
 		if (!gamePanel.hasAnActiveGame()) {
 			JOptionPane.showMessageDialog(null,
@@ -155,6 +164,11 @@ public class SaveLoadDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * Loads the selected game
+	 * 
+	 * @return loaded game
+	 */
 	private Game LoadGame() {
 		if (gamesList.getSelectedItem() == null) {
 			JOptionPane.showMessageDialog(null,
@@ -179,6 +193,9 @@ public class SaveLoadDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * Updates list of files according to existing saved games
+	 */
 	public void UpdateFilesList() {
 		File folder = new File(savedGamesFolder);
 		if (!folder.isDirectory())

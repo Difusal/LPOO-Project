@@ -4,6 +4,12 @@ import game.logic.Labyrinth.Symbols;
 
 import java.util.Random;
 
+/**
+ * A living being representing a hero.
+ * 
+ * @author Henrique Ferrolho
+ * 
+ */
 public class Hero extends LivingBeing {
 	private static final long serialVersionUID = 1L;
 	private boolean hasSword = false;
@@ -16,6 +22,12 @@ public class Hero extends LivingBeing {
 		DOWN, LEFT, RIGHT, UP
 	}
 
+	/**
+	 * Constructs and initializes a hero with the specified name.
+	 * 
+	 * @param name
+	 *            the hero's name
+	 */
 	public Hero(String name) {
 		this.name = name;
 		this.type = Type.HERO;
@@ -23,6 +35,15 @@ public class Hero extends LivingBeing {
 		prepareSpriteData();
 	}
 
+	/**
+	 * Constructs and initializes a hero with the specified name on the
+	 * specified labyrinth.
+	 * 
+	 * @param name
+	 *            the hero's name
+	 * @param lab
+	 *            the game labyrinth
+	 */
 	public Hero(String name, Labyrinth lab) {
 		this.name = name;
 		this.type = Type.HERO;
@@ -36,6 +57,14 @@ public class Hero extends LivingBeing {
 		prepareSpriteData();
 	}
 
+	/**
+	 * Constructs and initialized a hero.
+	 * 
+	 * @param name
+	 *            this hero's name
+	 * @param poition
+	 *            this hero's position
+	 */
 	public Hero(String name, Coord position) {
 		this.name = name;
 		this.type = Type.HERO;
@@ -44,12 +73,23 @@ public class Hero extends LivingBeing {
 		prepareSpriteData();
 	}
 
+	/**
+	 * Prepares sprite sheet data.
+	 */
 	private void prepareSpriteData() {
 		// change this according to sprite sheet
 		frames = 4;
 		currentFrame = 0;
 	}
 
+	/**
+	 * Moves this hero to the specified direction if possible.
+	 * 
+	 * @param lab
+	 *            game labyrinth
+	 * @param direction
+	 *            direction in which to move hero
+	 */
 	public void move(Labyrinth lab, Direction direction) {
 		// updating direction hero is facing
 		if (direction != Direction.NONE)
@@ -76,13 +116,23 @@ public class Hero extends LivingBeing {
 		}
 	}
 
-	public String drawToString() {
+	/**
+	 * Prints hero to string.
+	 */
+	public String toString() {
 		if (hasSword)
 			return "A ";
 		else
 			return "H ";
 	}
 
+	/**
+	 * Catches sword if possible.
+	 * 
+	 * @param sword
+	 *            game sword
+	 * @return <code>true</code> if sword was caught
+	 */
 	public boolean catchSwordIfPossible(Sword sword) {
 		if (sword.isVisible() && sword.getPosition().equals(position)) {
 			// hide sword from labyrinth
@@ -97,31 +147,61 @@ public class Hero extends LivingBeing {
 		return false;
 	}
 
+	/**
+	 * Returns true if hero has sword.
+	 * 
+	 * @return <code>true</code> if hero has sword
+	 */
 	public boolean hasSword() {
 		return hasSword;
 	}
 
+	/**
+	 * Arms hero.
+	 */
 	public void arm() {
 		hasSword = true;
 	}
 
+	/**
+	 * Returns true if hero has eagle.
+	 * 
+	 * @return <code>true</code> if hero has eagle
+	 */
 	public boolean hasEagle() {
 		return hasEagle;
 	}
 
+	/**
+	 * Returns true if hero has just sent the eagle.
+	 * 
+	 * @return <code>true</code> if hero has just sent the eagle
+	 */
 	public boolean hasJustSentEagle() {
 		return hasJustSentEagle;
 	}
 
+	/**
+	 * Resets hasJustSentEagle to <code>false</code>
+	 */
 	public void resetHasJustSentEagleValue() {
 		hasJustSentEagle = false;
 	}
 
+	/**
+	 * Sends eagle.
+	 */
 	public void sendEagle() {
 		hasEagle = false;
 		hasJustSentEagle = true;
 	}
 
+	/**
+	 * Catches the eagle.
+	 * 
+	 * @param eagle
+	 *            the eagle
+	 */
 	public void catchEagle(Eagle eagle) {
 		hasEagle = true;
 		eagle.setWithHero(true);
@@ -132,10 +212,18 @@ public class Hero extends LivingBeing {
 		eagle.setHasSword(false);
 	}
 
+	/**
+	 * Returns true if hero has killed at least one dragon.
+	 * 
+	 * @return <code>true</code> if hero has killed at least one dragon
+	 */
 	public boolean hasKilledADragon() {
 		return hasKilledADragon;
 	}
 
+	/**
+	 * Sets hasKilledADragon to <code>true</code>.
+	 */
 	public void killedADragon() {
 		hasKilledADragon = true;
 	}

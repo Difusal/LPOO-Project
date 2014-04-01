@@ -137,7 +137,7 @@ public class GamePanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * TODO
+	 * Starts game creation mode
 	 */
 	public void startGameCreation() {
 		game = new Game();
@@ -145,10 +145,21 @@ public class GamePanel extends JPanel implements ActionListener {
 		initGame();
 	}
 
+	/**
+	 * Gets this game
+	 * 
+	 * @return this game
+	 */
 	public Game getGame() {
 		return game;
 	}
 
+	/**
+	 * Loads game
+	 * 
+	 * @param game
+	 *            game to be loaded
+	 */
 	public void loadGame(Game game) {
 		this.game = game;
 		creatingLabyrinth = false;
@@ -164,6 +175,12 @@ public class GamePanel extends JPanel implements ActionListener {
 		requestFocus();
 	}
 
+	/**
+	 * Mouse Adapter
+	 * 
+	 * @author Henrique Ferrolho
+	 * 
+	 */
 	private class MyMouseAdapter extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
 			if (!creatingLabyrinth)
@@ -246,6 +263,12 @@ public class GamePanel extends JPanel implements ActionListener {
 		}
 	}
 
+	/**
+	 * Keyboard adapter
+	 * 
+	 * @author henrique
+	 * 
+	 */
 	private class MyKeyboardAdapter extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
 			if (showBackground)
@@ -733,34 +756,78 @@ public class GamePanel extends JPanel implements ActionListener {
 		this.upKey = upKey;
 	}
 
+	/**
+	 * Gets left key
+	 * 
+	 * @return key assigned to move hero left
+	 */
 	public int getLeftKey() {
 		return leftKey;
 	}
 
+	/**
+	 * Sets key to move user left.
+	 * 
+	 * @param leftKey
+	 *            key to move user left
+	 */
 	public void setLeftKey(int leftKey) {
 		this.leftKey = leftKey;
 	}
 
+	/**
+	 * Gets right key
+	 * 
+	 * @return key assigned to move hero right
+	 */
 	public int getRightKey() {
 		return rightKey;
 	}
 
+	/**
+	 * Sets key to move user right.
+	 * 
+	 * @param rightKey
+	 *            key to move user right
+	 */
 	public void setRightKey(int rightKey) {
 		this.rightKey = rightKey;
 	}
 
+	/**
+	 * Gets down key
+	 * 
+	 * @return key assigned to move hero down
+	 */
 	public int getDownKey() {
 		return downKey;
 	}
 
+	/**
+	 * Sets key to move user down.
+	 * 
+	 * @param downKey
+	 *            key to move user down
+	 */
 	public void setDownKey(int downKey) {
 		this.downKey = downKey;
 	}
 
+	/**
+	 * Sets key to send eagle.
+	 * 
+	 * @param sendEagleKey
+	 *            key to send eagle
+	 */
 	public void setSendEagleKey(int sendEagleKey) {
 		this.sendEagleKey = sendEagleKey;
 	}
 
+	/**
+	 * Returns whether there is an active game or not
+	 * 
+	 * @return <code>true</code> if a game is active
+	 */
 	public boolean hasAnActiveGame() {
 		return !showBackground;
 	}

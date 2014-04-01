@@ -32,6 +32,9 @@ public class Game implements Serializable {
 	private Sword sword;
 	private boolean exitIsOpen = false;
 
+	/**
+	 * Constructs a game with an empty labyrinth for creation mode
+	 */
 	public Game() {
 		// initializing variables
 		lab = mazeBuilder.buildEmpty();
@@ -39,6 +42,14 @@ public class Game implements Serializable {
 		initializeVariables();
 	}
 
+	/**
+	 * Constructs a game with the specified number of dragons and behavior
+	 * 
+	 * @param dragonBehavior
+	 *            dragons behavior
+	 * @param numDragons
+	 *            number of dragons
+	 */
 	public Game(DragonBehavior dragonBehavior, int numDragons) {
 		// initializing variables
 		lab = mazeBuilder.buildDemo();
@@ -46,6 +57,19 @@ public class Game implements Serializable {
 		initializeVariables(dragonBehavior, numDragons);
 	}
 
+	/**
+	 * Constructs a game with the specified dimensions, number of dragons and
+	 * behavior
+	 * 
+	 * @param width
+	 *            maze width
+	 * @param height
+	 *            maze height
+	 * @param dragonBehavior
+	 *            dragons behavior
+	 * @param numDragons
+	 *            number of dragons to spaw
+	 */
 	public Game(int width, int height, DragonBehavior dragonBehavior,
 			int numDragons) {
 		// initializing variables
@@ -54,6 +78,11 @@ public class Game implements Serializable {
 		initializeVariables(dragonBehavior, numDragons);
 	}
 
+	/**
+	 * Initializes a game with no dragons. Hero and sword are initialized
+	 * outside of the visible maze. This method is used when "create maze"
+	 * button is pressed.
+	 */
 	public void initializeVariables() {
 		livingBeings = new Vector<LivingBeing>();
 
@@ -70,6 +99,14 @@ public class Game implements Serializable {
 		sword = new Sword(-1, -1);
 	}
 
+	/**
+	 * Initializes a regular game.
+	 * 
+	 * @param dragonBehavior
+	 *            a dragonBehavior
+	 * @param numDragons
+	 *            the number of dragons to be initialized
+	 */
 	public void initializeVariables(DragonBehavior dragonBehavior,
 			int numDragons) {
 		livingBeings = new Vector<LivingBeing>();
@@ -92,6 +129,13 @@ public class Game implements Serializable {
 					sword));
 	}
 
+	/**
+	 * Updates game.
+	 * 
+	 * @param directionToMoveHero
+	 *            a Direction in which to move hero.
+	 * @return <code>true</code> if game is done
+	 */
 	public boolean updateGame(Direction directionToMoveHero) {
 		boolean done = false;
 
@@ -157,26 +201,56 @@ public class Game implements Serializable {
 		return done;
 	}
 
+	/**
+	 * Returns the Labyrinth of this Game.
+	 * 
+	 * @return the Labyrinth
+	 */
 	public Labyrinth getLabyrinth() {
 		return lab;
 	}
 
+	/**
+	 * Returns the Hero of this Game.
+	 * 
+	 * @return the Hero
+	 */
 	public Hero getHero() {
 		return hero;
 	}
 
+	/**
+	 * Returns the LivingBeings of this Game.
+	 * 
+	 * @return the vector of LivingBeings
+	 */
 	public Vector<LivingBeing> getLivingBeings() {
 		return livingBeings;
 	}
 
+	/**
+	 * Returns the Sword of this Game.
+	 * 
+	 * @return the Sword
+	 */
 	public Sword getSword() {
 		return sword;
 	}
 
+	/**
+	 * Returns the Eagle of this Game.
+	 * 
+	 * @return the Eagle
+	 */
 	public Eagle getEagle() {
 		return eagle;
 	}
 
+	/**
+	 * Returns the exit state of this Game
+	 * 
+	 * @return <code>true</code> if exit is open
+	 */
 	public boolean exitIsOpen() {
 		return exitIsOpen;
 	}

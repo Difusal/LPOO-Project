@@ -143,7 +143,7 @@ public class Dragon extends LivingBeing {
 	/**
 	 * Draws dragon to string.
 	 */
-	public String drawToString() {
+	public String toString() {
 		if (isSleeping)
 			return "d ";
 		else
